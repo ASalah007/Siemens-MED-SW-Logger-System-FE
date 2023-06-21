@@ -20,7 +20,7 @@ function TestSuiteHook() {
   );
   // Fetch Data of test suites
   useEffect(() => {
-    fetch("http://localhost:8080/TestSuites/")
+    fetch("http://egc-med-tesla:8080/TestSuites/")
       .then((response) => response.json())
       .then((data) => {
         if (data && data.message !=="Client must be connected before running operations") {

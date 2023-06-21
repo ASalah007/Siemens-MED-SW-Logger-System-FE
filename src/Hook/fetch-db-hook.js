@@ -13,7 +13,7 @@ function FetchDbHook() {
       return;
     }
 
-    fetch("http://localhost:8080/database/urls", {
+    fetch("http://egc-med-tesla:8080/database/urls", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +42,7 @@ function FetchDbHook() {
   };
 
   const handleDisconnect = () => {
-    fetch("http://localhost:8080/database/urls", {
+    fetch("http://egc-med-tesla:8080/database/urls", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

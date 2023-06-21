@@ -31,7 +31,7 @@ function TestCaseHook() {
   const searchParams = new URLSearchParams(location.search);
   const testsuitId = searchParams.get("testsuitId");
   useEffect(() => {
-    fetch(`http://localhost:8080/testCases/?testSuite[id]=${testsuitId}`)
+    fetch(`http://egc-med-tesla:8080/testCases/?testSuite[id]=${testsuitId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data) {

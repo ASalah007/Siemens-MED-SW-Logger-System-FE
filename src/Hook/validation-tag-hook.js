@@ -11,7 +11,7 @@ function ValidationTagHook() {
 
   useEffect(() => {
     fetch(
-      `http://localhost:8080/validationTags/testCases?testSuite.id=${testsuitId}&testCase.id=${testcaseId}`
+      `http://egc-med-tesla:8080/validationTags/testCases?testSuite.id=${testsuitId}&testCase.id=${testcaseId}`
     )
       .then((response) => response.json())
       .then((data) => {
