@@ -2,6 +2,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import React from "react";
 import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
 import MapDialog from "./MapDialog";
+import { ReactFlowProvider } from "reactflow";
 
 function ShowInMap({ onClick, onClose, open, maps }) {
   return (
@@ -16,7 +17,14 @@ function ShowInMap({ onClick, onClose, open, maps }) {
         </IconButton>
       </Tooltip>
 
-      <MapDialog open={open} onClick={onClick} onClose={onClose} maps={maps} />
+      <ReactFlowProvider>
+        <MapDialog
+          open={open}
+          onClick={onClick}
+          onClose={onClose}
+          maps={maps}
+        />
+      </ReactFlowProvider>
     </div>
   );
 }

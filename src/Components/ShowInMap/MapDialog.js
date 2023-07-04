@@ -13,10 +13,12 @@ import ReactFlow, {
   MiniMap,
   useEdgesState,
   useNodesState,
+  useOnSelectionChange,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import Folder from "../Folder";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import CustomEdgeStartEnd from "../ConnectivityMap/CustomEdgeStartEnd";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -88,6 +90,7 @@ export default function MapDialog({ open, onClose, maps }) {
               edges={edges}
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
+              edgeTypes={{ "start-end": CustomEdgeStartEnd }}
             >
               <Controls />
               <MiniMap nodeColor="#6ede87" zoomable pannable />
@@ -141,6 +144,25 @@ function useMapDialogStates({ maps }) {
     setNodes(newNodes);
     setEdges(getEdges(Object.values(maps)[i]));
   };
+
+  useOnSelectionChange({
+    onChange: ({ nodes, edges }) => {
+      setEdges((old) => {
+        const nw = [...old];
+        nw.map((e) => {
+          const edgeAffected =
+            nodes.length > 0 &&
+            (e.source === nodes[0].id || e.target === nodes[0].id);
+
+          e.animated = edgeAffected;
+          e.type = edgeAffected && "start-end";
+
+          return e;
+        });
+        return nw;
+      });
+    },
+  });
 
   return {
     nodes,
