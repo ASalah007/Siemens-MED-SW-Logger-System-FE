@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ValidationTag from "./Pages/ValidationTag/ValidationTag";
 import Welcome from "./Pages/Welcome/Welcome";
 import { DataBaseContextProvider } from "./Contexts/DatabaseContext.js";
+import TreePage from "./Pages/TreePage/TreePage.js";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/testsuits" element={<Testsuit />} />
           <Route path="/testcases" element={<Testcase />} />
           <Route path="/validtags" element={<ValidationTag />} />
+          <Route path="/tree" element={<TreePage />} />
         </Routes>
       </BrowserRouter>
     </DataBaseContextProvider>

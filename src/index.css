@@ -1,21 +1,18 @@
-:root
-{
-  --body_background:#c7c7c7;
-  --body_color:#006D8E;
-  --table_color:#08607B;
-  --validation-point-font-color:#414141;
+:root {
+  --body_background: #c7c7c7;
+  --body_color: #006d8e;
+  --table_color: #08607b;
+  --validation-point-font-color: #414141;
 }
 
-[data-theme = "dark"]
-{
-  --body_background:#1f1e1e;
-  --body_color:#0C0C0C;
-  --table_color:#111111;
-  --validation-point-font-color:#fff;
+[data-theme="dark"] {
+  --body_background: #1f1e1e;
+  --body_color: #0c0c0c;
+  --table_color: #111111;
+  --validation-point-font-color: #fff;
 }
 
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -31,7 +28,6 @@ body {
   background-color: var(--body_background);
 }
 
-
-
-
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

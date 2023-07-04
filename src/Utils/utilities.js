@@ -140,3 +140,97 @@ export const getItemId = (item, nestedData) => {
 
   return itemN;
 };
+
+export function formatDuration(milliseconds) {
+  if (milliseconds < 1000) return String(milliseconds + "ms");
+  let seconds = Math.floor(milliseconds / 1000);
+  let minutes = Math.floor(seconds / 60);
+  let hours = Math.floor(minutes / 60);
+
+  // Calculate the remaining time
+  seconds %= 60;
+  minutes %= 60;
+
+  // Create the formatted string
+  let formattedDuration = "";
+  if (hours > 0) formattedDuration += hours + "h ";
+  if (minutes > 0) formattedDuration += minutes + "m ";
+  if (seconds > 0) formattedDuration += seconds + "s";
+
+  return formattedDuration.trim();
+}
+
+export function getConnectedComponents(graph) {
+  const visited = new Set();
+  const components = [];
+
+  for (let node in graph) {
+    if (!visited.has(node)) {
+      const component = [];
+      dfs(node, component);
+      components.push(component);
+    }
+  }
+  return components;
+
+  function dfs(node, component) {
+    if (visited.has(node)) return;
+    visited.add(node);
+    component.push(node);
+
+    const neighbor = graph[node];
+    dfs(neighbor, component);
+  }
+}
+
+export function getNodes(connectedComponents) {
+  const nodes = [];
+
+  const style = {
+    borderRadius: "10px",
+    width: "40px",
+    height: "40px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
+  let currentX = 10;
+  let currentY = 30;
+  const componentSpacing = 120;
+  const nodeSpacing = 70;
+
+  for (let i = 0; i < connectedComponents.length; i++) {
+    const component = connectedComponents[i];
+    const componentSize = component.length;
+
+    for (let j = 0; j < componentSize; j++) {
+      const nodeId = component[j];
+      const node = {
+        id: nodeId,
+        position: { x: currentX, y: currentY },
+        data: { label: nodeId },
+        style,
+        connectable: false,
+      };
+      nodes.push(node);
+
+      currentX += nodeSpacing;
+    }
+
+    currentY += componentSpacing;
+    currentX = 10;
+  }
+
+  return nodes;
+}
+
+export function getEdges(graph) {
+  const edges = Object.entries(graph).map(([source, target]) => ({
+    id: `e${source}-${target}`,
+    source,
+    target,
+  }));
+
+  return edges;
+}
