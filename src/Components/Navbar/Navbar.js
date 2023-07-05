@@ -7,47 +7,49 @@ import InsertChartIcon from "@mui/icons-material/InsertChart";
 import ThemeButton from "../Theme/ThemeButton";
 export default function Navbar() {
   return (
-    <AppBar
-      position="static"
-      sx={{
-        backgroundColor: "var(--body_color)",
-        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-      }}
-    >
-      <Container maxWidth="x">
-        <ThemeButton />
-        <Toolbar disableGutters>
-          <InsertChartIcon
-            sx={{
-              display: { xs: "none", md: "flex" },
-              mr: 1,
-              color: "#333333",
-              fontWeight: "bold",
-              textShadow: "1px 1px #cccccc",
-            }}
-            style={{ color: "white", fontSize: 50 }}
-          />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontSize: "18px",
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".05rem",
-              color: "white",
-              textDecoration: "none",
-              textShadow: "0.5px 1px #cccccc",
-            }}
-          >
-            TEST RESULTS VISUALIZER
-          </Typography>
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <div className="z-10">
+      <AppBar
+        position="static"
+        sx={{
+          backgroundColor: "var(--body_color)",
+          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+        }}
+      >
+        <Container maxWidth="x">
+          <ThemeButton />
+          <Toolbar disableGutters>
+            <InsertChartIcon
+              sx={{
+                display: { xs: "none", md: "flex" },
+                mr: 1,
+                color: "#333333",
+                fontWeight: "bold",
+                textShadow: "1px 1px #cccccc",
+              }}
+              style={{ color: "white", fontSize: 50 }}
+            />
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontSize: "18px",
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".05rem",
+                color: "white",
+                textDecoration: "none",
+                textShadow: "0.5px 1px #cccccc",
+              }}
+            >
+              TEST RESULTS VISUALIZER
+            </Typography>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </div>
   );
 }

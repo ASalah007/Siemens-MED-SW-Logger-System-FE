@@ -1,10 +1,10 @@
 export const config = {
   particles: {
     number: {
-      value: 100,
+      value: 90,
       density: {
-        enable: true,
-        value_area: 500,
+        enable: false,
+        value_area: 800,
       },
     },
     color: {
@@ -26,7 +26,7 @@ export const config = {
       },
     },
     opacity: {
-      value: 0.5,
+      value: 0.2,
       random: false,
       anim: {
         enable: false,
@@ -49,7 +49,7 @@ export const config = {
       enable: true,
       distance: 150,
       color: "#000000",
-      opacity: 0.4,
+      opacity: 0.3,
       width: 1,
     },
     move: {
