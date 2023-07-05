@@ -7,6 +7,9 @@ module.exports = {
         success: "#6ede87",
         fail: "#ff595e",
       },
+      backgroundImage: {
+        home: "url('./Resources/cool-background.png')",
+      },
     },
   },
   plugins: [],

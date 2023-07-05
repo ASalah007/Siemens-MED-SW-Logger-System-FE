@@ -3,7 +3,7 @@ import TestResultsAccordion from "../../Components/TestResultsAccordion/TestResu
 
 function TreePage() {
   return (
-    <div className="bg-white">
+    <div className="bg-white flex flex-col grow">
       <TestResultsAccordion />
     </div>
   );
