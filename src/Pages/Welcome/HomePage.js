@@ -27,7 +27,7 @@ function HomePage() {
       <ParticlesBackground />
       <div className="flex flex-col justify-center items-center bg-white grow">
         {/* Welcome Message */}
-        <div className="mb-10 font-bold text-5xl text-center flex flex-col gap-3 z-10">
+        <div className="mb-14 font-bold text-5xl text-center flex flex-col gap-3 z-10 translate-y-4">
           {connected ? (
             <>
               <span>Connected to {database}</span>
@@ -42,7 +42,7 @@ function HomePage() {
 
         {/* Controls */}
         {connected ? (
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-6 translate-y-10">
             <div className="flex gap-6">
               <Link to="/tree">
                 <Button
@@ -72,7 +72,7 @@ function HomePage() {
           </div>
         ) : (
           <>
-            <div className="flex flex-col gap-20 items-center z-10">
+            <div className="flex flex-col gap-12 items-center z-10 translate-y-10">
               <div className="bg-gray-100 p-1 rounded-3xl border border-black flex gap-3 justify-between">
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                   <Select
