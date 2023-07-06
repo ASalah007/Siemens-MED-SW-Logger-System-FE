@@ -1,14 +1,15 @@
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
-import { databases } from "../../data";
 import ParticlesBackground from "./ParticlesBackground";
 import { LoadingButton } from "@mui/lab";
 import { Link } from "react-router-dom";
+import { fetchDatabases } from "../../Services/services";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
-  const [database, setDatabase] = useState(databases[0]);
+  const [databases, setDatabases] = useState([]);
+  const [database, setDatabase] = useState(null);
   const [connected, setConnected] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +22,13 @@ function HomePage() {
     setLoading(false);
     setConnected(false);
   }
+
+  useEffect(() => {
+    fetchDatabases().then((databases) => {
+      setDatabases(databases);
+      setDatabase(databases[0]);
+    });
+  }, []);
 
   return (
     <div className="grow bg-red-100 flex flex-col">
