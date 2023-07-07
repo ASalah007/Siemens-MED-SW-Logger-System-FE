@@ -16,7 +16,6 @@ function HAccordion({
   const divsRef = [useRef(), useRef(), useRef(), useRef()];
   const [currentDiv, setCurrentDiv] = useState(0);
   const [expanding, setExpanding] = useState(false);
-  console.log("options: ", firstHeaderOptions);
 
   useEffect(() => {
     if (!expanding) return;
