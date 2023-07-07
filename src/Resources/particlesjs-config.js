@@ -1,7 +1,7 @@
 export const config = {
   particles: {
     number: {
-      value: 90,
+      value: 95,
       density: {
         enable: false,
         value_area: 800,
@@ -54,7 +54,7 @@ export const config = {
     },
     move: {
       enable: true,
-      speed: 1.1,
+      speed: 0.3,
       direction: "none",
       random: false,
       straight: false,
