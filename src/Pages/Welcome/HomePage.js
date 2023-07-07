@@ -5,22 +5,33 @@ import ParticlesBackground from "./ParticlesBackground";
 import { LoadingButton } from "@mui/lab";
 import { Link } from "react-router-dom";
 import { fetchDatabases } from "../../Services/services";
+import Cookies from "universal-cookie";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
   const [databases, setDatabases] = useState([]);
-  const [database, setDatabase] = useState(null);
-  const [connected, setConnected] = useState(false);
+  const [database, setDatabase] = useState("");
+  const cookies = new Cookies();
+  const [connectedDatabase, setConnectedDatabase] = useState(
+    cookies.get("connectedDatabase")
+  );
   const [loading, setLoading] = useState(false);
 
   function connectToDatabase(database) {
     setLoading(true);
-    setTimeout(() => setConnected(true), 2000);
+    const tomorrow = new Date();
+    tomorrow.setDate(new Date().getDate() + 1);
+    cookies.set("connectedDatabase", database, {
+      path: "/",
+      expires: tomorrow,
+    });
+    setConnectedDatabase(database);
+    setLoading(false);
   }
 
   function disconnect() {
-    setLoading(false);
-    setConnected(false);
+    setConnectedDatabase(null);
+    cookies.remove("connectedDatabase");
   }
 
   useEffect(() => {
@@ -36,7 +47,7 @@ function HomePage() {
       <div className="flex flex-col justify-center items-center bg-white grow">
         {/* Welcome Message */}
         <div className="mb-14 font-bold text-5xl text-center flex flex-col gap-3 z-10 translate-y-4">
-          {connected ? (
+          {connectedDatabase ? (
             <>
               <span>Connected to {database}</span>
             </>
@@ -49,7 +60,7 @@ function HomePage() {
         </div>
 
         {/* Controls */}
-        {connected ? (
+        {connectedDatabase ? (
           <div className="flex flex-col items-center gap-6 translate-y-10">
             <div className="flex gap-6">
               <Link to="/tree">
@@ -119,6 +130,7 @@ function HomePage() {
                     <Button
                       sx={{ color: "#0F62FE", fontWeight: "bold" }}
                       onClick={() => connectToDatabase(d)}
+                      key={d}
                     >
                       {d}
                     </Button>

@@ -21,7 +21,6 @@ function TestResultsAccordion() {
   const [activeValidationPoint, setActiveValidationPoint] = useState(-1);
 
   const [testSuitesTableView, setTestSuitesTableView] = useState(false);
-  // const [testCasesTableView, setTestCasesTableView] = useState(false);
 
   const TSColumns = ["id", "status", "duration"].concat(
     Object.keys(testSuites[0].metaData).filter((k) => k !== "design_info")
@@ -34,13 +33,6 @@ function TestResultsAccordion() {
       .filter(([k, v]) => k !== "design_info")
       .flatMap(([k, v]) => v),
   ]);
-
-  // const TCColumns = ["id", "status", "duration"];
-  // const TCData = testCases.map((e, i) => [
-  //   i,
-  //   String(e.status),
-  //   formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
-  // ]);
 
   const firstHeader = (
     <HAccordionHeader

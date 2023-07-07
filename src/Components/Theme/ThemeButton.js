@@ -12,10 +12,10 @@ function ThemeButton() {
     else setLightMode();
   };
   return (
-    <div style={{ float:"right" ,marginTop:"10px"}}>
-      <label class="switch" for="darkmode-toggle">
+    <div style={{ float: "right", marginTop: "10px" }}>
+      <label className="switch" htmlFor="darkmode-toggle">
         <input type="checkbox" id="darkmode-toggle" onChange={toggleTheme} />
-        <span class="slider round"></span>
+        <span className="slider round"></span>
       </label>
     </div>
   );
