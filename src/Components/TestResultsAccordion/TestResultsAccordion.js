@@ -53,23 +53,22 @@ function TestResultsAccordion({ testSuites }) {
       .flatMap(([k, v]) => v),
   ]);
 
-  const firstHeader = (
-    <HAccordionHeader
-      data={testSuites}
-      title="Test Suites"
-      actionElements={
-        <ShowInTable
-          sx={{ color: "#ffca3a" }}
-          onClick={() => setTestSuitesTableView(true)}
-          open={testSuitesTableView}
-          onClose={() => setTestSuitesTableView(false)}
-          title="Test Suites"
-          columns={TSColumns}
-          data={TSData}
-        />
-      }
-    />
-  );
+  const firstHeaderOptions = {
+    failed: testSuites.length,
+    total: testSuites.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
+    title: "Test Suites",
+    actionElements: (
+      <ShowInTable
+        sx={{ color: "#ffca3a" }}
+        onClick={() => setTestSuitesTableView(true)}
+        open={testSuitesTableView}
+        onClose={() => setTestSuitesTableView(false)}
+        title="Test Suites"
+        columns={TSColumns}
+        data={TSData}
+      />
+    ),
+  };
   const firstColumnElements = testSuites.map((data, i) => (
     <TSEntry
       data={data}
@@ -91,7 +90,11 @@ function TestResultsAccordion({ testSuites }) {
     />
   ));
 
-  const secondHeader = <HAccordionHeader data={testCases} title="Test Cases" />;
+  const secondHeaderOptions = {
+    total: testCases.length,
+    failed: testCases.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
+    title: "Test Cases",
+  };
   const secondColumnElements = testCases.map((data, i) => (
     <TCEntry
       data={data}
@@ -110,9 +113,14 @@ function TestResultsAccordion({ testSuites }) {
     />
   ));
 
-  const thirdHeader = (
-    <HAccordionHeader data={validationTags} title="Validation Tags" />
-  );
+  const thirdHeaderOptions = {
+    total: validationTags.length,
+    failed: validationTags.reduce(
+      (acc, ele) => (ele.status ? acc : acc + 1),
+      0
+    ),
+    title: "Validation Tags",
+  };
   const thirdColumnElements = validationTags.map((data, i) => (
     <VTEntry
       data={data}
@@ -128,9 +136,14 @@ function TestResultsAccordion({ testSuites }) {
     />
   ));
 
-  const fourthHeader = (
-    <HAccordionHeader data={validationPoints} title="Validation Points" />
-  );
+  const fourthHeaderOptions = {
+    total: validationPoints.length,
+    failed: validationPoints.reduce(
+      (acc, ele) => (ele.status ? acc : acc + 1),
+      0
+    ),
+    title: "Validation Points",
+  };
   const fourthColumnElements = validationPoints.map((data, i) => (
     <VPEntry
       data={data}
@@ -147,13 +160,13 @@ function TestResultsAccordion({ testSuites }) {
     <div className="flex flex-col grow">
       <HAccordion
         firstColumnElements={firstColumnElements}
-        firstHeader={firstHeader}
+        firstHeaderOptions={firstHeaderOptions}
         secondColumnElements={secondColumnElements}
-        secondHeader={secondHeader}
+        secondHeaderOptions={secondHeaderOptions}
         thirdColumnElements={thirdColumnElements}
-        thirdHeader={thirdHeader}
+        thirdHeaderOptions={thirdHeaderOptions}
         fourthColumnElements={fourthColumnElements}
-        fourthHeader={fourthHeader}
+        fourthHeaderOptions={fourthHeaderOptions}
       />
     </div>
   );

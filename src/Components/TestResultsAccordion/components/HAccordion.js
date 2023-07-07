@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
+import HAccordionHeader from "./HAccoridionHeader";
 
 function HAccordion({
   firstColumnElements,
   secondColumnElements,
   thirdColumnElements,
   fourthColumnElements,
-  firstHeader,
-  secondHeader,
-  thirdHeader,
-  fourthHeader,
+
+  firstHeaderOptions,
+  secondHeaderOptions,
+  thirdHeaderOptions,
+  fourthHeaderOptions,
 }) {
   const [divsWidth, setDivsWidth] = useState([]);
   const divsRef = [useRef(), useRef(), useRef(), useRef()];
   const [currentDiv, setCurrentDiv] = useState(0);
   const [expanding, setExpanding] = useState(false);
+  console.log("options: ", firstHeaderOptions);
 
   useEffect(() => {
     if (!expanding) return;
@@ -59,7 +62,9 @@ function HAccordion({
         }}
         ref={divsRef[0]}
       >
-        <div className="shadow-lg z-10">{firstHeader}</div>
+        <div className="shadow-lg z-10">
+          <HAccordionHeader {...firstHeaderOptions} />
+        </div>
         <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
           {firstColumnElements}
         </div>
@@ -83,7 +88,9 @@ function HAccordion({
         }}
         ref={divsRef[1]}
       >
-        <div className="shadow z-10">{secondHeader}</div>
+        <div className="shadow z-10">
+          <HAccordionHeader {...secondHeaderOptions} />
+        </div>
         <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
           {secondColumnElements}
         </div>
@@ -107,7 +114,9 @@ function HAccordion({
         }}
         ref={divsRef[2]}
       >
-        <div className="shadow z-10">{thirdHeader}</div>
+        <div className="shadow z-10">
+          <HAccordionHeader {...thirdHeaderOptions} />
+        </div>
         <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
           {thirdColumnElements}
         </div>
@@ -131,7 +140,9 @@ function HAccordion({
         }}
         ref={divsRef[3]}
       >
-        <div className="shadow z-10">{fourthHeader}</div>
+        <div className="shadow z-10">
+          <HAccordionHeader {...fourthHeaderOptions} />
+        </div>
         <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
           {fourthColumnElements}
         </div>
