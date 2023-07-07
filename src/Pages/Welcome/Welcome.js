@@ -6,12 +6,12 @@ import FetchDbHook from "../../Hook/fetch-db-hook";
 const Welcome = () => {
   const [handleConnect, handleChange, connected, handleDisconnect] =
     FetchDbHook();
-    
+
   return (
     <div className="WelcomeContainer">
       <div className="Welcome">
         <div className="WelcomeBody">
-        <h1>Test Results Visualizer</h1>
+          <h1>Test Results Visualizer</h1>
           <form onSubmit={handleConnect} className="WelcomeForm">
             <label className="FormLabel">
               Database path:
@@ -30,14 +30,11 @@ const Welcome = () => {
 
           <form onSubmit={handleDisconnect} className="WelcomeForm">
             <label className="FormLabel">Disconnect From Database: </label>
-            <button className="FormButton">
-              Disconnect
-            </button>
+            <button className="FormButton">Disconnect</button>
           </form>
-          
+
           {connected && <h1> Connected </h1>}
 
-         
           <Link className="CustomLinkWelcome" to="/testsuits">
             <button className="WelcomeBtn" disabled={!connected}>
               Click here to go to test suite page
