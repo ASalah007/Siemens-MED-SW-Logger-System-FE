@@ -60,7 +60,7 @@ function HAccordion({
         ref={divsRef[0]}
       >
         <div className="shadow-lg z-10">{firstHeader}</div>
-        <div className="overflow-y-auto flex gap-2 flex-col pt-5">
+        <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
           {firstColumnElements}
         </div>
       </div>
@@ -84,7 +84,7 @@ function HAccordion({
         ref={divsRef[1]}
       >
         <div className="shadow z-10">{secondHeader}</div>
-        <div className="overflow-y-auto flex gap-2 flex-col pt-5">
+        <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
           {secondColumnElements}
         </div>
       </div>
@@ -108,7 +108,7 @@ function HAccordion({
         ref={divsRef[2]}
       >
         <div className="shadow z-10">{thirdHeader}</div>
-        <div className="overflow-y-auto flex gap-2 flex-col pt-5">
+        <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
           {thirdColumnElements}
         </div>
       </div>
@@ -132,7 +132,7 @@ function HAccordion({
         ref={divsRef[3]}
       >
         <div className="shadow z-10">{fourthHeader}</div>
-        <div className="overflow-y-auto flex gap-2 flex-col pt-5">
+        <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
           {fourthColumnElements}
         </div>
       </div>

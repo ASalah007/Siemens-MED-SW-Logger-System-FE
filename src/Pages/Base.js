@@ -4,9 +4,9 @@ import Navbar from "../Components/Navbar/Navbar";
 
 function BasePage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen max-h-screen ">
       <Navbar />
-      <div className="grow flex flex-col">
+      <div className="grow flex flex-col overflow-hidden">
         <Outlet />
       </div>
     </div>

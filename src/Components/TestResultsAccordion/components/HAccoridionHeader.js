@@ -11,10 +11,10 @@ function HAccordionHeader({ title, data, actionElements }) {
       </div>
       <div className="flex justify-between px-8">
         <div className="text-fail font-bold">
-          failed: {failed}/{total}
+          Failed: {failed}/{total}
         </div>
         <div className="text-success font-bold">
-          succeeded: {total - failed}/{total}
+          Passed: {total - failed}/{total}
         </div>
       </div>
     </div>

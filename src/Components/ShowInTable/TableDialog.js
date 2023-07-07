@@ -37,7 +37,7 @@ function TableDialog(props) {
         onClose();
       }}
       open={open}
-      maxWidth="xl"
+      maxWidth="lg"
     >
       <DialogTitle className="flex items-center justify-end bg-gray-100">
         {onClose ? (
@@ -47,12 +47,14 @@ function TableDialog(props) {
         ) : null}
       </DialogTitle>
       <DialogContent className="bg-gray-100">
-        <MUIDataTable
-          title={title}
-          columns={columns}
-          data={data}
-          options={options}
-        />
+        <div className="">
+          <MUIDataTable
+            title={title}
+            columns={columns}
+            data={data}
+            options={options}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );

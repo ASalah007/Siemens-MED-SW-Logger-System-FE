@@ -4,7 +4,6 @@ import MiniTable from "../../MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
 
 function VPEntry({ data, num, onClick, active }) {
-  console.log(data);
   const [resultsTableView, setResultsTableView] = useState(false);
   let resultsColumns = [];
   let resultsData = [];

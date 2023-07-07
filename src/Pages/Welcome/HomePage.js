@@ -35,21 +35,23 @@ function HomePage() {
   }
 
   useEffect(() => {
-    fetchDatabases().then((databases) => {
-      setDatabases(databases);
-      setDatabase(databases[0]);
-    });
-  }, []);
+    if (!connectedDatabase) {
+      fetchDatabases().then((databases) => {
+        setDatabases(databases);
+        setDatabase(databases[0]);
+      });
+    }
+  }, [connectedDatabase]);
 
   return (
-    <div className="grow bg-red-100 flex flex-col">
+    <div className="grow bg-white flex flex-col">
       <ParticlesBackground />
       <div className="flex flex-col justify-center items-center bg-white grow">
         {/* Welcome Message */}
         <div className="mb-14 font-bold text-5xl text-center flex flex-col gap-3 z-10 translate-y-4">
           {connectedDatabase ? (
             <>
-              <span>Connected to {database}</span>
+              <span>Connected to {connectedDatabase}</span>
             </>
           ) : (
             <>

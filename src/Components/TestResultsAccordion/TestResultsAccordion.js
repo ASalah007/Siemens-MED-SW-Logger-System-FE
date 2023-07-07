@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import HAccordion from "./components/HAccordion.js";
-import { tss, tcs, vts, vps } from "../../data.js";
 import TSEntry from "./components/TSEntry.js";
 import TCEntry from "./components/TCEntry.js";
 import VTEntry from "./components/VTEntry.js";
@@ -8,9 +7,13 @@ import VPEntry from "./components/VPEntry.js";
 import HAccordionHeader from "./components/HAccoridionHeader.js";
 import ShowInTable from "../ShowInTable/ShowInTable.js";
 import { formatDuration } from "../../Utils/utilities.js";
+import {
+  fetchTestCases,
+  fetchValidationPoints,
+  fetchValidationTags,
+} from "../../Services/services.js";
 
-function TestResultsAccordion() {
-  const [testSuites, setTestSuites] = useState(tss);
+function TestResultsAccordion({ testSuites }) {
   const [testCases, setTestCases] = useState([]);
   const [validationTags, setValidationTags] = useState([]);
   const [validationPoints, setValidationPoints] = useState([]);
@@ -22,9 +25,25 @@ function TestResultsAccordion() {
 
   const [testSuitesTableView, setTestSuitesTableView] = useState(false);
 
+  function loadTestCases(testSuiteId) {
+    fetchTestCases(testSuiteId).then((data) => setTestCases(data));
+  }
+
+  function loadValidationTags(testCaseId) {
+    fetchValidationTags(testCaseId).then((data) => setValidationTags(data));
+  }
+
+  function loadValidationPoints(validationTagId) {
+    fetchValidationPoints(validationTagId).then((data) =>
+      setValidationPoints(data)
+    );
+  }
+
   const TSColumns = ["id", "status", "duration"].concat(
-    Object.keys(testSuites[0].metaData).filter((k) => k !== "design_info")
+    testSuites.length > 0 &&
+      Object.keys(testSuites[0].metaData).filter((k) => k !== "design_info")
   );
+
   const TSData = testSuites.map((e, i) => [
     i,
     String(e.status),
@@ -59,7 +78,7 @@ function TestResultsAccordion() {
       onClick={() => {
         setActiveTestSuite(i);
 
-        setTestCases(tcs); // TODO: change later
+        loadTestCases(data.id);
         setActiveTestCase(-1);
 
         setValidationTags([]);
@@ -80,7 +99,8 @@ function TestResultsAccordion() {
       num={i}
       onClick={() => {
         setActiveTestCase(i);
-        setValidationTags(vts); // TODO: change later
+
+        loadValidationTags(data.id);
         setActiveValidationTag(-1);
 
         setValidationPoints([]);
@@ -101,7 +121,7 @@ function TestResultsAccordion() {
       onClick={() => {
         setActiveValidationTag(i);
 
-        setValidationPoints(vps); // TODO: change later
+        loadValidationPoints(data.id);
         setActiveValidationPoint(-1);
       }}
       active={activeValidationTag === i}
