@@ -1,6 +1,6 @@
 import React from "react";
 import Folder from "../../Folder.js";
-import MiniTable from "../../MiniTable.js";
+import MiniTable from "../../MiniTable/MiniTable.js";
 
 function VTEntry({ data, num, onClick, active }) {
   return (

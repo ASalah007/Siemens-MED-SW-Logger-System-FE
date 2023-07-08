@@ -2,7 +2,6 @@ import { IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import TableViewIcon from "@mui/icons-material/TableView";
 import TableDialog from "./TableDialog";
-import MUIDataTable from "mui-datatables";
 
 function ShowInTable({
   onClick,

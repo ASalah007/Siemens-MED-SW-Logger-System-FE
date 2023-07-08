@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Folder from "../../Folder.js";
-import MiniTable from "../../MiniTable.js";
+import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
 
 function VPEntry({ data, num, onClick, active }) {
