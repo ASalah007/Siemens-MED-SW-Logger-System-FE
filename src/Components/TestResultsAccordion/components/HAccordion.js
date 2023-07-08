@@ -19,30 +19,70 @@ function HAccordion({
   const [currentDiv, setCurrentDiv] = useState(0);
   const [expanding, setExpanding] = useState(false);
 
-  const [firstColumnMinimized, setFirstColumnMinimized] = useState(false);
-  const [secondColumnMinimized, setSecondColumnMinimized] = useState(false);
-  const [thirdColumnMinimized, setThirdColumnMinimized] = useState(false);
-  const [fourthColumnMinimized, setFourthColumnMinimized] = useState(false);
+  const [minimized, setMinimized] = useState([false, false, false, false]);
+  function minimize(column, value) {
+    setMinimized((o) => {
+      const nw = [...o];
+      nw[column] = value;
+      return nw;
+    });
+  }
+
+  // useEffect(() => {
+  //   console.log(divsWidth);
+  //   const visible = minimized.reduce((acc, e) => Number(!e) + acc, 0);
+  //   setDivsWidth((o) => {
+  //     console.log(o);
+  //     const nw = [...o];
+  //     nw.map((w, i) => (minimized[i] ? 0 : `1/${visible}%`));
+  //     console.log("new: ", nw);
+  //     return nw;
+  //   });
+  // }, [minimized]);
 
   useEffect(() => {
     if (!expanding) return;
 
     const expand = (e) => {
       e.preventDefault();
-      const newLeftWidth = Math.max(
-        e.x - divsRef[currentDiv].current.getBoundingClientRect().left,
-        250
-      );
 
-      const newRightWidth = Math.max(
-        divsRef[currentDiv + 1].current.getBoundingClientRect().right - e.x,
-        250
-      );
+      let rightColumn = currentDiv + 1;
+      let leftColumn = -1;
+      let newRightWidth = -1,
+        newLeftWidth = -1;
+      for (let i = rightColumn - 1; i >= 0; i--) {
+        if (!minimized[i]) {
+          leftColumn = i;
+          break;
+        }
+      }
+      const MINWIDTH = 250;
+
+      let dw = e.x - divsRef[leftColumn].current.getBoundingClientRect().right;
+
+      const leftWidth = divsRef[leftColumn].current.offsetWidth;
+      const rightWidth = divsRef[rightColumn].current.offsetWidth;
+      if (
+        (dw > 0 && rightWidth > MINWIDTH + dw) ||
+        (dw < 0 && leftWidth > MINWIDTH - dw)
+      ) {
+        newRightWidth = rightWidth - dw;
+        newLeftWidth = leftWidth + dw;
+      }
+
+      // console.log(leftColumn, rightColumn);
+      // console.log(
+      //   divsRef[leftColumn].current.offsetWidth,
+      //   divsRef[rightColumn].current.offsetWidth
+      // );
+      // console.log(newLeftWidth, newRightWidth);
+
+      if (newLeftWidth === -1 || newRightWidth === -1) return;
 
       setDivsWidth((oldWidths) => {
         const newWidths = [...oldWidths];
-        newWidths[currentDiv] = Math.max(newLeftWidth, 20);
-        newWidths[currentDiv + 1] = Math.max(newRightWidth, 20);
+        newWidths[leftColumn] = newLeftWidth;
+        newWidths[rightColumn] = newRightWidth;
         return newWidths;
       });
     };
@@ -55,37 +95,37 @@ function HAccordion({
       window.removeEventListener("mousemove", expand);
       window.removeEventListener("mouseup", cancelExpanding);
     };
-  }, [expanding, currentDiv]);
+  }, [expanding, currentDiv, minimized]);
 
   return (
     <div className="flex grow max-h-screen">
-      {firstColumnMinimized && (
+      {minimized[0] && (
         <MinimizedColumn
-          onMaximize={() => setFirstColumnMinimized(false)}
+          onMaximize={() => minimize(0, false)}
           total={firstHeaderOptions.total}
           failed={firstHeaderOptions.failed}
           title="Test Suites"
         />
       )}
-      {secondColumnMinimized && (
+      {minimized[1] && (
         <MinimizedColumn
-          onMaximize={() => setSecondColumnMinimized(false)}
+          onMaximize={() => minimize(1, false)}
           total={secondHeaderOptions.total}
           failed={secondHeaderOptions.failed}
           title="Test Cases"
         />
       )}
-      {thirdColumnMinimized && (
+      {minimized[2] && (
         <MinimizedColumn
-          onMaximize={() => setThirdColumnMinimized(false)}
+          onMaximize={() => minimize(2, false)}
           total={thirdHeaderOptions.total}
           failed={thirdHeaderOptions.failed}
           title="Validation Tags"
         />
       )}
-      {fourthColumnMinimized && (
+      {minimized[3] && (
         <MinimizedColumn
-          onMaximize={() => setFourthColumnMinimized(false)}
+          onMaximize={() => minimize(3, false)}
           total={fourthHeaderOptions.total}
           failed={fourthHeaderOptions.failed}
           title="Validation Points"
@@ -93,19 +133,18 @@ function HAccordion({
       )}
 
       {/* first column */}
-      {!firstColumnMinimized && (
+      {!minimized[0] && (
         <div
           className="w-1/4 flex flex-col pb-10 grow"
           style={{
             width: divsWidth[0] + "px",
-            maxWidth: divsWidth[0] + "px",
           }}
           ref={divsRef[0]}
         >
           <div className="shadow-lg z-10">
             <HAccordionHeader
               {...firstHeaderOptions}
-              onMinimize={() => setFirstColumnMinimized(true)}
+              onMinimize={() => minimize(0, true)}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
@@ -115,7 +154,7 @@ function HAccordion({
       )}
 
       {/* first divider */}
-      {!firstColumnMinimized && !secondColumnMinimized && (
+      {!minimized[0] && !minimized[1] && (
         <div
           className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
           onMouseDown={(e) => {
@@ -126,19 +165,18 @@ function HAccordion({
       )}
 
       {/* second column */}
-      {!secondColumnMinimized && (
+      {!minimized[1] && (
         <div
           className="w-1/4 flex flex-col pb-10 grow"
           style={{
             width: divsWidth[1] + "px",
-            maxWidth: divsWidth[1] + "px",
           }}
           ref={divsRef[1]}
         >
           <div className="shadow z-10">
             <HAccordionHeader
               {...secondHeaderOptions}
-              onMinimize={() => setSecondColumnMinimized(true)}
+              onMinimize={() => minimize(1, true)}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
@@ -148,31 +186,29 @@ function HAccordion({
       )}
 
       {/* second divider */}
-      {(!firstColumnMinimized || !secondColumnMinimized) &&
-        !thirdColumnMinimized && (
-          <div
-            className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
-            onMouseDown={(e) => {
-              setCurrentDiv(1);
-              setExpanding(true);
-            }}
-          ></div>
-        )}
+      {(!minimized[0] || !minimized[1]) && !minimized[2] && (
+        <div
+          className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
+          onMouseDown={(e) => {
+            setCurrentDiv(1);
+            setExpanding(true);
+          }}
+        ></div>
+      )}
 
       {/* third column */}
-      {!thirdColumnMinimized && (
+      {!minimized[2] && (
         <div
           className="w-1/4 flex flex-col pb-10 grow"
           style={{
             width: divsWidth[2] + "px",
-            maxWidth: divsWidth[2] + "px",
           }}
           ref={divsRef[2]}
         >
           <div className="shadow z-10">
             <HAccordionHeader
               {...thirdHeaderOptions}
-              onMinimize={() => setThirdColumnMinimized(true)}
+              onMinimize={() => minimize(2, true)}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
@@ -182,33 +218,29 @@ function HAccordion({
       )}
 
       {/* third divider */}
-      {(!firstColumnMinimized ||
-        !secondColumnMinimized ||
-        !thirdColumnMinimized) &&
-        !fourthColumnMinimized && (
-          <div
-            className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
-            onMouseDown={(e) => {
-              setCurrentDiv(2);
-              setExpanding(true);
-            }}
-          ></div>
-        )}
+      {(!minimized[0] || !minimized[1] || !minimized[2]) && !minimized[3] && (
+        <div
+          className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
+          onMouseDown={(e) => {
+            setCurrentDiv(2);
+            setExpanding(true);
+          }}
+        ></div>
+      )}
 
       {/* fourth column */}
-      {!fourthColumnMinimized && (
+      {!minimized[3] && (
         <div
           className="w-1/4 flex flex-col pb-10 grow"
           style={{
             width: divsWidth[3] + "px",
-            maxWidth: divsWidth[3] + "px",
           }}
           ref={divsRef[3]}
         >
           <div className="shadow z-10">
             <HAccordionHeader
               {...fourthHeaderOptions}
-              onMinimize={() => setFourthColumnMinimized(true)}
+              onMinimize={() => minimize(3, true)}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
