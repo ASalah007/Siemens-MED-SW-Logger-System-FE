@@ -12,6 +12,7 @@ function VPEntry({ data, num, onClick, active }) {
     resultsColumns = Object.keys(data.results[0]);
     resultsData = data.results.map((e) => Object.values(e));
   }
+  console.log(data);
 
   return (
     <div>
@@ -23,7 +24,8 @@ function VPEntry({ data, num, onClick, active }) {
               (data.status ? "text-success" : "text-fail")
             }
           >
-            Validation Point {num}
+            Validation Point {num} -- ({data.levels.mac},{" "}
+            {data.levels.direction})
           </span>
         }
         actionElements={
