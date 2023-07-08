@@ -4,7 +4,6 @@ import TSEntry from "./components/TSEntry.js";
 import TCEntry from "./components/TCEntry.js";
 import VTEntry from "./components/VTEntry.js";
 import VPEntry from "./components/VPEntry.js";
-import HAccordionHeader from "./components/HAccoridionHeader.js";
 import ShowInTable from "../ShowInTable/ShowInTable.js";
 import { formatDuration } from "../../Utils/utilities.js";
 import {
@@ -22,6 +21,11 @@ function TestResultsAccordion({ testSuites }) {
   const [activeTestCase, setActiveTestCase] = useState(-1);
   const [activeValidationTag, setActiveValidationTag] = useState(-1);
   const [activeValidationPoint, setActiveValidationPoint] = useState(-1);
+
+  const [filterTestSuite, setFilterTestSuite] = useState("any");
+  const [filterTestCase, setFilterTestCase] = useState("any");
+  const [filterValidationTag, setFilterValidationTag] = useState("any");
+  const [filterValidationPoint, setFilterValidationPoint] = useState("any");
 
   const [testSuitesTableView, setTestSuitesTableView] = useState(false);
 
@@ -57,6 +61,10 @@ function TestResultsAccordion({ testSuites }) {
     failed: testSuites.length,
     total: testSuites.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
     title: "Test Suites",
+    onPassedClick: () =>
+      setFilterTestSuite(filterTestSuite === "passed" ? "any" : "passed"),
+    onFailedClick: () =>
+      setFilterTestSuite(filterTestSuite === "failed" ? "any" : "failed"),
     actionElements: (
       <ShowInTable
         sx={{ color: "#ffca3a" }}
@@ -69,49 +77,67 @@ function TestResultsAccordion({ testSuites }) {
       />
     ),
   };
-  const firstColumnElements = testSuites.map((data, i) => (
-    <TSEntry
-      data={data}
-      key={data.id}
-      num={i}
-      onClick={() => {
-        setActiveTestSuite(i);
+  function filterPredict(filterOption, data) {
+    if (filterOption === "passed" && data.status) return true;
+    if (filterOption === "failed" && !data.status) return true;
+    return filterOption === "any";
+  }
+  const firstColumnElements = testSuites
+    .filter((data) => filterPredict(filterTestSuite, data))
+    .map((data, i) => (
+      <TSEntry
+        data={data}
+        key={data.id}
+        num={i}
+        onClick={() => {
+          setActiveTestSuite(i);
 
-        loadTestCases(data.id);
-        setActiveTestCase(-1);
+          loadTestCases(data.id);
+          setActiveTestCase(-1);
+          setFilterTestCase("any");
 
-        setValidationTags([]);
-        setActiveValidationTag(-1);
+          setValidationTags([]);
+          setActiveValidationTag(-1);
+          setFilterValidationTag("any");
 
-        setValidationPoints([]);
-        setActiveValidationPoint(-1);
-      }}
-      active={activeTestSuite === i}
-    />
-  ));
+          setValidationPoints([]);
+          setActiveValidationPoint(-1);
+          setFilterValidationPoint("any");
+        }}
+        active={activeTestSuite === i}
+      />
+    ));
 
   const secondHeaderOptions = {
     total: testCases.length,
     failed: testCases.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
     title: "Test Cases",
+    onPassedClick: () =>
+      setFilterTestCase(filterTestCase === "passed" ? "any" : "passed"),
+    onFailedClick: () =>
+      setFilterTestCase(filterTestCase === "failed" ? "any" : "failed"),
   };
-  const secondColumnElements = testCases.map((data, i) => (
-    <TCEntry
-      data={data}
-      key={data.id}
-      num={i}
-      onClick={() => {
-        setActiveTestCase(i);
+  const secondColumnElements = testCases
+    .filter((data) => filterPredict(filterTestCase, data))
+    .map((data, i) => (
+      <TCEntry
+        data={data}
+        key={data.id}
+        num={i}
+        onClick={() => {
+          setActiveTestCase(i);
 
-        loadValidationTags(data.id);
-        setActiveValidationTag(-1);
+          loadValidationTags(data.id);
+          setActiveValidationTag(-1);
+          setFilterValidationTag("any");
 
-        setValidationPoints([]);
-        setActiveValidationPoint(-1);
-      }}
-      active={activeTestCase === i}
-    />
-  ));
+          setValidationPoints([]);
+          setActiveValidationPoint(-1);
+          setFilterValidationPoint("any");
+        }}
+        active={activeTestCase === i}
+      />
+    ));
 
   const thirdHeaderOptions = {
     total: validationTags.length,
@@ -120,21 +146,32 @@ function TestResultsAccordion({ testSuites }) {
       0
     ),
     title: "Validation Tags",
+    onPassedClick: () =>
+      setFilterValidationTag(
+        filterValidationTag === "passed" ? "any" : "passed"
+      ),
+    onFailedClick: () =>
+      setFilterValidationTag(
+        filterValidationTag === "failed" ? "any" : "failed"
+      ),
   };
-  const thirdColumnElements = validationTags.map((data, i) => (
-    <VTEntry
-      data={data}
-      key={data.id}
-      num={i}
-      onClick={() => {
-        setActiveValidationTag(i);
+  const thirdColumnElements = validationTags
+    .filter((data) => filterPredict(filterValidationTag, data))
+    .map((data, i) => (
+      <VTEntry
+        data={data}
+        key={data.id}
+        num={i}
+        onClick={() => {
+          setActiveValidationTag(i);
 
-        loadValidationPoints(data.id);
-        setActiveValidationPoint(-1);
-      }}
-      active={activeValidationTag === i}
-    />
-  ));
+          loadValidationPoints(data.id);
+          setActiveValidationPoint(-1);
+          setFilterValidationPoint("any");
+        }}
+        active={activeValidationTag === i}
+      />
+    ));
 
   const fourthHeaderOptions = {
     total: validationPoints.length,
@@ -143,30 +180,55 @@ function TestResultsAccordion({ testSuites }) {
       0
     ),
     title: "Validation Points",
+    onPassedClick: () =>
+      setFilterValidationPoint(
+        filterValidationPoint === "passed" ? "any" : "passed"
+      ),
+    onFailedClick: () =>
+      setFilterValidationPoint(
+        filterValidationPoint === "failed" ? "any" : "failed"
+      ),
   };
-  const fourthColumnElements = validationPoints.map((data, i) => (
-    <VPEntry
-      data={data}
-      key={data.id}
-      num={i}
-      onClick={() => {
-        setActiveValidationPoint(i);
-      }}
-      active={activeValidationPoint === i}
-    />
-  ));
+  const fourthColumnElements = validationPoints
+    .filter((data) => filterPredict(filterValidationPoint, data))
+    .map((data, i) => (
+      <VPEntry
+        data={data}
+        key={data.id}
+        num={i}
+        onClick={() => {
+          setActiveValidationPoint(i);
+        }}
+        active={activeValidationPoint === i}
+      />
+    ));
 
   return (
     <div className="flex flex-col grow">
       <HAccordion
         firstColumnElements={firstColumnElements}
         firstHeaderOptions={firstHeaderOptions}
+        firstColumnPlaceHolder={
+          "Test Suit " + (activeTestSuite >= 0 ? activeTestSuite : "")
+        }
         secondColumnElements={secondColumnElements}
         secondHeaderOptions={secondHeaderOptions}
+        secondColumnPlaceHolder={
+          "Test Case " + (activeTestCase >= 0 ? activeTestCase : "")
+        }
         thirdColumnElements={thirdColumnElements}
         thirdHeaderOptions={thirdHeaderOptions}
+        thirdColumnPlaceHolder={
+          activeValidationTag >= 0
+            ? validationTags[activeValidationTag].metaData.name
+            : "Validation Tag"
+        }
         fourthColumnElements={fourthColumnElements}
         fourthHeaderOptions={fourthHeaderOptions}
+        fourthColumnPlaceHolder={
+          "Validation Point " +
+          (activeValidationPoint >= 0 ? activeValidationPoint : "")
+        }
       />
     </div>
   );

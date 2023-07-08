@@ -13,6 +13,11 @@ function HAccordion({
   secondHeaderOptions,
   thirdHeaderOptions,
   fourthHeaderOptions,
+
+  firstColumnPlaceHolder,
+  secondColumnPlaceHolder,
+  thirdColumnPlaceHolder,
+  fourthColumnPlaceHolder,
 }) {
   const [divsWidth, setDivsWidth] = useState([]);
   const divsRef = [useRef(), useRef(), useRef(), useRef()];
@@ -27,18 +32,6 @@ function HAccordion({
       return nw;
     });
   }
-
-  // useEffect(() => {
-  //   console.log(divsWidth);
-  //   const visible = minimized.reduce((acc, e) => Number(!e) + acc, 0);
-  //   setDivsWidth((o) => {
-  //     console.log(o);
-  //     const nw = [...o];
-  //     nw.map((w, i) => (minimized[i] ? 0 : `1/${visible}%`));
-  //     console.log("new: ", nw);
-  //     return nw;
-  //   });
-  // }, [minimized]);
 
   useEffect(() => {
     if (!expanding) return;
@@ -70,13 +63,6 @@ function HAccordion({
         newLeftWidth = leftWidth + dw;
       }
 
-      // console.log(leftColumn, rightColumn);
-      // console.log(
-      //   divsRef[leftColumn].current.offsetWidth,
-      //   divsRef[rightColumn].current.offsetWidth
-      // );
-      // console.log(newLeftWidth, newRightWidth);
-
       if (newLeftWidth === -1 || newRightWidth === -1) return;
 
       setDivsWidth((oldWidths) => {
@@ -104,7 +90,7 @@ function HAccordion({
           onMaximize={() => minimize(0, false)}
           total={firstHeaderOptions.total}
           failed={firstHeaderOptions.failed}
-          title="Test Suites"
+          title={firstColumnPlaceHolder}
         />
       )}
       {minimized[1] && (
@@ -112,7 +98,7 @@ function HAccordion({
           onMaximize={() => minimize(1, false)}
           total={secondHeaderOptions.total}
           failed={secondHeaderOptions.failed}
-          title="Test Cases"
+          title={secondColumnPlaceHolder}
         />
       )}
       {minimized[2] && (
@@ -120,7 +106,7 @@ function HAccordion({
           onMaximize={() => minimize(2, false)}
           total={thirdHeaderOptions.total}
           failed={thirdHeaderOptions.failed}
-          title="Validation Tags"
+          title={thirdColumnPlaceHolder}
         />
       )}
       {minimized[3] && (
@@ -128,7 +114,7 @@ function HAccordion({
           onMaximize={() => minimize(3, false)}
           total={fourthHeaderOptions.total}
           failed={fourthHeaderOptions.failed}
-          title="Validation Points"
+          title={fourthColumnPlaceHolder}
         />
       )}
 

@@ -9,6 +9,8 @@ function HAccordionHeader({
   actionElements,
   minimize,
   onMinimize,
+  onPassedClick,
+  onFailedClick,
 }) {
   return (
     <div className="bg-[#6a4c93] flex flex-col pb-4 pt-2 shadow h-28 overflow-hidden">
@@ -22,10 +24,16 @@ function HAccordionHeader({
         </div>
       </div>
       <div className="flex justify-between px-8">
-        <div className="text-fail font-bold">
+        <div
+          className="text-fail font-bold hover:cursor-pointer select-none"
+          onClick={() => onFailedClick && onFailedClick()}
+        >
           Failed: {failed}/{total}
         </div>
-        <div className="text-success font-bold">
+        <div
+          className="text-success font-bold hover:cursor-pointer select-none"
+          onClick={() => onPassedClick && onPassedClick()}
+        >
           Passed: {total - failed}/{total}
         </div>
       </div>

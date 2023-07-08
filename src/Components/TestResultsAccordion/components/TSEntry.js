@@ -43,7 +43,7 @@ function TSEntry({ data, num, onClick, active }) {
             }
           >
             <span>
-              {data.metaData.owner} {num} --{" "}
+              Test Suit {num} --{" "}
               {formatDuration(
                 new Date(data.end_date) - new Date(data.creation_date)
               )}
