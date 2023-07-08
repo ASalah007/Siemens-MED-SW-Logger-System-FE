@@ -13,6 +13,54 @@ import {
 } from "../../Services/services.js";
 
 function TestResultsAccordion({ testSuites }) {
+  const {
+    firstColumnElements,
+    firstHeaderOptions,
+    secondColumnElements,
+    secondHeaderOptions,
+    thirdColumnElements,
+    thirdHeaderOptions,
+    fourthColumnElements,
+    fourthHeaderOptions,
+    activeTestSuite,
+    activeTestCase,
+    activeValidationTag,
+    activeValidationPoint,
+    validationTags,
+  } = useTestResultsAccordionStates({ testSuites });
+
+  return (
+    <div className="flex flex-col grow">
+      <HAccordion
+        firstColumnElements={firstColumnElements}
+        firstHeaderOptions={firstHeaderOptions}
+        firstColumnPlaceHolder={
+          "Test Suit " + (activeTestSuite >= 0 ? activeTestSuite : "")
+        }
+        secondColumnElements={secondColumnElements}
+        secondHeaderOptions={secondHeaderOptions}
+        secondColumnPlaceHolder={
+          "Test Case " + (activeTestCase >= 0 ? activeTestCase : "")
+        }
+        thirdColumnElements={thirdColumnElements}
+        thirdHeaderOptions={thirdHeaderOptions}
+        thirdColumnPlaceHolder={
+          activeValidationTag >= 0
+            ? validationTags[activeValidationTag].metaData.name
+            : "Validation Tag"
+        }
+        fourthColumnElements={fourthColumnElements}
+        fourthHeaderOptions={fourthHeaderOptions}
+        fourthColumnPlaceHolder={
+          "Validation Point " +
+          (activeValidationPoint >= 0 ? activeValidationPoint : "")
+        }
+      />
+    </div>
+  );
+}
+
+function useTestResultsAccordionStates({ testSuites }) {
   const [testCases, setTestCases] = useState([]);
   const [validationTags, setValidationTags] = useState([]);
   const [validationPoints, setValidationPoints] = useState([]);
@@ -203,35 +251,21 @@ function TestResultsAccordion({ testSuites }) {
       />
     ));
 
-  return (
-    <div className="flex flex-col grow">
-      <HAccordion
-        firstColumnElements={firstColumnElements}
-        firstHeaderOptions={firstHeaderOptions}
-        firstColumnPlaceHolder={
-          "Test Suit " + (activeTestSuite >= 0 ? activeTestSuite : "")
-        }
-        secondColumnElements={secondColumnElements}
-        secondHeaderOptions={secondHeaderOptions}
-        secondColumnPlaceHolder={
-          "Test Case " + (activeTestCase >= 0 ? activeTestCase : "")
-        }
-        thirdColumnElements={thirdColumnElements}
-        thirdHeaderOptions={thirdHeaderOptions}
-        thirdColumnPlaceHolder={
-          activeValidationTag >= 0
-            ? validationTags[activeValidationTag].metaData.name
-            : "Validation Tag"
-        }
-        fourthColumnElements={fourthColumnElements}
-        fourthHeaderOptions={fourthHeaderOptions}
-        fourthColumnPlaceHolder={
-          "Validation Point " +
-          (activeValidationPoint >= 0 ? activeValidationPoint : "")
-        }
-      />
-    </div>
-  );
+  return {
+    firstColumnElements,
+    firstHeaderOptions,
+    secondColumnElements,
+    secondHeaderOptions,
+    thirdColumnElements,
+    thirdHeaderOptions,
+    fourthColumnElements,
+    fourthHeaderOptions,
+    activeTestSuite,
+    activeTestCase,
+    activeValidationTag,
+    activeValidationPoint,
+    validationTags,
+  };
 }
 
 export default TestResultsAccordion;
