@@ -76,6 +76,10 @@ function useTestResultsAccordionStates({ testSuites }) {
   const [filterValidationPoint, setFilterValidationPoint] = useState("any");
 
   const [testSuitesTableView, setTestSuitesTableView] = useState(false);
+  const [testCasesTableView, setTestCasesTableView] = useState(false);
+  const [validationTagsTableView, setValidationTagsTableView] = useState(false);
+  const [validationPointsTableView, setValidationPointsTableView] =
+    useState(false);
 
   function loadTestCases(testSuiteId) {
     fetchTestCases(testSuiteId).then((data) => setTestCases(data));
@@ -103,6 +107,41 @@ function useTestResultsAccordionStates({ testSuites }) {
     ...Object.entries(e.metaData)
       .filter(([k, v]) => k !== "design_info")
       .flatMap(([k, v]) => v),
+  ]);
+
+  const TCColumns = ["id", "status", "duration", "failed VTs"];
+  const TCData = testCases.map((e, i) => [
+    i,
+    String(e.status),
+    formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
+    `x/${e.validationTags_count}`,
+  ]);
+
+  const VTColumns = [
+    "name",
+    "status",
+    "duration",
+    "failed VPs",
+    "descrition",
+    "executable Path",
+  ];
+  const VTData = validationTags.map((e) => [
+    e.metaData.name,
+    String(e.status),
+    formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
+    `x/${e.validationPoints_count}`,
+    e.metaData.metaData.Description,
+    e.metaData.metaData["Executable Path"],
+  ]);
+
+  console.log(validationPoints);
+  const VPColumns = ["id", "status", "mac", "direction", "failed results"];
+  const VPData = validationPoints.map((e, i) => [
+    i,
+    e.status,
+    e.levels.mac,
+    e.levels.direction,
+    `x/${e.results.length}`,
   ]);
 
   const firstHeaderOptions = {
@@ -164,6 +203,17 @@ function useTestResultsAccordionStates({ testSuites }) {
       setFilterTestCase(filterTestCase === "passed" ? "any" : "passed"),
     onFailedClick: () =>
       setFilterTestCase(filterTestCase === "failed" ? "any" : "failed"),
+    actionElements: (
+      <ShowInTable
+        sx={{ color: "#ffca3a" }}
+        onClick={() => setTestCasesTableView(true)}
+        open={testCasesTableView}
+        onClose={() => setTestCasesTableView(false)}
+        title="Test Cases"
+        columns={TCColumns}
+        data={TCData}
+      />
+    ),
   };
   const secondColumnElements = testCases
     .filter((data) => filterPredict(filterTestCase, data))
@@ -202,6 +252,17 @@ function useTestResultsAccordionStates({ testSuites }) {
       setFilterValidationTag(
         filterValidationTag === "failed" ? "any" : "failed"
       ),
+    actionElements: (
+      <ShowInTable
+        sx={{ color: "#ffca3a" }}
+        onClick={() => setValidationTagsTableView(true)}
+        open={validationTagsTableView}
+        onClose={() => setValidationTagsTableView(false)}
+        title="Validation Tags"
+        columns={VTColumns}
+        data={VTData}
+      />
+    ),
   };
   const thirdColumnElements = validationTags
     .filter((data) => filterPredict(filterValidationTag, data))
@@ -236,6 +297,17 @@ function useTestResultsAccordionStates({ testSuites }) {
       setFilterValidationPoint(
         filterValidationPoint === "failed" ? "any" : "failed"
       ),
+    actionElements: (
+      <ShowInTable
+        sx={{ color: "#ffca3a" }}
+        onClick={() => setValidationPointsTableView(true)}
+        open={validationPointsTableView}
+        onClose={() => setValidationPointsTableView(false)}
+        title="Validation Points"
+        columns={VPColumns}
+        data={VPData}
+      />
+    ),
   };
   const fourthColumnElements = validationPoints
     .filter((data) => filterPredict(filterValidationPoint, data))
