@@ -1,6 +1,6 @@
 import React from "react";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 
 function HAccordionHeader({
   title,
@@ -18,9 +18,11 @@ function HAccordionHeader({
         {title}
         {actionElements}
         <div className="absolute right-1 -top-1">
-          <IconButton onClick={() => onMinimize && onMinimize()}>
-            <KeyboardDoubleArrowLeftIcon sx={{ color: "#ffca3a" }} />
-          </IconButton>
+          <Tooltip title="Minimize" placement="top" disableInteractive>
+            <IconButton onClick={() => onMinimize && onMinimize()}>
+              <KeyboardDoubleArrowLeftIcon sx={{ color: "#ffca3a" }} />
+            </IconButton>
+          </Tooltip>
         </div>
       </div>
       <div className="flex justify-between px-8">

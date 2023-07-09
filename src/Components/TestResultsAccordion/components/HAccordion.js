@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import HAccordionHeader from "./HAccoridionHeader";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
 function HAccordion({
@@ -242,9 +242,11 @@ function MinimizedColumn({ total, failed, onMaximize, title }) {
   return (
     <div className="flex flex-col border-r">
       <div className="bg-[#6a4c93] flex flex-col gap-1 h-28 items-center p-1">
-        <IconButton onClick={() => onMaximize()}>
-          <KeyboardDoubleArrowRightIcon sx={{ color: "#ffca3a" }} />
-        </IconButton>
+        <Tooltip title="Maximize" placement="top" disableInteractive>
+          <IconButton onClick={() => onMaximize()}>
+            <KeyboardDoubleArrowRightIcon sx={{ color: "#ffca3a" }} />
+          </IconButton>
+        </Tooltip>
         <div className="text-fail font-bold">
           {failed}/{total}
         </div>

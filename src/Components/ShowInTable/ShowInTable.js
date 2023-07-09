@@ -15,7 +15,7 @@ function ShowInTable({
 }) {
   return (
     <div>
-      <Tooltip title={"show in a table"} placement="top" disableInteractive>
+      <Tooltip title="show in a table" placement="top" disableInteractive>
         <IconButton onClick={() => onClick()} sx={sx}>
           <TableViewIcon />
         </IconButton>
