@@ -12,7 +12,6 @@ function VPEntry({ data, num, onClick, active }) {
     resultsColumns = Object.keys(data.results[0]);
     resultsData = data.results.map((e) => Object.values(e));
   }
-  console.log(data);
 
   return (
     <div>

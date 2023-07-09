@@ -11,6 +11,7 @@ import {
   fetchValidationPoints,
   fetchValidationTags,
 } from "../../Services/services.js";
+import ShowFilter from "../ShowFilter/ShowFilter.js";
 
 function TestResultsAccordion({ testSuites }) {
   const {
@@ -81,6 +82,10 @@ function useTestResultsAccordionStates({ testSuites }) {
   const [validationPointsTableView, setValidationPointsTableView] =
     useState(false);
 
+  const [testSuitesSelectedFilters, setTestSuitesSelectedFilters] = useState(
+    []
+  );
+
   function loadTestCases(testSuiteId) {
     fetchTestCases(testSuiteId).then((data) => setTestCases(data));
   }
@@ -109,6 +114,18 @@ function useTestResultsAccordionStates({ testSuites }) {
       .flatMap(([k, v]) => v),
   ]);
 
+  function applyFilters(arr, filters, data) {
+    if (filters.length === 0) return [...arr];
+    const f = data.map((e) =>
+      e.reduce(
+        (acc, ele, i) =>
+          (filters[i].length === 0 || filters[i].includes(ele)) && acc,
+        true
+      )
+    );
+    return arr.filter((e, i) => f[i]);
+  }
+
   const TCColumns = ["id", "status", "duration", "failed VTs"];
   const TCData = testCases.map((e, i) => [
     i,
@@ -134,7 +151,6 @@ function useTestResultsAccordionStates({ testSuites }) {
     e.metaData.metaData["Executable Path"],
   ]);
 
-  console.log(validationPoints);
   const VPColumns = ["id", "status", "mac", "direction", "failed results"];
   const VPData = validationPoints.map((e, i) => [
     i,
@@ -143,6 +159,14 @@ function useTestResultsAccordionStates({ testSuites }) {
     e.levels.direction,
     `x/${e.results.length}`,
   ]);
+
+  const filteringOptions = TSColumns.map((e) => new Set());
+  TSData.map((e, i) => e.map((b, j) => filteringOptions[j].add(b)));
+  console.log(
+    "filtered Data:",
+    applyFilters(TSData, testSuitesSelectedFilters, TSData)
+  );
+  console.log("unfiltered Data:", TSData);
 
   const firstHeaderOptions = {
     failed: testSuites.length,
@@ -153,15 +177,24 @@ function useTestResultsAccordionStates({ testSuites }) {
     onFailedClick: () =>
       setFilterTestSuite(filterTestSuite === "failed" ? "any" : "failed"),
     actionElements: (
-      <ShowInTable
-        sx={{ color: "#ffca3a" }}
-        onClick={() => setTestSuitesTableView(true)}
-        open={testSuitesTableView}
-        onClose={() => setTestSuitesTableView(false)}
-        title="Test Suites"
-        columns={TSColumns}
-        data={TSData}
-      />
+      <div className="flex">
+        <ShowInTable
+          sx={{ color: "#ffca3a" }}
+          onClick={() => setTestSuitesTableView(true)}
+          open={testSuitesTableView}
+          onClose={() => setTestSuitesTableView(false)}
+          title="Test Suites"
+          columns={TSColumns}
+          data={applyFilters(TSData, testSuitesSelectedFilters, TSData)}
+        />
+        <ShowFilter
+          labels={TSColumns}
+          filteringOptions={filteringOptions.map((e) => [...e])}
+          onApply={(selectedFilters) =>
+            setTestSuitesSelectedFilters(selectedFilters)
+          }
+        />
+      </div>
     ),
   };
   function filterPredict(filterOption, data) {
@@ -169,7 +202,7 @@ function useTestResultsAccordionStates({ testSuites }) {
     if (filterOption === "failed" && !data.status) return true;
     return filterOption === "any";
   }
-  const firstColumnElements = testSuites
+  let firstColumnElements = testSuites
     .filter((data) => filterPredict(filterTestSuite, data))
     .map((data, i) => (
       <TSEntry
@@ -194,6 +227,11 @@ function useTestResultsAccordionStates({ testSuites }) {
         active={activeTestSuite === i}
       />
     ));
+  firstColumnElements = applyFilters(
+    firstColumnElements,
+    testSuitesSelectedFilters,
+    TSData
+  );
 
   const secondHeaderOptions = {
     total: testCases.length,

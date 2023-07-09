@@ -50,6 +50,7 @@ function TableDialog(props) {
       }}
       open={open}
       maxWidth="lg"
+      scroll="body"
     >
       <DialogTitle className="flex items-center justify-end bg-gray-100">
         {onClose ? (
