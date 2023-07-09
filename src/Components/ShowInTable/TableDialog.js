@@ -15,14 +15,26 @@ function TableDialog(props) {
     draggableColumns: {
       enabled: true,
     },
-    setCellProps: () => {
+    setCellProps: (value) => {
+      const textColor =
+        value === "fail" || value === "false"
+          ? "text-red-400"
+          : value === "true"
+          ? "text-green-400"
+          : "";
+
       return {
-        className: "tableCell",
+        className: "tableCell " + textColor,
       };
     },
     setRowProps: (row, rowIndex) => {
+      let bg = "";
+      if (row[1] === "false" || row[1] === "fail") bg = "bg-red-200";
+      // else if (row[1] === "true" || row[1] === "pass") bg = "bg-green-200";
+      else if (rowIndex % 2 === 1) bg = "bg-gray-200";
+
       return {
-        className: rowIndex % 2 === 1 && "bg-gray-200",
+        className: bg,
         style: { cursor: "pointer" },
       };
     },

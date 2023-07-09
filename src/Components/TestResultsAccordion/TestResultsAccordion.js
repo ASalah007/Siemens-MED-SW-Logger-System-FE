@@ -138,7 +138,7 @@ function useTestResultsAccordionStates({ testSuites }) {
   const VPColumns = ["id", "status", "mac", "direction", "failed results"];
   const VPData = validationPoints.map((e, i) => [
     i,
-    e.status,
+    String(e.status),
     e.levels.mac,
     e.levels.direction,
     `x/${e.results.length}`,
