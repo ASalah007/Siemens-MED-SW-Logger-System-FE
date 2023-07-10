@@ -11,11 +11,13 @@ function TablePagination({
   onPageChange,
 }) {
   rowsPerPage = rowsPerPage || 10;
+  page = page || 0;
+  count = count || 0;
   const pos = `${page * rowsPerPage + 1}-${
     page * rowsPerPage + rowsPerPage
   } of ${count}`;
   return (
-    <div className="flex items-center justify-center gap-3">
+    <div className="flex items-center justify-center gap-3 pl-2">
       <div className="flex items-center gap-3">
         <div>Rows Per Page: </div>
         <div>
@@ -41,13 +43,13 @@ function TablePagination({
         <IconButton
           sx={{ color: "#000" }}
           disabled={page === 0}
-          onClick={() => onPageChange(Math.min(0, page - 1))}
+          onClick={() => onPageChange(Math.max(0, page - 1))}
         >
           <KeyboardArrowLeftRoundedIcon />
         </IconButton>
         <IconButton
           sx={{ color: "#000" }}
-          disabled={page === Math.ceil(count / rowsPerPage) - 1}
+          disabled={page === Math.ceil(count / rowsPerPage) - 1 || count === 0}
           onClick={() =>
             onPageChange(Math.min(page + 1, Math.ceil(count / rowsPerPage) - 1))
           }

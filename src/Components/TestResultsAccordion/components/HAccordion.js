@@ -25,6 +25,24 @@ function HAccordion({
   firstColumnRowsPerPage,
   onFirstColumnPageChange,
   onFirstColumnRowsPerPageChange,
+
+  secondColumnCount,
+  secondColumnPage,
+  secondColumnRowsPerPage,
+  onSecondColumnPageChange,
+  onSecondColumnRowsPerPageChange,
+
+  thirdColumnCount,
+  thirdColumnPage,
+  thirdColumnRowsPerPage,
+  onThirdColumnPageChange,
+  onThirdColumnRowsPerPageChange,
+
+  fourthColumnCount,
+  fourthColumnPage,
+  fourthColumnRowsPerPage,
+  onFourthColumnPageChange,
+  onFourthColumnRowsPerPageChange,
 }) {
   const [divsWidth, setDivsWidth] = useState([]);
   const divsRef = [useRef(), useRef(), useRef(), useRef()];
@@ -56,7 +74,7 @@ function HAccordion({
           break;
         }
       }
-      const MINWIDTH = 250;
+      const MINWIDTH = 280;
 
       let dw = e.x - divsRef[leftColumn].current.getBoundingClientRect().right;
 
@@ -181,6 +199,15 @@ function HAccordion({
               onMinimize={() => minimize(1, true)}
             />
           </div>
+          <div>
+            <TablePagination
+              count={secondColumnCount}
+              page={secondColumnPage}
+              rowsPerPage={secondColumnRowsPerPage}
+              onPageChange={onSecondColumnPageChange}
+              onRowsPerPageChange={onSecondColumnRowsPerPageChange}
+            />
+          </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
             {secondColumnElements}
           </div>
@@ -213,6 +240,15 @@ function HAccordion({
               onMinimize={() => minimize(2, true)}
             />
           </div>
+          <div>
+            <TablePagination
+              count={thirdColumnCount}
+              page={thirdColumnPage}
+              rowsPerPage={thirdColumnRowsPerPage}
+              onPageChange={onThirdColumnPageChange}
+              onRowsPerPageChange={onThirdColumnRowsPerPageChange}
+            />
+          </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
             {thirdColumnElements}
           </div>
@@ -243,6 +279,15 @@ function HAccordion({
             <HAccordionHeader
               {...fourthHeaderOptions}
               onMinimize={() => minimize(3, true)}
+            />
+          </div>
+          <div>
+            <TablePagination
+              count={fourthColumnCount}
+              page={fourthColumnPage}
+              rowsPerPage={fourthColumnRowsPerPage}
+              onPageChange={onFourthColumnPageChange}
+              onRowsPerPageChange={onFourthColumnRowsPerPageChange}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">

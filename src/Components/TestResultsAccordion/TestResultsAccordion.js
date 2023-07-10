@@ -17,22 +17,45 @@ function TestResultsAccordion({ testSuites }) {
   const {
     firstColumnElements,
     firstHeaderOptions,
+
     secondColumnElements,
     secondHeaderOptions,
+
     thirdColumnElements,
     thirdHeaderOptions,
+
     fourthColumnElements,
     fourthHeaderOptions,
+
     activeTestSuite,
     activeTestCase,
     activeValidationTag,
     activeValidationPoint,
     validationTags,
+
     testSuitesCount,
     testSuitesPage,
     testSuitesRowsPerPage,
     handleTestSuitesPageChange,
     handleTestSuitesRowsPerPageChange,
+
+    testCasesCount,
+    testCasesPage,
+    testCasesRowsPerPage,
+    handleTestCasesPageChange,
+    handleTestCasesRowsPerPageChange,
+
+    validationTagsCount,
+    validationTagsPage,
+    validationTagsRowsPerPage,
+    handleValidationTagsPageChange,
+    handleValidationTagsRowsPerPageChange,
+
+    validationPointsCount,
+    validationPointsPage,
+    validationPointsRowsPerPage,
+    handleValidationPointsPageChange,
+    handleValidationPointsRowsPerPageChange,
   } = useTestResultsAccordionStates({ testSuites });
 
   return (
@@ -53,6 +76,11 @@ function TestResultsAccordion({ testSuites }) {
         secondColumnPlaceHolder={
           "Test Case " + (activeTestCase >= 0 ? activeTestCase : "")
         }
+        secondColumnCount={testCasesCount}
+        secondColumnPage={testCasesPage}
+        secondColumnRowsPerPage={testCasesRowsPerPage}
+        onSecondColumnPageChange={handleTestCasesPageChange}
+        onSecondColumnRowsPerPageChange={handleTestCasesRowsPerPageChange}
         thirdColumnElements={thirdColumnElements}
         thirdHeaderOptions={thirdHeaderOptions}
         thirdColumnPlaceHolder={
@@ -60,11 +88,23 @@ function TestResultsAccordion({ testSuites }) {
             ? validationTags[activeValidationTag].metaData.name
             : "Validation Tag"
         }
+        thirdColumnCount={validationTagsCount}
+        thirdColumnPage={validationTagsPage}
+        thirdColumnRowsPerPage={validationTagsRowsPerPage}
+        onThirdColumnPageChange={handleValidationTagsPageChange}
+        onThirdColumnRowsPerPageChange={handleValidationTagsRowsPerPageChange}
         fourthColumnElements={fourthColumnElements}
         fourthHeaderOptions={fourthHeaderOptions}
         fourthColumnPlaceHolder={
           "Validation Point " +
           (activeValidationPoint >= 0 ? activeValidationPoint : "")
+        }
+        fourthColumnCount={validationPointsCount}
+        fourthColumnPage={validationPointsPage}
+        fourthColumnRowsPerPage={validationPointsRowsPerPage}
+        onFourthColumnPageChange={handleValidationPointsPageChange}
+        onFourthColumnRowsPerPageChange={
+          handleValidationPointsRowsPerPageChange
         }
       />
     </div>
@@ -101,6 +141,29 @@ function useTestResultsAccordionStates({ testSuites }) {
   const handleTestSuitesPageChange = (newPage) => setTestSuitesPage(newPage);
   const handleTestSuitesRowsPerPageChange = (newRows) =>
     setTestSuitesRowsPerPage(newRows);
+
+  const [testCasesPage, setTestCasesPage] = useState(0);
+  const [testCasesRowsPerPage, setTestCasesRowsPerPage] = useState(10);
+  const handleTestCasesPageChange = (newPage) => setTestCasesPage(newPage);
+  const handleTestCasesRowsPerPageChange = (newRows) =>
+    setTestCasesRowsPerPage(newRows);
+
+  const [validationTagsPage, setValidationTagsPage] = useState(0);
+  const [validationTagsRowsPerPage, setValidationTagsRowsPerPage] =
+    useState(10);
+  const handleValidationTagsPageChange = (newPage) =>
+    setValidationTagsPage(newPage);
+  const handleValidationTagsRowsPerPageChange = (newRows) =>
+    setValidationTagsRowsPerPage(newRows);
+
+  const [validationPointsPage, setValidationPointsPage] = useState(0);
+  const [validationPointsRowsPerPage, setValidationPointsRowsPerPage] =
+    useState(10);
+  const handleValidationPointsPageChange = (newPage) =>
+    setValidationPointsPage(newPage);
+  const handleValidationPointsRowsPerPageChange = (newRows) =>
+    setValidationPointsRowsPerPage(newRows);
+
   function paginate(arr, page, rowsPerPage) {
     return arr.filter(
       (e, i) => i >= page * rowsPerPage && i < page * rowsPerPage + rowsPerPage
@@ -274,27 +337,32 @@ function useTestResultsAccordionStates({ testSuites }) {
       />
     ),
   };
-  const secondColumnElements = testCases
-    .filter((data) => filterPredict(filterTestCase, data))
-    .map((data, i) => (
-      <TCEntry
-        data={data}
-        key={data.id}
-        num={i}
-        onClick={() => {
-          setActiveTestCase(i);
+  // TODO remove the paginate it will be replaced by the request params
+  const secondColumnElements = paginate(
+    testCases
+      .filter((data) => filterPredict(filterTestCase, data))
+      .map((data, i) => (
+        <TCEntry
+          data={data}
+          key={data.id}
+          num={i}
+          onClick={() => {
+            setActiveTestCase(i);
 
-          loadValidationTags(data.id);
-          setActiveValidationTag(-1);
-          setFilterValidationTag("any");
+            loadValidationTags(data.id);
+            setActiveValidationTag(-1);
+            setFilterValidationTag("any");
 
-          setValidationPoints([]);
-          setActiveValidationPoint(-1);
-          setFilterValidationPoint("any");
-        }}
-        active={activeTestCase === i}
-      />
-    ));
+            setValidationPoints([]);
+            setActiveValidationPoint(-1);
+            setFilterValidationPoint("any");
+          }}
+          active={activeTestCase === i}
+        />
+      )),
+    testCasesPage,
+    testCasesRowsPerPage
+  );
 
   const thirdHeaderOptions = {
     total: validationTags.length,
@@ -323,23 +391,28 @@ function useTestResultsAccordionStates({ testSuites }) {
       />
     ),
   };
-  const thirdColumnElements = validationTags
-    .filter((data) => filterPredict(filterValidationTag, data))
-    .map((data, i) => (
-      <VTEntry
-        data={data}
-        key={data.id}
-        num={i}
-        onClick={() => {
-          setActiveValidationTag(i);
+  // TODO remove the paginate it will be replaced by the request params
+  const thirdColumnElements = paginate(
+    validationTags
+      .filter((data) => filterPredict(filterValidationTag, data))
+      .map((data, i) => (
+        <VTEntry
+          data={data}
+          key={data.id}
+          num={i}
+          onClick={() => {
+            setActiveValidationTag(i);
 
-          loadValidationPoints(data.id);
-          setActiveValidationPoint(-1);
-          setFilterValidationPoint("any");
-        }}
-        active={activeValidationTag === i}
-      />
-    ));
+            loadValidationPoints(data.id);
+            setActiveValidationPoint(-1);
+            setFilterValidationPoint("any");
+          }}
+          active={activeValidationTag === i}
+        />
+      )),
+    validationTagsPage,
+    validationTagsRowsPerPage
+  );
 
   const fourthHeaderOptions = {
     total: validationPoints.length,
@@ -368,19 +441,24 @@ function useTestResultsAccordionStates({ testSuites }) {
       />
     ),
   };
-  const fourthColumnElements = validationPoints
-    .filter((data) => filterPredict(filterValidationPoint, data))
-    .map((data, i) => (
-      <VPEntry
-        data={data}
-        key={data.id}
-        num={i}
-        onClick={() => {
-          setActiveValidationPoint(i);
-        }}
-        active={activeValidationPoint === i}
-      />
-    ));
+  // TODO remove the paginate it will be replaced by the request params
+  const fourthColumnElements = paginate(
+    validationPoints
+      .filter((data) => filterPredict(filterValidationPoint, data))
+      .map((data, i) => (
+        <VPEntry
+          data={data}
+          key={data.id}
+          num={i}
+          onClick={() => {
+            setActiveValidationPoint(i);
+          }}
+          active={activeValidationPoint === i}
+        />
+      )),
+    validationPointsPage,
+    validationPointsRowsPerPage
+  );
 
   return {
     firstColumnElements,
@@ -402,6 +480,24 @@ function useTestResultsAccordionStates({ testSuites }) {
     testSuitesRowsPerPage,
     handleTestSuitesPageChange,
     handleTestSuitesRowsPerPageChange,
+
+    testCasesCount: testCases.length,
+    testCasesPage,
+    testCasesRowsPerPage,
+    handleTestCasesPageChange,
+    handleTestCasesRowsPerPageChange,
+
+    validationTagsCount: validationTags.length,
+    validationTagsPage,
+    validationTagsRowsPerPage,
+    handleValidationTagsPageChange,
+    handleValidationTagsRowsPerPageChange,
+
+    validationPointsCount: validationPoints.length,
+    validationPointsPage,
+    validationPointsRowsPerPage,
+    handleValidationPointsPageChange,
+    handleValidationPointsRowsPerPageChange,
   };
 }
 
