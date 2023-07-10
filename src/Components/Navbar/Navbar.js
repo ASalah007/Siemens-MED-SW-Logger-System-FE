@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import ThemeButton from "../Theme/ThemeButton";
+import { Link } from "react-router-dom";
 export default function Navbar() {
   return (
     <div className="z-10">
@@ -28,25 +29,25 @@ export default function Navbar() {
               }}
               style={{ color: "white", fontSize: 50 }}
             />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontSize: "18px",
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".05rem",
-                color: "white",
-                textDecoration: "none",
-                textShadow: "0.5px 1px #cccccc",
-              }}
-            >
-              TEST RESULTS VISUALIZER
-            </Typography>
+            <Link to="/">
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontSize: "18px",
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".05rem",
+                  color: "white",
+                  textDecoration: "none",
+                  textShadow: "0.5px 1px #cccccc",
+                }}
+              >
+                TEST RESULTS VISUALIZER
+              </Typography>
+            </Link>
           </Toolbar>
         </Container>
       </AppBar>
