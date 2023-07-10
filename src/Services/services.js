@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 const BASEURL = "http://egc-med-tesla:8080/";
 
 const urls = {
@@ -19,8 +18,7 @@ export async function fetchDatabases() {
 }
 
 export async function fetchTestSuites() {
-  const cookies = new Cookies();
-  const connectedDatabase = cookies.get("connectedDatabase");
+  const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
 
   const response = await axios.get(urls.listTestSuites, {
@@ -30,7 +28,7 @@ export async function fetchTestSuites() {
 }
 
 export async function fetchTestCases(testSuitId) {
-  const connectedDatabase = new Cookies().get("connectedDatabase");
+  const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
 
   const url = urls.getTestCases.replace("{testSuitId}", testSuitId);
@@ -42,7 +40,7 @@ export async function fetchTestCases(testSuitId) {
 }
 
 export async function fetchValidationTags(testCaseId) {
-  const connectedDatabase = new Cookies().get("connectedDatabase");
+  const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
 
   const url = urls.getValidationTags.replace("{testCaseId}", testCaseId);
@@ -53,7 +51,7 @@ export async function fetchValidationTags(testCaseId) {
 }
 
 export async function fetchValidationPoints(validationTagId) {
-  const connectedDatabase = new Cookies().get("connectedDatabase");
+  const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
   const url = urls.getValidationPoints.replace(
     "{validationTagId}",

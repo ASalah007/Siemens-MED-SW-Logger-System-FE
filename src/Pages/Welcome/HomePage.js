@@ -5,15 +5,13 @@ import ParticlesBackground from "./ParticlesBackground";
 import { LoadingButton } from "@mui/lab";
 import { Link } from "react-router-dom";
 import { fetchDatabases } from "../../Services/services";
-import Cookies from "universal-cookie";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
   const [databases, setDatabases] = useState([]);
   const [database, setDatabase] = useState("");
-  const cookies = new Cookies();
   const [connectedDatabase, setConnectedDatabase] = useState(
-    cookies.get("connectedDatabase")
+    sessionStorage.getItem("connectedDatabase")
   );
   const [loading, setLoading] = useState(false);
 
@@ -21,17 +19,14 @@ function HomePage() {
     setLoading(true);
     const tomorrow = new Date();
     tomorrow.setDate(new Date().getDate() + 1);
-    cookies.set("connectedDatabase", database, {
-      path: "/",
-      expires: tomorrow,
-    });
+    sessionStorage.setItem("connectedDatabase", database);
     setConnectedDatabase(database);
     setLoading(false);
   }
 
   function disconnect() {
     setConnectedDatabase(null);
-    cookies.remove("connectedDatabase");
+    sessionStorage.removeItem("connectedDatabase");
   }
 
   useEffect(() => {
