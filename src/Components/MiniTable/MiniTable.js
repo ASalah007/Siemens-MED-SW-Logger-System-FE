@@ -1,56 +1,22 @@
-import { createTheme, ThemeProvider } from "@mui/material";
-import MUIDataTable from "mui-datatables";
+import { Paper } from "@mui/material";
 import React from "react";
 
 export default function MiniTable({ keys, data }) {
-  const getTableTheme = () =>
-    createTheme({
-      components: {
-        MUIDataTableBodyCell: {
-          styleOverrides: {
-            root: {
-              padding: "3px 5px",
-            },
-          },
-        },
-        MUIDataTableHeadCell: {
-          styleOverrides: {
-            root: {
-              color: "#FFF",
-              fontWeight: "bold",
-              fontSize: "1.1rem",
-              padding: "6px 6px",
-            },
-          },
-        },
-      },
-    });
-
+  console.log({ keys, data });
   return (
-    <div className="max-w-fit pb-3 minitable">
-      <ThemeProvider theme={getTableTheme()}>
-        <MUIDataTable
-          data={keys.map((k) => [k, data[k]])}
-          columns={["Key", "Value"]}
-          options={{
-            download: false,
-            filter: false,
-            pagination: false,
-            print: false,
-            search: false,
-            viewColumns: false,
-            selectableRows: false,
-            elevation: 2,
-            sort: false,
-            rowHover: false,
-            setRowProps: (row, rowIndex) => {
-              return {
-                className: rowIndex % 2 === 1 && "bg-gray-200",
-              };
-            },
-          }}
-        />
-      </ThemeProvider>
-    </div>
+    <Paper elevation={4} sx={{ maxWidth: "max-content", mb: "6px" }}>
+      <table>
+        <tr className="bg-[#08607b] text-white text-xl">
+          <th className="p-2 text-start">Key</th>
+          <th className="p-2 text-start">Value</th>
+        </tr>
+        {keys.map((k, i) => (
+          <tr className={"" + (i % 2 === 1 && "bg-gray-200")}>
+            <td className="p-1 pl-2">{k}</td>
+            <td className="p-1 pl-2">{data[k]}</td>
+          </tr>
+        ))}
+      </table>
+    </Paper>
   );
 }
