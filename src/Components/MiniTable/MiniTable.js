@@ -4,7 +4,7 @@ import React from "react";
 export default function MiniTable({ keys, data }) {
   console.log({ keys, data });
   return (
-    <Paper elevation={4} sx={{ maxWidth: "max-content", mb: "6px" }}>
+    <Paper elevation={2} sx={{ maxWidth: "max-content", mb: "6px" }}>
       <table>
         <tr className="bg-[#08607b] text-white text-xl">
           <th className="p-2 text-start">Key</th>
