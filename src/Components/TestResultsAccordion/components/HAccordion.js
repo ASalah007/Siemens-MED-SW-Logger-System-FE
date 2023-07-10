@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import HAccordionHeader from "./HAccoridionHeader";
 import { IconButton, Tooltip } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import TablePagination from "../../TablePagination/TablePagination";
 
 function HAccordion({
   firstColumnElements,
@@ -18,6 +19,12 @@ function HAccordion({
   secondColumnPlaceHolder,
   thirdColumnPlaceHolder,
   fourthColumnPlaceHolder,
+
+  firstColumnCount,
+  firstColumnPage,
+  firstColumnRowsPerPage,
+  onFirstColumnPageChange,
+  onFirstColumnRowsPerPageChange,
 }) {
   const [divsWidth, setDivsWidth] = useState([]);
   const divsRef = [useRef(), useRef(), useRef(), useRef()];
@@ -131,6 +138,15 @@ function HAccordion({
             <HAccordionHeader
               {...firstHeaderOptions}
               onMinimize={() => minimize(0, true)}
+            />
+          </div>
+          <div>
+            <TablePagination
+              count={firstColumnCount}
+              page={firstColumnPage}
+              rowsPerPage={firstColumnRowsPerPage}
+              onPageChange={onFirstColumnPageChange}
+              onRowsPerPageChange={onFirstColumnRowsPerPageChange}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">

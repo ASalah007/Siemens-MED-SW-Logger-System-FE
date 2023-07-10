@@ -28,6 +28,11 @@ function TestResultsAccordion({ testSuites }) {
     activeValidationTag,
     activeValidationPoint,
     validationTags,
+    testSuitesCount,
+    testSuitesPage,
+    testSuitesRowsPerPage,
+    handleTestSuitesPageChange,
+    handleTestSuitesRowsPerPageChange,
   } = useTestResultsAccordionStates({ testSuites });
 
   return (
@@ -38,6 +43,11 @@ function TestResultsAccordion({ testSuites }) {
         firstColumnPlaceHolder={
           "Test Suit " + (activeTestSuite >= 0 ? activeTestSuite : "")
         }
+        firstColumnCount={testSuitesCount}
+        firstColumnPage={testSuitesPage}
+        firstColumnRowsPerPage={testSuitesRowsPerPage}
+        onFirstColumnPageChange={handleTestSuitesPageChange}
+        onFirstColumnRowsPerPageChange={handleTestSuitesRowsPerPageChange}
         secondColumnElements={secondColumnElements}
         secondHeaderOptions={secondHeaderOptions}
         secondColumnPlaceHolder={
@@ -86,6 +96,17 @@ function useTestResultsAccordionStates({ testSuites }) {
     []
   );
 
+  const [testSuitesPage, setTestSuitesPage] = useState(0);
+  const [testSuitesRowsPerPage, setTestSuitesRowsPerPage] = useState(10);
+  const handleTestSuitesPageChange = (newPage) => setTestSuitesPage(newPage);
+  const handleTestSuitesRowsPerPageChange = (newRows) =>
+    setTestSuitesRowsPerPage(newRows);
+  function paginate(arr, page, rowsPerPage) {
+    return arr.filter(
+      (e, i) => i >= page * rowsPerPage && i < page * rowsPerPage + rowsPerPage
+    );
+  }
+
   function loadTestCases(testSuiteId) {
     fetchTestCases(testSuiteId).then((data) => setTestCases(data));
   }
@@ -125,6 +146,8 @@ function useTestResultsAccordionStates({ testSuites }) {
     );
     return arr.filter((e, i) => f[i]);
   }
+  const filterTestSuites = (arr) =>
+    applyFilters(arr, testSuitesSelectedFilters, TSData);
 
   const TCColumns = ["id", "status", "duration", "failed VTs"];
   const TCData = testCases.map((e, i) => [
@@ -162,10 +185,7 @@ function useTestResultsAccordionStates({ testSuites }) {
 
   const filteringOptions = TSColumns.map((e) => new Set());
   TSData.map((e, i) => e.map((b, j) => filteringOptions[j].add(b)));
-  console.log(
-    "filtered Data:",
-    applyFilters(TSData, testSuitesSelectedFilters, TSData)
-  );
+  console.log("filtered Data:", filterTestSuites(TSData));
   console.log("unfiltered Data:", TSData);
 
   const firstHeaderOptions = {
@@ -185,14 +205,15 @@ function useTestResultsAccordionStates({ testSuites }) {
           onClose={() => setTestSuitesTableView(false)}
           title="Test Suites"
           columns={TSColumns}
-          data={applyFilters(TSData, testSuitesSelectedFilters, TSData)}
+          data={filterTestSuites(TSData)}
         />
         <ShowFilter
           labels={TSColumns}
           filteringOptions={filteringOptions.map((e) => [...e])}
-          onApply={(selectedFilters) =>
-            setTestSuitesSelectedFilters(selectedFilters)
-          }
+          onApply={(selectedFilters) => {
+            setTestSuitesSelectedFilters(selectedFilters);
+            setTestSuitesPage(0);
+          }}
         />
       </div>
     ),
@@ -227,10 +248,10 @@ function useTestResultsAccordionStates({ testSuites }) {
         active={activeTestSuite === i}
       />
     ));
-  firstColumnElements = applyFilters(
-    firstColumnElements,
-    testSuitesSelectedFilters,
-    TSData
+  firstColumnElements = paginate(
+    filterTestSuites(firstColumnElements),
+    testSuitesPage,
+    testSuitesRowsPerPage
   );
 
   const secondHeaderOptions = {
@@ -375,6 +396,12 @@ function useTestResultsAccordionStates({ testSuites }) {
     activeValidationTag,
     activeValidationPoint,
     validationTags,
+
+    testSuitesCount: filterTestSuites(testSuites).length,
+    testSuitesPage,
+    testSuitesRowsPerPage,
+    handleTestSuitesPageChange,
+    handleTestSuitesRowsPerPageChange,
   };
 }
 
