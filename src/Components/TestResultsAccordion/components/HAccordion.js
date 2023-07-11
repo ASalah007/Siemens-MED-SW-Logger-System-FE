@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import HAccordionHeader from "./HAccoridionHeader";
-import { IconButton, Tooltip } from "@mui/material";
+import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import TablePagination from "../../TablePagination/TablePagination";
+import { BlurCircularTwoTone } from "@material-ui/icons";
 
 function HAccordion({
   firstColumnElements,
@@ -43,6 +44,11 @@ function HAccordion({
   fourthColumnRowsPerPage,
   onFourthColumnPageChange,
   onFourthColumnRowsPerPageChange,
+
+  firstColumnLoading,
+  secondColumnLoading,
+  thirdColumnLoading,
+  fourthColumnLoading,
 }) {
   const [divsWidth, setDivsWidth] = useState([]);
   const divsRef = [useRef(), useRef(), useRef(), useRef()];
@@ -168,7 +174,13 @@ function HAccordion({
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
-            {firstColumnElements}
+            {firstColumnLoading ? (
+              <div className="flex justify-center items-end h-52">
+                <CircularProgress thickness={5} />
+              </div>
+            ) : (
+              firstColumnElements
+            )}
           </div>
         </div>
       )}
@@ -209,7 +221,13 @@ function HAccordion({
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
-            {secondColumnElements}
+            {secondColumnLoading ? (
+              <div className="flex justify-center items-end h-52">
+                <CircularProgress thickness={5} />
+              </div>
+            ) : (
+              secondColumnElements
+            )}
           </div>
         </div>
       )}
@@ -250,7 +268,13 @@ function HAccordion({
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
-            {thirdColumnElements}
+            {thirdColumnLoading ? (
+              <div className="flex justify-center items-end h-52">
+                <CircularProgress thickness={5} />
+              </div>
+            ) : (
+              thirdColumnElements
+            )}
           </div>
         </div>
       )}
@@ -291,7 +315,13 @@ function HAccordion({
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
-            {fourthColumnElements}
+            {fourthColumnLoading ? (
+              <div className="flex justify-center items-end h-52">
+                <CircularProgress thickness={5} />
+              </div>
+            ) : (
+              fourthColumnElements
+            )}
           </div>
         </div>
       )}

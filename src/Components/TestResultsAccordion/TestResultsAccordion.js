@@ -56,6 +56,10 @@ function TestResultsAccordion({ testSuites }) {
     validationPointsRowsPerPage,
     handleValidationPointsPageChange,
     handleValidationPointsRowsPerPageChange,
+
+    testCaseLoading,
+    validationTagsLoading,
+    validationPointsLoading,
   } = useTestResultsAccordionStates({ testSuites });
 
   return (
@@ -79,6 +83,7 @@ function TestResultsAccordion({ testSuites }) {
         secondColumnCount={testCasesCount}
         secondColumnPage={testCasesPage}
         secondColumnRowsPerPage={testCasesRowsPerPage}
+        secondColumnLoading={testCaseLoading}
         onSecondColumnPageChange={handleTestCasesPageChange}
         onSecondColumnRowsPerPageChange={handleTestCasesRowsPerPageChange}
         thirdColumnElements={thirdColumnElements}
@@ -91,6 +96,7 @@ function TestResultsAccordion({ testSuites }) {
         thirdColumnCount={validationTagsCount}
         thirdColumnPage={validationTagsPage}
         thirdColumnRowsPerPage={validationTagsRowsPerPage}
+        thirdColumnLoading={validationTagsLoading}
         onThirdColumnPageChange={handleValidationTagsPageChange}
         onThirdColumnRowsPerPageChange={handleValidationTagsRowsPerPageChange}
         fourthColumnElements={fourthColumnElements}
@@ -102,6 +108,7 @@ function TestResultsAccordion({ testSuites }) {
         fourthColumnCount={validationPointsCount}
         fourthColumnPage={validationPointsPage}
         fourthColumnRowsPerPage={validationPointsRowsPerPage}
+        fourthColumnLoading={validationPointsLoading}
         onFourthColumnPageChange={handleValidationPointsPageChange}
         onFourthColumnRowsPerPageChange={
           handleValidationPointsRowsPerPageChange
@@ -164,6 +171,10 @@ function useTestResultsAccordionStates({ testSuites }) {
   const handleValidationPointsRowsPerPageChange = (newRows) =>
     setValidationPointsRowsPerPage(newRows);
 
+  const [testCaseLoading, setTestCaseLoading] = useState(false);
+  const [validationTagsLoading, setValidationTagsLoading] = useState(false);
+  const [validationPointsLoading, setValidationPointsLoading] = useState(false);
+
   function paginate(arr, page, rowsPerPage) {
     return arr.filter(
       (e, i) => i >= page * rowsPerPage && i < page * rowsPerPage + rowsPerPage
@@ -171,17 +182,27 @@ function useTestResultsAccordionStates({ testSuites }) {
   }
 
   function loadTestCases(testSuiteId) {
-    fetchTestCases(testSuiteId).then((data) => setTestCases(data));
+    setTestCaseLoading(true);
+    fetchTestCases(testSuiteId).then((data) => {
+      setTestCases(data);
+      setTestCaseLoading(false);
+    });
   }
 
   function loadValidationTags(testCaseId) {
-    fetchValidationTags(testCaseId).then((data) => setValidationTags(data));
+    setValidationTagsLoading(true);
+    fetchValidationTags(testCaseId).then((data) => {
+      setValidationTags(data);
+      setValidationTagsLoading(false);
+    });
   }
 
   function loadValidationPoints(validationTagId) {
-    fetchValidationPoints(validationTagId).then((data) =>
-      setValidationPoints(data)
-    );
+    setValidationPointsLoading(true);
+    fetchValidationPoints(validationTagId).then((data) => {
+      setValidationPoints(data);
+      setValidationPointsLoading(false);
+    });
   }
 
   const TSColumns = ["id", "status", "duration"].concat(
@@ -248,8 +269,6 @@ function useTestResultsAccordionStates({ testSuites }) {
 
   const filteringOptions = TSColumns.map((e) => new Set());
   TSData.map((e, i) => e.map((b, j) => filteringOptions[j].add(b)));
-  console.log("filtered Data:", filterTestSuites(TSData));
-  console.log("unfiltered Data:", TSData);
 
   const firstHeaderOptions = {
     failed: testSuites.length,
@@ -498,6 +517,10 @@ function useTestResultsAccordionStates({ testSuites }) {
     validationPointsRowsPerPage,
     handleValidationPointsPageChange,
     handleValidationPointsRowsPerPageChange,
+
+    testCaseLoading,
+    validationTagsLoading,
+    validationPointsLoading,
   };
 }
 
