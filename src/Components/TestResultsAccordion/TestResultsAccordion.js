@@ -318,14 +318,17 @@ function useTestResultsAccordionStates({ testSuites }) {
           loadTestCases(data.id);
           setActiveTestCase(-1);
           setFilterTestCase("any");
+          setTestCasesPage(0);
 
           setValidationTags([]);
           setActiveValidationTag(-1);
           setFilterValidationTag("any");
+          setValidationTagsPage(0);
 
           setValidationPoints([]);
           setActiveValidationPoint(-1);
           setFilterValidationPoint("any");
+          setValidationPointsPage(0);
         }}
         active={activeTestSuite === i}
       />
@@ -371,10 +374,12 @@ function useTestResultsAccordionStates({ testSuites }) {
             loadValidationTags(data.id);
             setActiveValidationTag(-1);
             setFilterValidationTag("any");
+            setValidationTagsPage(0);
 
             setValidationPoints([]);
             setActiveValidationPoint(-1);
             setFilterValidationPoint("any");
+            setValidationPointsPage(0);
           }}
           active={activeTestCase === i}
         />
@@ -425,6 +430,7 @@ function useTestResultsAccordionStates({ testSuites }) {
             loadValidationPoints(data.id);
             setActiveValidationPoint(-1);
             setFilterValidationPoint("any");
+            setValidationPointsPage(0);
           }}
           active={activeValidationTag === i}
         />
