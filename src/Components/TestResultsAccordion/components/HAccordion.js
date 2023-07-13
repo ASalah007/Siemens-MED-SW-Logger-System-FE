@@ -332,7 +332,7 @@ function HAccordion({
 function MinimizedColumn({ total, failed, onMaximize, title }) {
   return (
     <div className="flex flex-col border-r">
-      <div className="bg-[#6a4c93] flex flex-col gap-1 h-28 items-center p-1">
+      <div className="bg-[#2D3047] flex flex-col gap-1 h-28 items-center p-1">
         <Tooltip title="Maximize" placement="top" disableInteractive>
           <IconButton onClick={() => onMaximize()}>
             <KeyboardDoubleArrowRightIcon sx={{ color: "#ffca3a" }} />

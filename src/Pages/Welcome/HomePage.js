@@ -5,6 +5,7 @@ import ParticlesBackground from "./ParticlesBackground";
 import { LoadingButton } from "@mui/lab";
 import { Link } from "react-router-dom";
 import { fetchDatabases } from "../../Services/services";
+import Nav from "../../Components/Navbar/Nav";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
@@ -39,7 +40,8 @@ function HomePage() {
   }, [connectedDatabase]);
 
   return (
-    <div className="grow bg-white flex flex-col">
+    <div className="grow bg-white flex flex-col h-screen">
+      <Nav />
       <ParticlesBackground />
       <div className="flex flex-col justify-center items-center bg-white grow">
         {/* Welcome Message */}
@@ -82,7 +84,7 @@ function HomePage() {
                 Disconnect
               </Button>
             </div>
-            <Link to="/testsuits">
+            <Link to="/old/testsuits">
               <Button>Go to old Tables View</Button>
             </Link>
           </div>
