@@ -77,7 +77,7 @@ export default function MapDialog({ open, onClose, maps }) {
                           onChange={() => checkBoxHandler(i, j)}
                         />
                       }
-                      label={`Mesh ${j + 1}`}
+                      label={`Group ${j + 1}`}
                     />
                   ))}
                 </FormGroup>
