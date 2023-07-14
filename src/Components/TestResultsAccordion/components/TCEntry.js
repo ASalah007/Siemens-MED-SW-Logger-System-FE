@@ -15,19 +15,24 @@ function TCEntry({ data, num, onClick, active }) {
     ele.slave_ids.join(", "),
   ]);
 
-  const macsColumns = [
-    "id",
-    ...Object.values(
-      Object.values(Object.values(data.metaData.macs_configuration))[0]
-    ).flatMap((o) => Object.keys(o)),
-  ];
+  const macsConfig = data?.metaData?.macs_configuration;
+  const mpgConfig = data?.metaData?.mpg_configuration;
 
-  const macsData = Object.entries(data.metaData.macs_configuration).map(
-    ([key, value]) => [
+  let macsColumns = [];
+  let macsData = [];
+  if (macsConfig && macsConfig.length > 0) {
+    macsColumns = [
+      "id",
+      ...Object.values(Object.values(Object.values(macsConfig))[0]).flatMap(
+        (o) => Object.keys(o)
+      ),
+    ];
+
+    macsData = Object.entries(macsConfig).map(([key, value]) => [
       key,
       ...Object.values(value).flatMap((e) => Object.values(e)),
-    ]
-  );
+    ]);
+  }
 
   const macsInfoColumns = ["id", "mii_type"];
   const macsInfoData = data.metaData.macs_info.map((e) => Object.values(e));
@@ -71,32 +76,34 @@ function TCEntry({ data, num, onClick, active }) {
           ))}
         </Folder>
 
-        <Folder
-          title="Macs Config"
-          actionElements={
-            <ShowInTable
-              onClick={() => setMacsConfigTableView(true)}
-              open={macsConfigTableView}
-              onClose={() => setMacsConfigTableView(false)}
-              title="Macs Configuration"
-              columns={macsColumns}
-              data={macsData}
-            />
-          }
-        >
-          {Object.keys(data.metaData.macs_configuration).map((k) => (
-            <Folder title={`${k}`}>
-              {Object.keys(data.metaData.macs_configuration[k]).map((e) => (
-                <Folder title={e}>
-                  <MiniTable
-                    keys={Object.keys(data.metaData.macs_configuration[k][e])}
-                    data={data.metaData.macs_configuration[k][e]}
-                  />
-                </Folder>
-              ))}
-            </Folder>
-          ))}
-        </Folder>
+        {macsConfig && (
+          <Folder
+            title="Macs Config"
+            actionElements={
+              <ShowInTable
+                onClick={() => setMacsConfigTableView(true)}
+                open={macsConfigTableView}
+                onClose={() => setMacsConfigTableView(false)}
+                title="Macs Configuration"
+                columns={macsColumns}
+                data={macsData}
+              />
+            }
+          >
+            {Object.keys(macsConfig).map((k) => (
+              <Folder title={`${k}`}>
+                {Object.keys(macsConfig[k]).map((e) => (
+                  <Folder title={e}>
+                    <MiniTable
+                      keys={Object.keys(macsConfig[k][e])}
+                      data={macsConfig[k][e]}
+                    />
+                  </Folder>
+                ))}
+              </Folder>
+            ))}
+          </Folder>
+        )}
 
         <Folder
           title="Macs Info"
@@ -118,30 +125,28 @@ function TCEntry({ data, num, onClick, active }) {
           ))}
         </Folder>
 
-        <Folder title="MPG Config">
-          {Object.keys(data.metaData.mpg_configuration).map((e) => (
-            <Folder title={e}>
-              <Folder title="FEC Config">
-                <MiniTable
-                  keys={Object.keys(
-                    data.metaData.mpg_configuration[e].fec_configuration
-                  )}
-                  data={data.metaData.mpg_configuration[e].fec_configuration}
-                />
-              </Folder>
+        {mpgConfig && (
+          <Folder title="MPG Config">
+            {Object.keys(mpgConfig).map((e) => (
+              <Folder title={e}>
+                <Folder title="FEC Config">
+                  <MiniTable
+                    keys={Object.keys(mpgConfig[e].fec_configuration)}
+                    data={mpgConfig[e].fec_configuration}
+                  />
+                </Folder>
 
-              <Folder title="Ports Config">
-                {data.metaData.mpg_configuration[e].ports_configuration.map(
-                  (b, i) => (
+                <Folder title="Ports Config">
+                  {mpgConfig[e].ports_configuration.map((b, i) => (
                     <Folder title={i}>
                       <MiniTable keys={Object.keys(b)} data={b} />
                     </Folder>
-                  )
-                )}
+                  ))}
+                </Folder>
               </Folder>
-            </Folder>
-          ))}
-        </Folder>
+            ))}
+          </Folder>
+        )}
       </Folder>
     </div>
   );

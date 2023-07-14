@@ -10,9 +10,9 @@ function TSEntry({ data, num, onClick, active }) {
   const [MPGTableView, setMPGTableView] = useState(false);
   const [mapView, setMapView] = useState(false);
 
-  const SAConfig = data.metaData.design_info.dut_instance_info.sa_configuration;
-  const MPGConfig =
-    data.metaData.design_info.dut_instance_info.mpg_configuration;
+  const design_info = data?.metaData?.design_info;
+  const SAConfig = design_info?.dut_instance_info?.sa_configuration;
+  const MPGConfig = design_info?.dut_instance_info?.mpg_configuration;
 
   let SAColumns = [];
   let SAData = [];
@@ -30,7 +30,7 @@ function TSEntry({ data, num, onClick, active }) {
     MPGData = MPGConfig.map((e) => Object.values(e));
   }
 
-  const connMap = data.metaData.design_info.dut_connectivity_map;
+  const connMap = data?.metaData?.design_info?.dut_connectivity_map;
 
   return (
     <div className="">
@@ -58,8 +58,8 @@ function TSEntry({ data, num, onClick, active }) {
             onClose={() => setMapView(false)}
             onClick={() => setMapView(true)}
             maps={{
-              "MPG Connectivity Map": connMap.mpg_connectivity_map,
-              "SA Connectivity Map": connMap.sa_connectivity_map,
+              "MPG Connectivity Map": connMap?.mpg_connectivity_map,
+              "SA Connectivity Map": connMap?.sa_connectivity_map,
             }}
           />
         }
@@ -71,49 +71,51 @@ function TSEntry({ data, num, onClick, active }) {
           />
         </Folder>
 
-        <Folder title="DUT Info">
-          <Folder
-            title="SA Config"
-            actionElements={
-              <ShowInTable
-                onClick={() => setSATableView(true)}
-                open={SATableView}
-                onClose={() => setSATableView(false)}
-                title="SA Configs"
-                columns={SAColumns}
-                data={SAData}
-              />
-            }
-          >
-            {SAConfig.map((e, i) => (
-              <Folder title={`${e.id}`} key={e.id}>
-                <MiniTable keys={Object.keys(e)} data={e} />
-              </Folder>
-            ))}
-          </Folder>
+        {design_info && (
+          <Folder title="DUT Info">
+            <Folder
+              title="SA Config"
+              actionElements={
+                <ShowInTable
+                  onClick={() => setSATableView(true)}
+                  open={SATableView}
+                  onClose={() => setSATableView(false)}
+                  title="SA Configs"
+                  columns={SAColumns}
+                  data={SAData}
+                />
+              }
+            >
+              {SAConfig &&
+                SAConfig.map((e, i) => (
+                  <Folder title={`${e.id}`} key={e.id}>
+                    <MiniTable keys={Object.keys(e)} data={e} />
+                  </Folder>
+                ))}
+            </Folder>
 
-          <Folder
-            title="MPG Config"
-            actionElements={
-              <ShowInTable
-                onClick={() => setMPGTableView(true)}
-                open={MPGTableView}
-                onClose={() => setMPGTableView(false)}
-                title="MPG Configs"
-                columns={MPGColumns}
-                data={MPGData}
-              />
-            }
-          >
-            {data.metaData.design_info.dut_instance_info.mpg_configuration.map(
-              (e, i) => (
-                <Folder title={`${e.id}`} key={e.id}>
-                  <MiniTable keys={Object.keys(e)} data={e} />
-                </Folder>
-              )
-            )}
+            <Folder
+              title="MPG Config"
+              actionElements={
+                <ShowInTable
+                  onClick={() => setMPGTableView(true)}
+                  open={MPGTableView}
+                  onClose={() => setMPGTableView(false)}
+                  title="MPG Configs"
+                  columns={MPGColumns}
+                  data={MPGData}
+                />
+              }
+            >
+              {MPGConfig &&
+                MPGConfig.map((e, i) => (
+                  <Folder title={`${e.id}`} key={e.id}>
+                    <MiniTable keys={Object.keys(e)} data={e} />
+                  </Folder>
+                ))}
+            </Folder>
           </Folder>
-        </Folder>
+        )}
       </Folder>
     </div>
   );

@@ -243,6 +243,7 @@ function getNodes(connectedComponents) {
 }
 
 function getEdges(graph) {
+  if (!graph) return [];
   const edges = Object.entries(graph).map(([source, target]) => ({
     id: `e${source}-${target}`,
     source,

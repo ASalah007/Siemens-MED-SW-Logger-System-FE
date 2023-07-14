@@ -13,7 +13,7 @@ function TreePage() {
   }, []);
 
   return !testSuites ? (
-    <div className="grow flex justify-center items-center">
+    <div className="grow flex justify-center items-center h-screen">
       <CircularProgress thickness={3} size={"3.5rem"} />
     </div>
   ) : (

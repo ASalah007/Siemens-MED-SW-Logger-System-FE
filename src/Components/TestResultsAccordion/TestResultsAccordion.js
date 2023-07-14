@@ -254,8 +254,8 @@ function useTestResultsAccordionStates({ testSuites }) {
     String(e.status),
     formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
     `x/${e.validationPoints_count}`,
-    e.metaData.metaData.Description,
-    e.metaData.metaData["Executable Path"],
+    e?.metaData?.metaData?.Description,
+    e?.metaData?.metaData && e.metaData.metaData["Executable Path"],
   ]);
 
   const VPColumns = ["id", "status", "mac", "direction", "failed results"];
@@ -271,8 +271,8 @@ function useTestResultsAccordionStates({ testSuites }) {
   TSData.map((e, i) => e.map((b, j) => filteringOptions[j].add(b)));
 
   const firstHeaderOptions = {
-    failed: testSuites.length,
-    total: testSuites.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
+    failed: testSuites.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
+    total: testSuites.length,
     title: "Test Suites",
     onPassedClick: () =>
       setFilterTestSuite(filterTestSuite === "passed" ? "any" : "passed"),

@@ -3,6 +3,7 @@ import Folder from "../../Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 
 function VTEntry({ data, num, onClick, active }) {
+  console.log(data);
   return (
     <div>
       <Folder
@@ -19,12 +20,14 @@ function VTEntry({ data, num, onClick, active }) {
         active={active}
         onClick={onClick}
       >
-        <Folder title="Meta Data">
-          <MiniTable
-            keys={Object.keys(data.metaData.metaData)}
-            data={data.metaData.metaData}
-          />
-        </Folder>
+        {data?.metaData?.metaData && (
+          <Folder title="Meta Data">
+            <MiniTable
+              keys={Object.keys(data.metaData.metaData)}
+              data={data.metaData.metaData}
+            />
+          </Folder>
+        )}
       </Folder>
     </div>
   );
