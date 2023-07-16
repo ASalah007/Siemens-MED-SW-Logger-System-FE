@@ -145,31 +145,52 @@ function useTestResultsAccordionStates({ testSuites }) {
 
   const [testSuitesPage, setTestSuitesPage] = useState(0);
   const [testSuitesRowsPerPage, setTestSuitesRowsPerPage] = useState(10);
-  const handleTestSuitesPageChange = (newPage) => setTestSuitesPage(newPage);
-  const handleTestSuitesRowsPerPageChange = (newRows) =>
+  const handleTestSuitesPageChange = (newPage) => {
+    setActiveTestSuite(-1);
+    setTestSuitesPage(newPage);
+  };
+  const handleTestSuitesRowsPerPageChange = (newRows) => {
+    setActiveTestSuite(-1);
     setTestSuitesRowsPerPage(newRows);
+  };
 
   const [testCasesPage, setTestCasesPage] = useState(0);
   const [testCasesRowsPerPage, setTestCasesRowsPerPage] = useState(10);
-  const handleTestCasesPageChange = (newPage) => setTestCasesPage(newPage);
-  const handleTestCasesRowsPerPageChange = (newRows) =>
+  const handleTestCasesPageChange = (newPage) => {
+    setTestCasesPage(newPage);
+    setActiveTestCase(-1);
+  };
+  const handleTestCasesRowsPerPageChange = (newRows) => {
     setTestCasesRowsPerPage(newRows);
+    setActiveTestCase(-1);
+    setTestCasesPage(0);
+  };
 
   const [validationTagsPage, setValidationTagsPage] = useState(0);
   const [validationTagsRowsPerPage, setValidationTagsRowsPerPage] =
     useState(10);
-  const handleValidationTagsPageChange = (newPage) =>
+  const handleValidationTagsPageChange = (newPage) => {
     setValidationTagsPage(newPage);
-  const handleValidationTagsRowsPerPageChange = (newRows) =>
+    setActiveValidationTag(-1);
+  };
+  const handleValidationTagsRowsPerPageChange = (newRows) => {
     setValidationTagsRowsPerPage(newRows);
+    setActiveValidationTag(-1);
+    setValidationTagsPage(0);
+  };
 
   const [validationPointsPage, setValidationPointsPage] = useState(0);
   const [validationPointsRowsPerPage, setValidationPointsRowsPerPage] =
     useState(10);
-  const handleValidationPointsPageChange = (newPage) =>
+  const handleValidationPointsPageChange = (newPage) => {
     setValidationPointsPage(newPage);
-  const handleValidationPointsRowsPerPageChange = (newRows) =>
+    setActiveValidationPoint(-1);
+  };
+  const handleValidationPointsRowsPerPageChange = (newRows) => {
     setValidationPointsRowsPerPage(newRows);
+    setActiveValidationPoint(-1);
+    setValidationPointsPage(0);
+  };
 
   const [testCaseLoading, setTestCaseLoading] = useState(false);
   const [validationTagsLoading, setValidationTagsLoading] = useState(false);
