@@ -3,7 +3,6 @@ import Folder from "../../Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 
 function VTEntry({ data, num, onClick, active }) {
-  console.log(data);
   return (
     <div>
       <Folder

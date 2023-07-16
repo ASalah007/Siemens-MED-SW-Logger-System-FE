@@ -303,7 +303,7 @@ function useTestResultsAccordionStates({ testSuites }) {
   );
 
   const TSData = testSuites.map((e, i) => [
-    i,
+    i + 1,
     String(e.status),
     formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
     ...Object.entries(e.metaData)
@@ -327,36 +327,38 @@ function useTestResultsAccordionStates({ testSuites }) {
 
   const TCColumns = ["id", "status", "duration", "failed VTs"];
   const TCData = testCases.map((e, i) => [
-    i,
+    i + 1,
     String(e.status),
     formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
-    `x/${e.validationTags_count}`,
+    `${e.failedValidationTagsCount}/${e.ValidationTagsCount}`,
   ]);
 
   const VTColumns = [
     "name",
     "status",
     "duration",
-    "failed VPs",
     "descrition",
     "executable Path",
+    "failed VPs",
   ];
   const VTData = validationTags.map((e) => [
     e.metaData.name,
     String(e.status),
     formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
-    `x/${e.validationPoints_count}`,
     e?.metaData?.metaData?.Description,
     e?.metaData?.metaData && e.metaData.metaData["Executable Path"],
+    `${e.failedValidationPointsCount}/${e.ValidationPointsCount}`,
   ]);
 
   const VPColumns = ["id", "status", "mac", "direction", "failed results"];
   const VPData = validationPoints.map((e, i) => [
-    i,
+    i + 1,
     String(e.status),
     e.levels.mac,
     e.levels.direction,
-    `x/${e.results.length}`,
+    `${e.results.reduce((acc, ele) => (acc += ele.status === "fail"), 0)}/${
+      e.results.length
+    }`,
   ]);
 
   const filteringOptions = TSColumns.map((e) => new Set());

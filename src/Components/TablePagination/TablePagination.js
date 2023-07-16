@@ -13,7 +13,7 @@ function TablePagination({
   rowsPerPage = rowsPerPage || 10;
   page = page || 0;
   count = count || 0;
-  const pos = `${page * rowsPerPage + 1}-${Math.min(
+  const pos = `${count===0?0:page * rowsPerPage + 1}-${Math.min(
     page * rowsPerPage + rowsPerPage,
     count
   )} of ${count}`;
