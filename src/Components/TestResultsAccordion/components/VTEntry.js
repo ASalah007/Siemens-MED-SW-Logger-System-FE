@@ -1,8 +1,18 @@
 import React from "react";
 import Folder from "../../Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
+import { formatDuration } from "../../../Utils/utilities.js";
 
 function VTEntry({ data, num, onClick, active }) {
+  const failedCount =
+    (!data.status ? data.failedValidationPointsCount + "/" : "") +
+    data.ValidationPointsCount;
+
+  const duration = formatDuration(
+    new Date(data.end_date) - new Date(data.creation_date)
+  );
+
+  const title = `${data.metaData.name} -- ${failedCount} -- ${duration} `;
   return (
     <div>
       <Folder
@@ -13,7 +23,7 @@ function VTEntry({ data, num, onClick, active }) {
               (data.status ? "text-success" : "text-fail")
             }
           >
-            {data.metaData.name}
+            {title}
           </span>
         }
         active={active}

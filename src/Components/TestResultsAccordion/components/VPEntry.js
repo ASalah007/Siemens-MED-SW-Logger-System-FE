@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Folder from "../../Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
+import { formatDuration } from "../../../Utils/utilities.js";
 
 function VPEntry({ data, num, onClick, active }) {
   const [resultsTableView, setResultsTableView] = useState(false);
@@ -13,6 +14,18 @@ function VPEntry({ data, num, onClick, active }) {
     resultsData = data.results.map((e) => Object.values(e));
   }
 
+  const failedCount =
+    (!data.status
+      ? data.results.reduce((acc, ele) => (acc += ele.status === "fail"), 0) +
+        "/"
+      : "") + data.results.length;
+
+  const duration = formatDuration(
+    new Date(data.end_date) - new Date(data.creation_date)
+  );
+
+  const title = `VP ${num} -- ${failedCount} -- ${duration} (${data.levels.mac}/${data.levels.direction})`;
+
   return (
     <div>
       <Folder
@@ -23,8 +36,7 @@ function VPEntry({ data, num, onClick, active }) {
               (data.status ? "text-success" : "text-fail")
             }
           >
-            Validation Point {num} -- ({data.levels.mac},{" "}
-            {data.levels.direction})
+            {title}
           </span>
         }
         actionElements={

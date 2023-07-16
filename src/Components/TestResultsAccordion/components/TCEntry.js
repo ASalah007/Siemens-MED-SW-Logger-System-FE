@@ -37,6 +37,15 @@ function TCEntry({ data, num, onClick, active }) {
   const macsInfoColumns = ["id", "mii_type"];
   const macsInfoData = data.metaData.macs_info.map((e) => Object.values(e));
 
+  const failedCount =
+    (!data.status ? `${data.failedValidationTagsCount}/` : "") +
+    data.ValidationTagsCount;
+  const duration = formatDuration(
+    new Date(data.end_date) - new Date(data.creation_date)
+  );
+
+  const title = `TC ${num} -- ${failedCount} -- ${duration} `;
+
   return (
     <div>
       <Folder
@@ -47,10 +56,7 @@ function TCEntry({ data, num, onClick, active }) {
               (data.status ? "text-success" : "text-fail")
             }
           >
-            Test Case {num} --{" "}
-            {formatDuration(
-              new Date(data.end_date) - new Date(data.creation_date)
-            )}
+            {title}
           </span>
         }
         active={active}

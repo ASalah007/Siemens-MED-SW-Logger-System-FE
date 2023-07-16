@@ -32,6 +32,14 @@ function TSEntry({ data, num, onClick, active }) {
 
   const connMap = data?.metaData?.design_info?.dut_connectivity_map;
 
+  const failedCount =
+    (!data.status ? data.failedTestCasesCount + "/" : "") + data.TestCasesCount;
+  const duration = formatDuration(
+    new Date(data.end_date) - new Date(data.creation_date)
+  );
+
+  const title = `TS ${num} -- ${failedCount} -- ${duration} `;
+
   return (
     <div className="">
       <Folder
@@ -42,12 +50,7 @@ function TSEntry({ data, num, onClick, active }) {
               (data.status ? "text-success" : "text-fail")
             }
           >
-            <span>
-              Test Suit {num} --{" "}
-              {formatDuration(
-                new Date(data.end_date) - new Date(data.creation_date)
-              )}
-            </span>
+            <span>{title}</span>
           </span>
         }
         onClick={onClick}
