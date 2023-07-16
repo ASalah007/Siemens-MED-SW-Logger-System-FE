@@ -27,30 +27,30 @@ export async function fetchTestSuites() {
   return response.data;
 }
 
-export async function fetchTestCases(testSuitId) {
+export async function fetchTestCases(testSuitId, limit, page) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
 
   const url = urls.getTestCases.replace("{testSuitId}", testSuitId);
   const response = await axios.get(url, {
-    params: { databaseName: connectedDatabase },
+    params: { databaseName: connectedDatabase, limit, page },
   });
 
   return response.data["results"];
 }
 
-export async function fetchValidationTags(testCaseId) {
+export async function fetchValidationTags(testCaseId, limit, page) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
 
   const url = urls.getValidationTags.replace("{testCaseId}", testCaseId);
   const response = await axios.get(url, {
-    params: { databaseName: connectedDatabase },
+    params: { databaseName: connectedDatabase, limit, page },
   });
   return response.data["results"];
 }
 
-export async function fetchValidationPoints(validationTagId) {
+export async function fetchValidationPoints(validationTagId, limit, page) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
   const url = urls.getValidationPoints.replace(
@@ -58,7 +58,7 @@ export async function fetchValidationPoints(validationTagId) {
     validationTagId
   );
   const response = await axios.get(url, {
-    params: { databaseName: connectedDatabase },
+    params: { databaseName: connectedDatabase, limit, page },
   });
   return response.data["results"];
 }

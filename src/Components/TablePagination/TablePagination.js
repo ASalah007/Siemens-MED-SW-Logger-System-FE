@@ -1,5 +1,5 @@
 import { IconButton, MenuItem, Select } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 
@@ -13,9 +13,11 @@ function TablePagination({
   rowsPerPage = rowsPerPage || 10;
   page = page || 0;
   count = count || 0;
-  const pos = `${page * rowsPerPage + 1}-${
-    page * rowsPerPage + rowsPerPage
-  } of ${count}`;
+  const pos = `${page * rowsPerPage + 1}-${Math.min(
+    page * rowsPerPage + rowsPerPage,
+    count
+  )} of ${count}`;
+
   return (
     <div className="flex items-center justify-center gap-3 pl-2">
       <div className="flex items-center gap-3">
