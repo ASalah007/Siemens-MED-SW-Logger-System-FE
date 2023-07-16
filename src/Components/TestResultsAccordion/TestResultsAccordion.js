@@ -420,8 +420,12 @@ function useTestResultsAccordionStates({ testSuites }) {
   );
 
   const secondHeaderOptions = {
-    total: testCases.length,
-    failed: testCases.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
+    total:
+      activeTestSuite > -1 ? testSuites[activeTestSuite].TestCasesCount : 0,
+    failed:
+      activeTestSuite > -1
+        ? testSuites[activeTestSuite].failedTestCasesCount
+        : 0,
     title: "Test Cases",
     onPassedClick: () =>
       setFilterTestCase(filterTestCase === "passed" ? "any" : "passed"),
@@ -457,11 +461,12 @@ function useTestResultsAccordionStates({ testSuites }) {
     ));
 
   const thirdHeaderOptions = {
-    total: validationTags.length,
-    failed: validationTags.reduce(
-      (acc, ele) => (ele.status ? acc : acc + 1),
-      0
-    ),
+    total:
+      activeTestCase > -1 ? testCases[activeTestCase].ValidationTagsCount : 0,
+    failed:
+      activeTestCase > -1
+        ? testCases[activeTestCase].failedValidationTagsCount
+        : 0,
     title: "Validation Tags",
     onPassedClick: () =>
       setFilterValidationTag(
@@ -499,11 +504,14 @@ function useTestResultsAccordionStates({ testSuites }) {
     ));
 
   const fourthHeaderOptions = {
-    total: validationPoints.length,
-    failed: validationPoints.reduce(
-      (acc, ele) => (ele.status ? acc : acc + 1),
-      0
-    ),
+    total:
+      activeValidationTag > -1
+        ? validationTags[activeValidationTag].ValidationPointsCount
+        : 0,
+    failed:
+      activeValidationTag > -1
+        ? validationTags[activeValidationTag].failedValidationPointsCount
+        : 0,
     title: "Validation Points",
     onPassedClick: () =>
       setFilterValidationPoint(
