@@ -199,11 +199,13 @@ function useTestResultsAccordionStates({ testSuites }) {
         setActiveTestCase(-1);
         setFilterTestCase("any");
         setTestCasesPage(0);
+      // eslint-disable-next-line no-fallthrough
       case "VT":
         setValidationTags([]);
         setActiveValidationTag(-1);
         setFilterValidationTag("any");
         setValidationTagsPage(0);
+      // eslint-disable-next-line no-fallthrough
       case "VP":
         setValidationPoints([]);
         setActiveValidationPoint(-1);
@@ -380,7 +382,7 @@ function useTestResultsAccordionStates({ testSuites }) {
       <TSEntry
         data={data}
         key={data._id}
-        num={i}
+        num={testSuitesRowsPerPage * testSuitesPage + i + 1}
         onClick={() => {
           setActiveTestSuite(i);
           setActiveTestCase(-1);
@@ -423,7 +425,7 @@ function useTestResultsAccordionStates({ testSuites }) {
       <TCEntry
         data={data}
         key={data._id}
-        num={i}
+        num={testCasesRowsPerPage * testCasesPage + i + 1}
         onClick={() => {
           setActiveTestCase(i);
           setActiveValidationTag(-1);
@@ -466,7 +468,7 @@ function useTestResultsAccordionStates({ testSuites }) {
       <VTEntry
         data={data}
         key={data._id}
-        num={i}
+        num={validationTagsRowsPerPage * validationPointsPage + i + 1}
         onClick={() => {
           setActiveValidationTag(i);
           setActiveValidationPoint(-1);
@@ -508,7 +510,7 @@ function useTestResultsAccordionStates({ testSuites }) {
       <VPEntry
         data={data}
         key={data._id}
-        num={i}
+        num={validationPointsRowsPerPage * validationPointsPage + i + 1}
         onClick={() => {
           setActiveValidationPoint(i);
         }}
