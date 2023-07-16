@@ -3,7 +3,6 @@ import HAccordionHeader from "./HAccoridionHeader";
 import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import TablePagination from "../../TablePagination/TablePagination";
-import { BlurCircularTwoTone } from "@material-ui/icons";
 
 function HAccordion({
   firstColumnElements,
