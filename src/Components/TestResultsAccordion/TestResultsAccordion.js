@@ -181,6 +181,30 @@ function useTestResultsAccordionStates({ testSuites }) {
     );
   }
 
+  function reset(type) {
+    switch (type) {
+      case "TC":
+        setActiveTestCase(-1);
+        setFilterTestCase("any");
+        setTestCasesPage(0);
+        break;
+      case "VT":
+        setActiveValidationTag(-1);
+        setFilterValidationTag("any");
+        setValidationTagsPage(0);
+        break;
+
+      case "VP":
+        setActiveValidationPoint(-1);
+        setFilterValidationPoint("any");
+        setValidationPointsPage(0);
+        break;
+
+      default:
+        break;
+    }
+  }
+
   function loadTestCases(testSuiteId) {
     setTestCaseLoading(true);
     fetchTestCases(testSuiteId).then((data) => {
@@ -316,19 +340,13 @@ function useTestResultsAccordionStates({ testSuites }) {
           setActiveTestSuite(i);
 
           loadTestCases(data.id);
-          setActiveTestCase(-1);
-          setFilterTestCase("any");
-          setTestCasesPage(0);
+          reset("TC");
 
           setValidationTags([]);
-          setActiveValidationTag(-1);
-          setFilterValidationTag("any");
-          setValidationTagsPage(0);
+          reset("VT");
 
           setValidationPoints([]);
-          setActiveValidationPoint(-1);
-          setFilterValidationPoint("any");
-          setValidationPointsPage(0);
+          reset("VP");
         }}
         active={activeTestSuite === i}
       />
@@ -372,14 +390,10 @@ function useTestResultsAccordionStates({ testSuites }) {
             setActiveTestCase(i);
 
             loadValidationTags(data.id);
-            setActiveValidationTag(-1);
-            setFilterValidationTag("any");
-            setValidationTagsPage(0);
+            reset("VT");
 
             setValidationPoints([]);
-            setActiveValidationPoint(-1);
-            setFilterValidationPoint("any");
-            setValidationPointsPage(0);
+            reset("VP");
           }}
           active={activeTestCase === i}
         />
@@ -428,9 +442,7 @@ function useTestResultsAccordionStates({ testSuites }) {
             setActiveValidationTag(i);
 
             loadValidationPoints(data.id);
-            setActiveValidationPoint(-1);
-            setFilterValidationPoint("any");
-            setValidationPointsPage(0);
+            reset("VP");
           }}
           active={activeValidationTag === i}
         />
