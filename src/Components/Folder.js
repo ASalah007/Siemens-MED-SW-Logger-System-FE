@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
 
-function Folder({ title, children, open, onClick, active, actionElements }) {
+function Folder({
+  title,
+  children,
+  open,
+  onClick,
+  active,
+  actionElements,
+  noArrow = false,
+}) {
   const [collapsed, setCollapsed] = useState(!open);
   return (
     <div className="flex flex-col gap-1">
@@ -12,7 +20,11 @@ function Folder({ title, children, open, onClick, active, actionElements }) {
           (active ? "bg-blue-200" : "hover:bg-blue-100")
         }
       >
-        <div className="text-slate-500" onClick={() => setCollapsed((o) => !o)}>
+        <div
+          className="text-slate-500 "
+          onClick={() => setCollapsed((o) => !o)}
+          style={{ visibility: noArrow && "hidden" }}
+        >
           {collapsed ? <ArrowRightRoundedIcon /> : <ArrowDropDownRoundedIcon />}
         </div>
         <div

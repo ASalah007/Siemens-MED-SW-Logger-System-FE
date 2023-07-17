@@ -63,7 +63,9 @@ function TCEntry({ data, num, onClick, active }) {
         onClick={onClick}
       >
         <Folder
+          noArrow
           title="DUT Master Slave Info"
+          onClick={() => setDutTableView(true)}
           actionElements={
             <ShowInTable
               onClick={() => setDutTableView(true)}
@@ -74,13 +76,7 @@ function TCEntry({ data, num, onClick, active }) {
               data={dutData}
             />
           }
-        >
-          {data.metaData.dut_master_slave_info.map((e, i) => (
-            <Folder title={`${i}`} key={e.id}>
-              <MiniTable keys={Object.keys(e)} data={e} />
-            </Folder>
-          ))}
-        </Folder>
+        ></Folder>
 
         {macsConfig && (
           <Folder
@@ -112,7 +108,9 @@ function TCEntry({ data, num, onClick, active }) {
         )}
 
         <Folder
+          noArrow
           title="Macs Info"
+          onClick={() => setMacsInfoTableView(true)}
           actionElements={
             <ShowInTable
               onClick={() => setMacsInfoTableView(true)}
@@ -123,13 +121,7 @@ function TCEntry({ data, num, onClick, active }) {
               data={macsInfoData}
             />
           }
-        >
-          {data.metaData.macs_info.map((e) => (
-            <Folder title={e.id}>
-              <MiniTable keys={Object.keys(e)} data={e} />
-            </Folder>
-          ))}
-        </Folder>
+        ></Folder>
 
         {mpgConfig && (
           <Folder title="MPG Config">
