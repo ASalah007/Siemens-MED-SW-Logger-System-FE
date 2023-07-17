@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
 
@@ -12,6 +12,7 @@ function Folder({
   noArrow = false,
 }) {
   const [collapsed, setCollapsed] = useState(!open);
+  const ref = useRef();
   return (
     <div className="flex flex-col gap-1">
       <div
@@ -35,7 +36,11 @@ function Folder({
         </div>
         <div className="pr-2">{actionElements}</div>
       </div>
-      {!collapsed && <div className="pl-5">{children}</div>}
+      {!collapsed && (
+        <div ref={ref} className="ml-[10px] pl-3 border-l-2 border-slate-400">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
