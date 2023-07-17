@@ -25,7 +25,7 @@ function TSEntry({ data, num, onClick, active }) {
     SAData = SAConfig.map((e) => Object.values(e));
   }
 
-  if (MPGConfig) {
+  if (MPGConfig && MPGConfig.length > 0) {
     MPGColumns = Object.keys(MPGConfig[0]);
     MPGData = MPGConfig.map((e) => Object.values(e));
   }
