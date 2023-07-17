@@ -394,13 +394,13 @@ function useTestResultsAccordionStates({ testSuites }) {
       </div>
     ),
   };
-  function filterPredict(filterOption, data) {
+  function filterPredicate(filterOption, data) {
     if (filterOption === "passed" && data.status) return true;
     if (filterOption === "failed" && !data.status) return true;
     return filterOption === "any";
   }
   let firstColumnElements = testSuites
-    .filter((data) => filterPredict(filterTestSuite, data))
+    .filter((data) => filterPredicate(filterTestSuite, data))
     .map((data, i) => (
       <TSEntry
         data={data}
@@ -447,7 +447,7 @@ function useTestResultsAccordionStates({ testSuites }) {
   };
 
   const secondColumnElements = testCases
-    .filter((data) => filterPredict(filterTestCase, data))
+    .filter((data) => filterPredicate(filterTestCase, data))
     .map((data, i) => (
       <TCEntry
         data={data}
@@ -491,7 +491,7 @@ function useTestResultsAccordionStates({ testSuites }) {
     ),
   };
   const thirdColumnElements = validationTags
-    .filter((data) => filterPredict(filterValidationTag, data))
+    .filter((data) => filterPredicate(filterValidationTag, data))
     .map((data, i) => (
       <VTEntry
         data={data}
@@ -536,7 +536,7 @@ function useTestResultsAccordionStates({ testSuites }) {
     ),
   };
   const fourthColumnElements = validationPoints
-    .filter((data) => filterPredict(filterValidationPoint, data))
+    .filter((data) => filterPredicate(filterValidationPoint, data))
     .map((data, i) => (
       <VPEntry
         data={data}
