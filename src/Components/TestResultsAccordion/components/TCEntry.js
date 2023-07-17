@@ -20,7 +20,7 @@ function TCEntry({ data, num, onClick, active }) {
 
   let macsColumns = [];
   let macsData = [];
-  if (macsConfig && macsConfig.length > 0) {
+  if (macsConfig) {
     macsColumns = [
       "id",
       ...Object.values(Object.values(Object.values(macsConfig))[0]).flatMap(
