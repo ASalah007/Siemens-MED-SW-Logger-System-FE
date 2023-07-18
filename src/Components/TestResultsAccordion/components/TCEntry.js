@@ -40,7 +40,7 @@ function TCEntry({ data, num, onClick, active }) {
   let mpgColumns = ["Id", "FEC Enable"];
   let mpgData = [];
 
-  console.log(mpgConfig);
+  console.log(data);
   if (mpgConfig) {
     mpgData = Object.entries(mpgConfig).map(([id, value]) => [
       id,
@@ -76,21 +76,41 @@ function TCEntry({ data, num, onClick, active }) {
         active={active}
         onClick={onClick}
       >
-        <Folder
-          noArrow
-          title="DUT Master Slave Info"
-          onClick={() => setDutTableView(true)}
-          actionElements={
-            <ShowInTable
-              onClick={() => setDutTableView(true)}
-              open={dutTableView}
-              onClose={() => setDutTableView(false)}
-              title="DUT Master Slave Info"
-              columns={dutColumns}
-              data={dutData}
-            />
-          }
-        ></Folder>
+        {data?.metaData?.dut_master_slave_info && (
+          <Folder
+            noArrow
+            title="DUT Master Slave Info"
+            onClick={() => setDutTableView(true)}
+            actionElements={
+              <ShowInTable
+                onClick={() => setDutTableView(true)}
+                open={dutTableView}
+                onClose={() => setDutTableView(false)}
+                title="DUT Master Slave Info"
+                columns={dutColumns}
+                data={dutData}
+              />
+            }
+          ></Folder>
+        )}
+
+        {data?.metaData?.macs_info && (
+          <Folder
+            noArrow
+            title="Macs Info"
+            onClick={() => setMacsInfoTableView(true)}
+            actionElements={
+              <ShowInTable
+                onClick={() => setMacsInfoTableView(true)}
+                open={macsInfoTableView}
+                onClose={() => setMacsInfoTableView(false)}
+                title="Macs Informations"
+                columns={macsInfoColumns}
+                data={macsInfoData}
+              />
+            }
+          ></Folder>
+        )}
 
         {macsConfig && (
           <Folder
@@ -120,22 +140,6 @@ function TCEntry({ data, num, onClick, active }) {
             ))}
           </Folder>
         )}
-
-        <Folder
-          noArrow
-          title="Macs Info"
-          onClick={() => setMacsInfoTableView(true)}
-          actionElements={
-            <ShowInTable
-              onClick={() => setMacsInfoTableView(true)}
-              open={macsInfoTableView}
-              onClose={() => setMacsInfoTableView(false)}
-              title="Macs Informations"
-              columns={macsInfoColumns}
-              data={macsInfoData}
-            />
-          }
-        ></Folder>
 
         {mpgConfig && (
           <Folder

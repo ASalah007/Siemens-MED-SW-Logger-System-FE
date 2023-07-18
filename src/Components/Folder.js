@@ -37,7 +37,7 @@ function Folder({
         <div className="pr-2">{actionElements}</div>
       </div>
       {!collapsed && (
-        <div ref={ref} className="ml-[10px] pl-3 border-l-2 border-slate-400">
+        <div ref={ref} className="ml-[10px] pl-3 border-l-2 border-slate-300">
           {children}
         </div>
       )}
