@@ -6,16 +6,20 @@ export default function MiniTable({ keys, data }) {
   return (
     <Paper elevation={2} sx={{ maxWidth: "max-content", mb: "6px" }}>
       <table>
-        <tr className="bg-[#08607b] text-white text-xl">
-          <th className="p-2 text-start">Key</th>
-          <th className="p-2 text-start">Value</th>
-        </tr>
-        {keys.map((k, i) => (
-          <tr className={"" + (i % 2 === 1 && "bg-gray-200")}>
-            <td className="p-1 pl-2">{k}</td>
-            <td className="p-1 pl-2">{data[k]}</td>
+        <thead>
+          <tr className="bg-[#08607b] text-white text-xl">
+            <th className="p-2 text-start">Key</th>
+            <th className="p-2 text-start">Value</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {keys.map((k, i) => (
+            <tr className={"" + (i % 2 === 1 && "bg-gray-200")}>
+              <td className="p-1 pl-2">{k}</td>
+              <td className="p-1 pl-2">{data[k]}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </Paper>
   );

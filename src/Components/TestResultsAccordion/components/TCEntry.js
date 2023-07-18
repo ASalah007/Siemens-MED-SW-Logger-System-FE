@@ -9,6 +9,8 @@ function TCEntry({ data, num, onClick, active }) {
   const [dutTableView, setDutTableView] = useState(false);
   const [macsConfigTableView, setMacsConfigTableView] = useState(false);
   const [macsInfoTableView, setMacsInfoTableView] = useState(false);
+  const [mpgConfigTableView, setMpgConfigTableView] = useState(false);
+  const [portConfigTableView, setPortConfigTableView] = useState(false);
 
   const dutColumns = ["master_id", "slave_ids"];
   const dutData = data.metaData.dut_master_slave_info.map((ele) => [
@@ -21,6 +23,7 @@ function TCEntry({ data, num, onClick, active }) {
 
   let macsColumns = [];
   let macsData = [];
+
   if (macsConfig) {
     macsColumns = [
       "id",
@@ -32,6 +35,16 @@ function TCEntry({ data, num, onClick, active }) {
     macsData = Object.entries(macsConfig).map(([key, value]) => [
       key,
       ...Object.values(value).flatMap((e) => Object.values(e)),
+    ]);
+  }
+  let mpgColumns = ["Id", "FEC Enable"];
+  let mpgData = [];
+
+  console.log(mpgConfig);
+  if (mpgConfig) {
+    mpgData = Object.entries(mpgConfig).map(([id, value]) => [
+      id,
+      value?.fec_configuration?.Enable,
     ]);
   }
 
@@ -125,18 +138,44 @@ function TCEntry({ data, num, onClick, active }) {
         ></Folder>
 
         {mpgConfig && (
-          <Folder title="MPG Config">
-            {Object.keys(mpgConfig).map((e) => (
-              <Folder title={e}>
+          <Folder
+            title="MPG Config"
+            actionElements={
+              <ShowInTable
+                onClick={() => setMpgConfigTableView(true)}
+                open={mpgConfigTableView}
+                onClose={() => setMpgConfigTableView(false)}
+                title="Mpg Config"
+                columns={mpgColumns}
+                data={mpgData}
+              />
+            }
+          >
+            {Object.entries(mpgConfig).map(([k, v]) => (
+              <Folder title={k}>
                 <Folder title="FEC Config">
                   <MiniTable
-                    keys={Object.keys(mpgConfig[e].fec_configuration)}
-                    data={mpgConfig[e].fec_configuration}
+                    keys={Object.keys(v.fec_configuration)}
+                    data={v.fec_configuration}
                   />
                 </Folder>
 
-                <Folder title="Ports Config">
-                  {mpgConfig[e].ports_configuration.map((b, i) => (
+                <Folder
+                  title="Ports Config"
+                  actionElements={
+                    <ShowInTable
+                      onClick={() => setPortConfigTableView(true)}
+                      open={portConfigTableView}
+                      onClose={() => setPortConfigTableView(false)}
+                      title="Ports Config"
+                      columns={["Id", ...Object.keys(v.ports_configuration[0])]}
+                      data={Object.entries(v.ports_configuration).map(
+                        ([k, v]) => [k, ...Object.values(v)]
+                      )}
+                    />
+                  }
+                >
+                  {v.ports_configuration.map((b, i) => (
                     <Folder title={i}>
                       <MiniTable keys={Object.keys(b)} data={b} />
                     </Folder>
