@@ -311,20 +311,6 @@ function useTestResultsAccordionStates({ testSuites }) {
       .flatMap(([k, v]) => v),
   ]);
 
-  function applyFilters(arr, filters, data) {
-    if (filters.length === 0) return [...arr];
-    const f = data.map((e) =>
-      e.reduce(
-        (acc, ele, i) =>
-          (filters[i].length === 0 || filters[i].includes(ele)) && acc,
-        true
-      )
-    );
-    return arr.filter((e, i) => f[i]);
-  }
-  const filterTestSuites = (arr) =>
-    applyFilters(arr, testSuitesSelectedFilters, TSData);
-
   const TCColumns = ["id", "status", "duration", "failed VTs"];
   const TCData = testCases.map((e, i) => [
     i + 1,
@@ -361,6 +347,23 @@ function useTestResultsAccordionStates({ testSuites }) {
     }`,
   ]);
 
+  function applyFilters(arr, filters, data) {
+    if (filters.length === 0) return [...arr];
+    const f = data.map((e) =>
+      e.reduce(
+        (acc, ele, i) =>
+          (filters[i].length === 0 || filters[i].includes(ele)) && acc,
+        true
+      )
+    );
+    return arr.filter((e, i) => f[i]);
+  }
+
+  const filterTestSuites = (arr) =>
+    applyFilters(arr, testSuitesSelectedFilters, TSData);
+
+  const testSuitesCount = filterTestSuites(testSuites).length;
+
   const filteringOptions = TSColumns.map((e) => new Set());
   TSData.map((e, i) => e.map((b, j) => filteringOptions[j].add(b)));
 
@@ -382,6 +385,11 @@ function useTestResultsAccordionStates({ testSuites }) {
           title="Test Suites"
           columns={TSColumns}
           data={filterTestSuites(TSData)}
+          page={testSuitesPage}
+          count={testSuitesCount}
+          onPageChange={handleTestSuitesPageChange}
+          onRowsPerPageChange={handleTestCasesRowsPerPageChange}
+          rowsPerPage={testSuitesRowsPerPage}
         />
         <ShowFilter
           labels={TSColumns}
@@ -442,6 +450,11 @@ function useTestResultsAccordionStates({ testSuites }) {
         title="Test Cases"
         columns={TCColumns}
         data={TCData}
+        page={testCasesPage}
+        count={testCasesCount}
+        onPageChange={handleTestCasesPageChange}
+        onRowsPerPageChange={handleTestCasesRowsPerPageChange}
+        rowsPerPage={testCasesRowsPerPage}
       />
     ),
   };
@@ -487,6 +500,11 @@ function useTestResultsAccordionStates({ testSuites }) {
         title="Validation Tags"
         columns={VTColumns}
         data={VTData}
+        page={validationTagsPage}
+        count={validationTagsCount}
+        onPageChange={handleValidationTagsPageChange}
+        onRowsPerPageChange={handleValidationTagsRowsPerPageChange}
+        rowsPerPage={validationTagsRowsPerPage}
       />
     ),
   };
@@ -532,6 +550,11 @@ function useTestResultsAccordionStates({ testSuites }) {
         title="Validation Points"
         columns={VPColumns}
         data={VPData}
+        page={validationPointsPage}
+        count={validationPointsCount}
+        onPageChange={handleValidationPointsPageChange}
+        onRowsPerPageChange={handleValidationPointsRowsPerPageChange}
+        rowsPerPage={validationPointsRowsPerPage}
       />
     ),
   };
@@ -564,7 +587,7 @@ function useTestResultsAccordionStates({ testSuites }) {
     activeValidationPoint,
     validationTags,
 
-    testSuitesCount: filterTestSuites(testSuites).length,
+    testSuitesCount,
     testSuitesPage,
     testSuitesRowsPerPage,
     handleTestSuitesPageChange,

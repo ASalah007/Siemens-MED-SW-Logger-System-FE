@@ -2,15 +2,29 @@ import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import MUIDataTable from "mui-datatables";
+import TablePagination from "../TablePagination/TablePagination";
 
 function TableDialog(props) {
-  const { onClose, open, title, onRowClick, columns, data } = props;
+  const {
+    onClose,
+    open,
+    title,
+    onRowClick,
+    columns,
+    data,
+    count,
+    page,
+    rowsPerPage,
+    onRowsPerPageChange,
+    onPageChange,
+  } = props;
 
   const options = {
     filter: true,
     selectableRows: "none",
     ilterType: "multiselect",
     rowsPerPage: 10,
+    pagination: false,
 
     draggableColumns: {
       enabled: true,
@@ -66,6 +80,13 @@ function TableDialog(props) {
             columns={columns}
             data={data}
             options={options}
+          />
+          <TablePagination
+            count={count}
+            page={page}
+            onRowsPerPageChange={onRowsPerPageChange}
+            onPageChange={onPageChange}
+            rowsPerPage={rowsPerPage}
           />
         </div>
       </DialogContent>

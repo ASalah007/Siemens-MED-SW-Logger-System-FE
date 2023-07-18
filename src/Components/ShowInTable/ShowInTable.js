@@ -12,6 +12,11 @@ function ShowInTable({
   data,
   onRowClick,
   sx,
+  count,
+  page,
+  rowsPerPage,
+  onRowsPerPageChange,
+  onPageChange,
 }) {
   return (
     <div>
@@ -28,6 +33,11 @@ function ShowInTable({
         columns={columns}
         data={data}
         onRowClick={onRowClick}
+        count={count}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={onRowsPerPageChange}
+        onPageChange={onPageChange}
       ></TableDialog>
     </div>
   );
