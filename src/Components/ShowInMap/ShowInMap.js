@@ -9,7 +9,7 @@ function ShowInMap({ onClick, onClose, open, maps }) {
     <div>
       <Tooltip
         title={"Show Connectivity Map"}
-        placement="top"
+        placement="bottom"
         disableInteractive
       >
         <IconButton onClick={() => onClick()}>

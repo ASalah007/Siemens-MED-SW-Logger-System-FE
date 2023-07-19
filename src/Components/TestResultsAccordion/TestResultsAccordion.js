@@ -385,7 +385,6 @@ function useTestResultsAccordionStates({ testSuites }) {
           title="Test Suites"
           columns={TSColumns}
           data={filterTestSuites(TSData)}
-          nativePagination
         />
         <ShowFilter
           labels={TSColumns}
@@ -451,6 +450,7 @@ function useTestResultsAccordionStates({ testSuites }) {
         onPageChange={handleTestCasesPageChange}
         onRowsPerPageChange={handleTestCasesRowsPerPageChange}
         rowsPerPage={testCasesRowsPerPage}
+        nativePagination={false}
       />
     ),
   };
@@ -501,6 +501,7 @@ function useTestResultsAccordionStates({ testSuites }) {
         onPageChange={handleValidationTagsPageChange}
         onRowsPerPageChange={handleValidationTagsRowsPerPageChange}
         rowsPerPage={validationTagsRowsPerPage}
+        nativePagination={false}
       />
     ),
   };
@@ -551,6 +552,7 @@ function useTestResultsAccordionStates({ testSuites }) {
         onPageChange={handleValidationPointsPageChange}
         onRowsPerPageChange={handleValidationPointsRowsPerPageChange}
         rowsPerPage={validationPointsRowsPerPage}
+        nativePagination={false}
       />
     ),
   };

@@ -18,7 +18,7 @@ function HAccordionHeader({
         {title}
         {actionElements}
         <div className="absolute right-1 -top-1">
-          <Tooltip title="Minimize" placement="top" disableInteractive>
+          <Tooltip title="Minimize" placement="bottom" disableInteractive>
             <IconButton onClick={() => onMinimize && onMinimize()}>
               <KeyboardDoubleArrowLeftIcon sx={{ color: "#ffca3a" }} />
             </IconButton>

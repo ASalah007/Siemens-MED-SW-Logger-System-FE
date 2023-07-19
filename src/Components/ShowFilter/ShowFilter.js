@@ -7,7 +7,7 @@ function ShowFilter({ labels, filteringOptions, onApply }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Tooltip title="Filter" placement="top" disableInteractive>
+      <Tooltip title="Filter" placement="bottom" disableInteractive>
         <IconButton onClick={() => setOpen(!open)}>
           <FilterListIcon sx={{ color: "#ffca3a" }} />
         </IconButton>

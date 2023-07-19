@@ -17,11 +17,11 @@ function ShowInTable({
   rowsPerPage,
   onRowsPerPageChange,
   onPageChange,
-  nativePagination = false,
+  nativePagination = true,
 }) {
   return (
     <div>
-      <Tooltip title="show in a table" placement="top" disableInteractive>
+      <Tooltip title="show in a table" placement="bottom" disableInteractive>
         <IconButton onClick={() => onClick()} sx={sx}>
           <TableViewIcon />
         </IconButton>
