@@ -20,11 +20,11 @@ function VPEntry({ data, num, onClick, active }) {
         "/"
       : "") + data.results.length;
 
-  const duration = formatDuration(
-    new Date(data.end_date) - new Date(data.creation_date)
-  );
+  const levels = Object.values(data.levels)
+    .map((e, i) => (i > 0 ? "/" + e : e))
+    .join("");
 
-  const title = `VP ${num} -- ${failedCount} -- ${duration} (${data.levels.mac}/${data.levels.direction})`;
+  const title = `VP ${num} -- ${failedCount} -- (${levels})`;
 
   return (
     <div>
