@@ -97,31 +97,31 @@ function TSEntry({ data, num, onClick, active }) {
                 ))}
             </Folder>
 
-            <Folder
-              title="MPG Config"
-              actionElements={
-                <ShowInTable
-                  onClick={() => setMPGTableView(true)}
-                  open={MPGTableView}
-                  onClose={() => setMPGTableView(false)}
-                  title="MPG Configs"
-                  columns={MPGColumns}
-                  data={MPGData}
-                />
-              }
-            >
-              {MPGConfig &&
-                MPGConfig.map((e, i) => (
+            {MPGConfig && MPGConfig.length > 0 && (
+              <Folder
+                title="MPG Config"
+                actionElements={
+                  <ShowInTable
+                    onClick={() => setMPGTableView(true)}
+                    open={MPGTableView}
+                    onClose={() => setMPGTableView(false)}
+                    title="MPG Configs"
+                    columns={MPGColumns}
+                    data={MPGData}
+                  />
+                }
+              >
+                {MPGConfig.map((e, i) => (
                   <Folder title={`${e.id}`} key={e.id}>
                     <MiniTable keys={Object.keys(e)} data={e} />
                   </Folder>
                 ))}
-            </Folder>
+              </Folder>
+            )}
           </Folder>
         )}
       </Folder>
     </div>
   );
 }
-
 export default TSEntry;
