@@ -63,7 +63,7 @@ function TestResultsAccordion({ testSuites }) {
   } = useTestResultsAccordionStates({ testSuites });
 
   return (
-    <div className="flex flex-col grow">
+    <div className="flex flex-col grow max-h-full">
       <HAccordion
         firstColumnElements={firstColumnElements}
         firstHeaderOptions={firstHeaderOptions}
@@ -385,11 +385,7 @@ function useTestResultsAccordionStates({ testSuites }) {
           title="Test Suites"
           columns={TSColumns}
           data={filterTestSuites(TSData)}
-          page={testSuitesPage}
-          count={testSuitesCount}
-          onPageChange={handleTestSuitesPageChange}
-          onRowsPerPageChange={handleTestCasesRowsPerPageChange}
-          rowsPerPage={testSuitesRowsPerPage}
+          nativePagination
         />
         <ShowFilter
           labels={TSColumns}

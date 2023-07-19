@@ -114,7 +114,7 @@ function HAccordion({
   }, [expanding, currentDiv, minimized]);
 
   return (
-    <div className="flex grow max-h-screen">
+    <div className="flex grow max-h-full">
       {minimized[0] && (
         <MinimizedColumn
           onMaximize={() => minimize(0, false)}

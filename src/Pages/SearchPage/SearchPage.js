@@ -1,55 +1,97 @@
 import React, { useState } from "react";
 import Nav from "../../Components/Navbar/Nav";
 import SearchResultsAccordion from "../../Components/SearchResultsAccordion/SearchResultsAccordion";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Autocomplete,
   Button,
   Checkbox,
+  Divider,
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
-import Folder from "../../Components/Folder";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import searchImage from "../../Resources/search.svg";
 
-const testSuitesFilters = [
-  "status",
-  "owner",
-  "version",
-  "machine",
-  "compilation mode",
-  "solution",
-  "tool name",
-];
-const testCasesFilters = ["Streaming Type", "Packet Per Burst"];
-const validationTagsFilters = ["Description", "Executable Path", "Type"];
-const validationPointsFilters = ["mac", "direction"];
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const testSuitesOptions = {
-  status: ["true", "false"],
-  owner: ["ahmed1", "ahmed2", "ahmed3"],
-  version: ["12.1.1", "11.1.1"],
+const testSuitesFilters = {
+  "Meta Data": [
+    ["Id", false],
+    ["Owner", true],
+    ["Version", true],
+    ["Machine", true],
+    ["Compilation Mode", true],
+    ["Platform", true],
+    ["Solution", true],
+    ["Tool name", true],
+    ["Status", true],
+  ],
+
+  "SA Configuration": [
+    ["mii_enum", true],
+    ["miiLaneNumber", false],
+    ["miiLaneWidth", false],
+    ["miiSpeed", false],
+    ["compiledFEC", true],
+    ["miiWireDelay", false],
+  ],
+
+  "MPG Configuration": [
+    ["compiledFEC", true],
+    ["mpgPortIdOffset", false],
+    ["mpgPortsNumber", false],
+    ["mpgLanesNumber", false],
+    ["mpgMaxLanesNumberList", false],
+    ["mpgLaneWidth", false],
+    ["mpgMaxLaneWidthList", false],
+    ["mpgOneG_ENABLED", false],
+    ["mpgWireDelay", false],
+  ],
+};
+const testCasesFilters = {
+  "Meta Data": [
+    ["Streaming Type", true],
+    ["Packet Per Burst", false],
+  ],
+};
+const validationTagsFilters = {
+  "Meta Data": [
+    ["Description", false],
+    ["Executable Path", false],
+    ["Type", true],
+  ],
+};
+const validationPointsFilters = {
+  Levels: [
+    ["mac", false],
+    ["direction", true],
+  ],
 };
 
-const testCasesOptions = {
-  "Streaming Type": ["st1", "st2"],
-};
-const validationTagsOptions = {
-  Type: ["frame validation"],
-};
-const validationPointsOptions = {
-  mac: ["1", "2"],
-};
+function createObjectByKeys(filters) {
+  // [["a",true], [...]] => {"a": [], "":[]}
+  function transformArray(arr) {
+    return arr.reduce((acc, ele) => {
+      acc[ele[0]] = [];
+      return acc;
+    }, {});
+  }
 
-function createObjectByKeys(keys) {
-  return keys.reduce((obj, key) => {
-    obj[key] = [];
-    return obj;
+  return Object.entries(filters).reduce((acc, [k, v]) => {
+    acc[k] = transformArray(v);
+    return acc;
   }, {});
 }
 
-function SearchPage() {
+export default function SearchPage() {
   const [testSuitesValues, setTestSuitesValues] = useState(
     createObjectByKeys(testSuitesFilters)
   );
@@ -62,6 +104,7 @@ function SearchPage() {
   const [validationPointsValues, setValidationPointsValues] = useState(
     createObjectByKeys(validationPointsFilters)
   );
+  const [returnResult, setReturnResult] = useState();
 
   function clearSearch() {
     setTestSuitesValues(createObjectByKeys(testSuitesFilters));
@@ -69,153 +112,154 @@ function SearchPage() {
     setValidationTagsValues(createObjectByKeys(validationTagsFilters));
     setValidationPointsValues(createObjectByKeys(validationPointsFilters));
   }
+  const [searched, setSearched] = useState(false);
+
+  function search() {
+    console.log({
+      returnResult,
+      testSuites: {
+        ...testSuitesValues["Meta Data"],
+        design_info: {
+          dut_instance_info: {
+            sa_configuration: testSuitesValues["SA Configuration"],
+            mpg_configuration: testSuitesValues["MPG Configuration"],
+          },
+        },
+      },
+      testCases: testCasesValues["Meta Data"],
+      validationTags: validationTagsValues,
+      validationPoints: { levels: validationTagsValues.Levels },
+    });
+    setSearched(true);
+  }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="h-screen bg-white flex flex-col">
       <Nav />
-      <div className="grow flex flex-col gap-5">
-        <div className="flex items-baseline p-5 gap-4">
-          <h1 className="font-semibold text-4xl">Search</h1>
-          <Button size="small" onClick={clearSearch}>
-            clear search
-          </Button>
+
+      <div className="grow flex overflow-hidden">
+        <div className="grow flex items-stretch justify-center">
+          {searched ? (
+            <SearchResultsAccordion />
+          ) : (
+            <img src={searchImage} alt="img" />
+          )}
         </div>
 
-        <div className="flex gap-5 items-center p-4">
-          <div className="flex gap-1 items-center whitespace-nowrap">
-            <div>Results Type:</div>
-            <div className="grow">
-              <Select
-                autoWidth
-                variant="standard"
-                defaultValue={"TS"}
-                size="small"
-              >
-                <MenuItem value={"TS"}>Test Suites</MenuItem>
-                <MenuItem value={"TC"}>Test Cases</MenuItem>
-                <MenuItem value={"VT"}>Validation Tags</MenuItem>
-                <MenuItem value={"VP"}>Validation Points</MenuItem>
-              </Select>
-            </div>
+        {/* filters list */}
+        <div className="py-4 px-3 border-l overflow-auto flex flex-col gap-5 w-96">
+          <div className="flex justify-around">
+            <Button onClick={clearSearch}>Clear search</Button>
+            <Button variant="contained" onClick={() => search()}>
+              Search
+            </Button>
           </div>
-          <Button variant="contained">Search</Button>
-        </div>
 
-        <div className="grid grid-cols-2 gap-x-5">
-          <div>
-            <Folder title="Test Suit Filters">
-              <div className="grid grid-cols-2 gap-3 p-2">
-                {testSuitesFilters.map((e) => (
-                  <FilterItem
-                    label={e}
-                    options={testSuitesOptions[e]}
-                    value={testSuitesValues[e]}
-                    onChange={(event, value) =>
-                      setTestSuitesValues((o) => {
-                        const nw = { ...o };
-                        nw[e] = value;
-                        return nw;
-                      })
-                    }
-                  />
-                ))}
-              </div>
-            </Folder>
-
-            <Folder title="Test Case Filters">
-              <div className="grid grid-cols-2 gap-3 p-2">
-                {testCasesFilters.map((e) => (
-                  <FilterItem
-                    label={e}
-                    options={testCasesOptions[e]}
-                    value={testCasesValues[e]}
-                    onChange={(event, value) =>
-                      setTestCasesValues((o) => {
-                        const nw = { ...o };
-                        nw[e] = value;
-                        return nw;
-                      })
-                    }
-                  />
-                ))}
-              </div>
-            </Folder>
-          </div>
+          <FilterItem label="Return Result">
+            <Select
+              defaultValue="TS"
+              size="small"
+              value={returnResult}
+              onChange={(e) => setReturnResult(e.target.value)}
+            >
+              <MenuItem value="TS">Test Suites</MenuItem>
+              <MenuItem value="TC">Test Cases</MenuItem>
+              <MenuItem value="VT">Validation Tags</MenuItem>
+              <MenuItem value="VP">Validation Points</MenuItem>
+            </Select>
+          </FilterItem>
 
           <div>
-            <Folder title="Validation Tag Filters">
-              <div className="grid grid-cols-2 gap-3 p-2">
-                {validationTagsFilters.map((e) => (
-                  <FilterItem
-                    label={e}
-                    options={validationTagsOptions[e]}
-                    value={validationTagsValues[e]}
-                    onChange={(event, value) =>
-                      setValidationTagsValues((o) => {
-                        const nw = { ...o };
-                        nw[e] = value;
-                        return nw;
-                      })
-                    }
-                  />
-                ))}
-              </div>
-            </Folder>
-
-            <Folder title="Validation Point Filters">
-              <div className="grid grid-cols-2 gap-3 p-2">
-                {validationPointsFilters.map((e) => (
-                  <FilterItem
-                    label={e}
-                    options={validationPointsOptions[e]}
-                    value={validationPointsValues[e]}
-                    onChange={(event, value) =>
-                      setValidationPointsValues((o) => {
-                        const nw = { ...o };
-                        nw[e] = value;
-                        return nw;
-                      })
-                    }
-                  />
-                ))}
-              </div>
-            </Folder>
+            <FilterAccordion
+              title="Test Suites Filters"
+              filters={testSuitesFilters}
+              values={testSuitesValues}
+              setValue={setTestSuitesValues}
+            />
+            <FilterAccordion
+              title="Test Cases Filters"
+              filters={testCasesFilters}
+              values={testCasesValues}
+              setValue={setTestCasesValues}
+            />
+            <FilterAccordion
+              title="Validation Tags Filters"
+              filters={validationTagsFilters}
+              values={validationTagsValues}
+              setValue={setValidationTagsValues}
+            />
+            <FilterAccordion
+              title="Validation Points Filters"
+              filters={validationPointsFilters}
+              values={validationPointsValues}
+              setValue={setValidationPointsValues}
+            />
           </div>
-        </div>
-
-        <div className="grow flex flex-col min-h-[600px]">
-          <SearchResultsAccordion />
         </div>
       </div>
     </div>
   );
 }
 
-function FilterItem({ label, options, value, onChange }) {
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+function FilterItem({ label, children }) {
   return (
-    <Autocomplete
-      multiple
-      getOptionLabel={(option) => String(option)}
-      options={options || []}
-      disableCloseOnSelect
-      renderOption={(props, option, { selected }) => (
-        <li {...props}>
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8 }}
-            checked={selected}
-          />
-          {option}
-        </li>
-      )}
-      fullWidth
-      renderInput={(params) => <TextField {...params} label={label} />}
-      value={value}
-      onChange={onChange}
-    />
+    <div className="flex flex-col gap-1 whitespace-nowrap">
+      <div className="font-semibold text-gray-400">{label}</div>
+      {children}
+    </div>
   );
 }
-export default SearchPage;
+
+function FilterAccordion({ title, filters, values, setValue }) {
+  return (
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography>{title}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        {Object.entries(filters).map(([k, v]) => {
+          return (
+            <div className="py-5">
+              <Divider>{k}</Divider>
+              <div className="flex flex-col gap-4">
+                {v.map(([l, ac]) => (
+                  <FilterItem label={l}>
+                    {
+                      <Autocomplete
+                        size="small"
+                        multiple
+                        freeSolo
+                        disableCloseOnSelect
+                        value={values[k][l]}
+                        onChange={(e, v) =>
+                          setValue((o) => {
+                            const nw = JSON.parse(JSON.stringify(o));
+                            nw[k][l] = v;
+                            return nw;
+                          })
+                        }
+                        options={ac ? ["o1", "o2", "o3"] : []}
+                        renderOption={(props, option, { selected }) => (
+                          <li {...props}>
+                            <Checkbox
+                              icon={icon}
+                              checkedIcon={checkedIcon}
+                              style={{ marginRight: 8 }}
+                              checked={selected}
+                            />
+                            {option}
+                          </li>
+                        )}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    }
+                  </FilterItem>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </AccordionDetails>
+    </Accordion>
+  );
+}

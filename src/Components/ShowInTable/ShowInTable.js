@@ -17,6 +17,7 @@ function ShowInTable({
   rowsPerPage,
   onRowsPerPageChange,
   onPageChange,
+  nativePagination = false,
 }) {
   return (
     <div>
@@ -38,6 +39,7 @@ function ShowInTable({
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={onRowsPerPageChange}
         onPageChange={onPageChange}
+        nativePagination={nativePagination}
       ></TableDialog>
     </div>
   );

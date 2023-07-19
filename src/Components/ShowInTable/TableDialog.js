@@ -17,6 +17,7 @@ function TableDialog(props) {
     rowsPerPage,
     onRowsPerPageChange,
     onPageChange,
+    nativePagination,
   } = props;
 
   const options = {
@@ -24,7 +25,7 @@ function TableDialog(props) {
     selectableRows: "none",
     ilterType: "multiselect",
     rowsPerPage: 10,
-    pagination: false,
+    pagination: nativePagination,
 
     draggableColumns: {
       enabled: true,
@@ -81,13 +82,17 @@ function TableDialog(props) {
             data={data}
             options={options}
           />
-          <TablePagination
-            count={count}
-            page={page}
-            onRowsPerPageChange={onRowsPerPageChange}
-            onPageChange={onPageChange}
-            rowsPerPage={rowsPerPage}
-          />
+          {!nativePagination && (
+            <div className="flex justify-end">
+              <TablePagination
+                count={count}
+                page={page}
+                onRowsPerPageChange={onRowsPerPageChange}
+                onPageChange={onPageChange}
+                rowsPerPage={rowsPerPage}
+              />
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
