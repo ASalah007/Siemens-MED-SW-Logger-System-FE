@@ -264,7 +264,7 @@ function useTestResultsAccordionStates({ testSuites }) {
     fetchValidationTags(
       testCases[activeTestCase]._id,
       validationTagsRowsPerPage,
-      validationTagsPage
+      validationTagsPage + 1
     ).then((data) => {
       setValidationTags(data);
       setValidationTagsLoading(false);
@@ -285,7 +285,7 @@ function useTestResultsAccordionStates({ testSuites }) {
     fetchValidationPoints(
       validationTags[activeValidationTag]._id,
       validationPointsRowsPerPage,
-      validationPointsPage
+      validationPointsPage + 1
     ).then((data) => {
       setValidationPoints(data);
       setValidationPointsLoading(false);

@@ -5,7 +5,6 @@ import ShowInTable from "../../ShowInTable/ShowInTable";
 import { formatDuration } from "../../../Utils/utilities.js";
 
 function TCEntry({ data, num, onClick, active }) {
-  console.log(data);
   const [dutTableView, setDutTableView] = useState(false);
   const [macsConfigTableView, setMacsConfigTableView] = useState(false);
   const [macsInfoTableView, setMacsInfoTableView] = useState(false);
@@ -40,7 +39,6 @@ function TCEntry({ data, num, onClick, active }) {
   let mpgColumns = ["Id", "FEC Enable"];
   let mpgData = [];
 
-  console.log(data);
   if (mpgConfig) {
     mpgData = Object.entries(mpgConfig).map(([id, value]) => [
       id,

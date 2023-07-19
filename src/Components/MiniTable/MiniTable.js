@@ -2,7 +2,6 @@ import { Paper } from "@mui/material";
 import React from "react";
 
 export default function MiniTable({ keys, data }) {
-  console.log({ keys, data });
   return (
     <Paper elevation={2} sx={{ maxWidth: "max-content", mb: "6px" }}>
       <table>
