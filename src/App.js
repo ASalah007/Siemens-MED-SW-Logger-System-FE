@@ -8,6 +8,7 @@ import TreePage from "./Pages/TreePage/TreePage.js";
 import HomePage from "./Pages/Welcome/HomePage.js";
 import BasePage from "./Pages/Base";
 import SearchPage from "./Pages/SearchPage/SearchPage";
+import ConnectedPage from "./Pages/ConnectedPage/ConnectedPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/tree" element={<TreePage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/connected" element={<ConnectedPage />} />
         </Routes>
       </BrowserRouter>
     </DataBaseContextProvider>

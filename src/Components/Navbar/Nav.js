@@ -21,7 +21,7 @@ function Nav() {
           </IconButton>
         </Link>
 
-        <Link to="/" className="flex gap-2 items-baseline font-bold">
+        <Link to="/connected" className="flex gap-2 items-baseline font-bold">
           {connectedDatabase}
           <Tooltip
             title={
