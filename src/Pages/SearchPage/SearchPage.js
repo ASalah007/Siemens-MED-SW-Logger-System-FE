@@ -129,7 +129,7 @@ export default function SearchPage() {
       },
       testCases: testCasesValues["Meta Data"],
       validationTags: validationTagsValues,
-      validationPoints: { levels: validationTagsValues.Levels },
+      validationPoints: { levels: validationPointsValues.Levels },
     });
     setSearched(true);
   }
