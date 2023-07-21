@@ -71,8 +71,9 @@ const validationTagsFilters = {
 };
 const validationPointsFilters = {
   Levels: [
-    ["mac", false],
-    ["direction", true],
+    ["Mac", false],
+    ["Direction", true],
+    ["Packet Identifier", false],
   ],
 };
 
