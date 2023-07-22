@@ -3,23 +3,68 @@ import TestResultsAccordion from "../../Components/TestResultsAccordion/TestResu
 import { CircularProgress } from "@mui/material";
 import { fetchTestSuites } from "../../Services/services.js";
 import Nav from "../../Components/Navbar/Nav.js";
+import { useTestResultsEntryState } from "../../Components/TestResultsAccordion/Hooks/TestResultsEntryHook.js";
 
 function TreePage() {
-  const [testSuites, setTestSuites] = useState(null);
-  useEffect(() => {
-    fetchTestSuites().then((data) => {
-      setTestSuites(data);
-    });
-  }, []);
+  const [
+    testSuites,
+    setTestSuites,
+    activeTestSuite,
+    setActiveTestSuite,
+    testSuitesFilter,
+    setTestSuitesFilter,
+    testSuitesTableView,
+    setTestSuitesTableView,
+    testSuitesPage,
+    setTestSuitesPage,
+    testSuitesRowsPerPage,
+    setTestSuitesRowsPerPage,
+    testSuiteLoading,
+    setTestSuiteLoading,
+    handleTestSuitesPageChange,
+    handleTestSuitesRowsPerPageChange,
+  ] = useTestResultsEntryState();
 
-  return !testSuites ? (
-    <div className="grow flex justify-center items-center h-screen">
-      <CircularProgress thickness={3} size={"3.5rem"} />
-    </div>
-  ) : (
+  useEffect(() => {
+    setTestSuiteLoading(true);
+    fetchTestSuites(
+      testSuitesRowsPerPage,
+      testSuitesPage + 1,
+      testSuitesFilter
+    ).then((data) => {
+      setTestSuites(data);
+      setTestSuiteLoading(false);
+    });
+  }, [
+    testSuitesRowsPerPage,
+    testSuitesPage,
+    testSuitesFilter,
+    setTestSuiteLoading,
+    setTestSuites,
+  ]);
+
+  return (
     <div className="bg-white flex flex-col grow h-screen overflow-hidden">
       <Nav />
-      <TestResultsAccordion testSuites={testSuites} />
+      <TestResultsAccordion
+        testSuites={testSuites}
+        testSuitesCount={100}
+        setTestSuites={setTestSuites}
+        activeTestSuite={activeTestSuite}
+        setActiveTestSuite={setActiveTestSuite}
+        testSuitesFilter={testSuitesFilter}
+        setTestSuitesFilter={setTestSuitesFilter}
+        testSuitesTableView={testSuitesTableView}
+        setTestSuitesTableView={setTestSuitesTableView}
+        testSuitesPage={testSuitesPage}
+        setTestSuitesPage={setTestSuitesPage}
+        testSuitesRowsPerPage={testSuitesRowsPerPage}
+        setTestSuitesRowsPerPage={setTestSuitesRowsPerPage}
+        testSuiteLoading={testSuiteLoading}
+        setTestSuiteLoading={setTestSuiteLoading}
+        handleTestSuitesPageChange={handleTestSuitesPageChange}
+        handleTestSuitesRowsPerPageChange={handleTestSuitesRowsPerPageChange}
+      />
     </div>
   );
 }

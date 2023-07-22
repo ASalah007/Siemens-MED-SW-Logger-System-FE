@@ -13,7 +13,21 @@ import {
 import ShowFilter from "../../ShowFilter/ShowFilter.js";
 import { useTestResultsEntryState } from "./TestResultsEntryHook.js";
 
-export function useTestResultsAccordionStates({ testSuites }) {
+export function useTestResultsAccordionStates({
+  testSuites,
+  activeTestSuite,
+  setActiveTestSuite,
+  testSuitesTableView,
+  setTestSuitesTableView,
+  testSuitesPage,
+  setTestSuitesPage,
+  testSuitesRowsPerPage,
+  testSuitesFilter,
+  setTestSuitesFilter,
+  testSuitesCount,
+  handleTestSuitesPageChange,
+  handleTestSuitesRowsPerPageChange,
+}) {
   const [
     testCases,
     setTestCases,
@@ -71,26 +85,9 @@ export function useTestResultsAccordionStates({ testSuites }) {
     handleValidationPointsRowsPerPageChange,
   ] = useTestResultsEntryState();
 
-  const [activeTestSuite, setActiveTestSuite] = useState(-1);
-
-  const [filterTestSuite, setFilterTestSuite] = useState("any");
-
-  const [testSuitesTableView, setTestSuitesTableView] = useState(false);
-
   const [testSuitesSelectedFilters, setTestSuitesSelectedFilters] = useState(
     []
   );
-
-  const [testSuitesPage, setTestSuitesPage] = useState(0);
-  const [testSuitesRowsPerPage, setTestSuitesRowsPerPage] = useState(10);
-  const handleTestSuitesPageChange = (newPage) => {
-    setActiveTestSuite(-1);
-    setTestSuitesPage(newPage);
-  };
-  const handleTestSuitesRowsPerPageChange = (newRows) => {
-    setActiveTestSuite(-1);
-    setTestSuitesRowsPerPage(newRows);
-  };
 
   const testCasesCount =
     activeTestSuite > -1 ? testSuites[activeTestSuite].TestCasesCount : 0;
@@ -102,12 +99,6 @@ export function useTestResultsAccordionStates({ testSuites }) {
     activeValidationTag > -1
       ? validationTags[activeValidationTag].ValidationPointsCount
       : 0;
-
-  function paginate(arr, page, rowsPerPage) {
-    return arr.filter(
-      (e, i) => i >= page * rowsPerPage && i < page * rowsPerPage + rowsPerPage
-    );
-  }
 
   function reset(type) {
     switch (type) {
@@ -266,8 +257,6 @@ export function useTestResultsAccordionStates({ testSuites }) {
   const filterTestSuites = (arr) =>
     applyFilters(arr, testSuitesSelectedFilters, TSData);
 
-  const testSuitesCount = filterTestSuites(testSuites).length;
-
   const filteringOptions = TSColumns.map((e) => new Set());
   TSData.map((e, i) => e.map((b, j) => filteringOptions[j].add(b)));
 
@@ -276,9 +265,9 @@ export function useTestResultsAccordionStates({ testSuites }) {
     total: testSuites.length,
     title: "Test Suites",
     onPassedClick: () =>
-      setFilterTestSuite(filterTestSuite === "passed" ? "any" : "passed"),
+      setTestSuitesFilter(testSuitesFilter === "passed" ? "any" : "passed"),
     onFailedClick: () =>
-      setFilterTestSuite(filterTestSuite === "failed" ? "any" : "failed"),
+      setTestSuitesFilter(testSuitesFilter === "failed" ? "any" : "failed"),
     actionElements: (
       <div className="flex">
         <ShowInTable
@@ -289,6 +278,12 @@ export function useTestResultsAccordionStates({ testSuites }) {
           title="Test Suites"
           columns={TSColumns}
           data={filterTestSuites(TSData)}
+          page={testSuitesPage}
+          count={testSuitesCount}
+          onPageChange={handleTestSuitesPageChange}
+          onRowsPerPageChange={handleTestSuitesRowsPerPageChange}
+          rowsPerPage={testSuitesRowsPerPage}
+          nativePagination={false}
         />
         <ShowFilter
           labels={TSColumns}
@@ -306,27 +301,22 @@ export function useTestResultsAccordionStates({ testSuites }) {
     if (filterOption === "failed" && !data.status) return true;
     return filterOption === "any";
   }
-  let firstColumnElements = testSuites
-    .filter((data) => filterPredicate(filterTestSuite, data))
-    .map((data, i) => (
-      <TSEntry
-        data={data}
-        key={data._id}
-        num={testSuitesRowsPerPage * testSuitesPage + i + 1}
-        onClick={() => {
-          setActiveTestSuite(i);
-          setActiveTestCase(-1);
-          setActiveValidationTag(-1);
-          setActiveValidationPoint(-1);
-        }}
-        active={activeTestSuite === i}
-      />
-    ));
-  firstColumnElements = paginate(
-    filterTestSuites(firstColumnElements),
-    testSuitesPage,
-    testSuitesRowsPerPage
-  );
+  let firstColumnElements = testSuites.map((data, i) => (
+    <TSEntry
+      data={data}
+      key={data._id}
+      num={testSuitesRowsPerPage * testSuitesPage + i + 1}
+      onClick={() => {
+        setActiveTestSuite(i);
+        setActiveTestCase(-1);
+        setActiveValidationTag(-1);
+        setActiveValidationPoint(-1);
+      }}
+      active={activeTestSuite === i}
+    />
+  ));
+
+  firstColumnElements = filterTestSuites(firstColumnElements);
 
   const secondHeaderOptions = {
     total:
@@ -486,12 +476,6 @@ export function useTestResultsAccordionStates({ testSuites }) {
     activeValidationTag,
     activeValidationPoint,
     validationTags,
-
-    testSuitesCount,
-    testSuitesPage,
-    testSuitesRowsPerPage,
-    handleTestSuitesPageChange,
-    handleTestSuitesRowsPerPageChange,
 
     testCasesCount,
 

@@ -2,7 +2,16 @@ import HAccordion from "./components/HAccordion.js";
 import React from "react";
 import { useTestResultsAccordionStates } from "./Hooks/TestResultsAccordionHook.js";
 
-export default function TestResultsAccordion({ testSuites }) {
+export default function TestResultsAccordion(props) {
+  const {
+    testSuitesCount,
+    testSuitesPage,
+    testSuitesRowsPerPage,
+    handleTestSuitesPageChange,
+    handleTestSuitesRowsPerPageChange,
+    testSuiteLoading,
+  } = props;
+
   const {
     firstColumnElements,
     firstHeaderOptions,
@@ -21,12 +30,6 @@ export default function TestResultsAccordion({ testSuites }) {
     activeValidationTag,
     activeValidationPoint,
     validationTags,
-
-    testSuitesCount,
-    testSuitesPage,
-    testSuitesRowsPerPage,
-    handleTestSuitesPageChange,
-    handleTestSuitesRowsPerPageChange,
 
     testCasesCount,
     testCasesPage,
@@ -49,7 +52,7 @@ export default function TestResultsAccordion({ testSuites }) {
     testCaseLoading,
     validationTagsLoading,
     validationPointsLoading,
-  } = useTestResultsAccordionStates({ testSuites });
+  } = useTestResultsAccordionStates(props);
 
   return (
     <div className="flex flex-col grow max-h-full">
@@ -62,6 +65,7 @@ export default function TestResultsAccordion({ testSuites }) {
         firstColumnCount={testSuitesCount}
         firstColumnPage={testSuitesPage}
         firstColumnRowsPerPage={testSuitesRowsPerPage}
+        firstColumnLoading={testSuiteLoading}
         onFirstColumnPageChange={handleTestSuitesPageChange}
         onFirstColumnRowsPerPageChange={handleTestSuitesRowsPerPageChange}
         secondColumnElements={secondColumnElements}

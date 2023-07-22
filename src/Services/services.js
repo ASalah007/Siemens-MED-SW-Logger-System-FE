@@ -18,13 +18,15 @@ export async function fetchDatabases() {
   return data["databasesNames"];
 }
 
-export async function fetchTestSuites() {
+export async function fetchTestSuites(limit, page, filter) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
 
-  const response = await axios.get(urls.listTestSuites, {
-    params: { databaseName: connectedDatabase },
-  });
+  const params = { databaseName: connectedDatabase, limit, page };
+  if (filter === "passed") params.status = true;
+  else if (filter === "failed") params.status = false;
+
+  const response = await axios.get(urls.listTestSuites, { params });
   return response.data;
 }
 
