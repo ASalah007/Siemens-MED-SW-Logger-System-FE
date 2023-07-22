@@ -28,14 +28,16 @@ export async function fetchTestSuites() {
   return response.data;
 }
 
-export async function fetchTestCases(testSuitId, limit, page) {
+export async function fetchTestCases(testSuitId, limit, page, filter) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
 
+  const params = { databaseName: connectedDatabase, limit, page };
+  if (filter === "passed") params.status = true;
+  else if (filter === "failed") params.status = false;
+
   const url = urls.getTestCases.replace("{testSuitId}", testSuitId);
-  const response = await axios.get(url, {
-    params: { databaseName: connectedDatabase, limit, page },
-  });
+  const response = await axios.get(url, { params });
 
   return response.data["results"];
 }

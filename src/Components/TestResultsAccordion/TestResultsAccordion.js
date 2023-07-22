@@ -129,7 +129,7 @@ function useTestResultsAccordionStates({ testSuites }) {
   const [activeValidationPoint, setActiveValidationPoint] = useState(-1);
 
   const [filterTestSuite, setFilterTestSuite] = useState("any");
-  const [filterTestCase, setFilterTestCase] = useState("any");
+  const [testCasesFilter, setTestCasesFilter] = useState("any");
   const [filterValidationTag, setFilterValidationTag] = useState("any");
   const [filterValidationPoint, setFilterValidationPoint] = useState("any");
 
@@ -218,7 +218,7 @@ function useTestResultsAccordionStates({ testSuites }) {
       case "TC":
         setTestCases([]);
         setActiveTestCase(-1);
-        setFilterTestCase("any");
+        setTestCasesFilter("any");
         setTestCasesPage(0);
       // eslint-disable-next-line no-fallthrough
       case "VT":
@@ -248,12 +248,19 @@ function useTestResultsAccordionStates({ testSuites }) {
     fetchTestCases(
       testSuites[activeTestSuite]._id,
       testCasesRowsPerPage,
-      testCasesPage + 1
+      testCasesPage + 1,
+      testCasesFilter
     ).then((data) => {
       setTestCases(data);
       setTestCaseLoading(false);
     });
-  }, [activeTestSuite, testCasesRowsPerPage, testCasesPage, testSuites]);
+  }, [
+    activeTestSuite,
+    testCasesRowsPerPage,
+    testCasesPage,
+    testSuites,
+    testCasesFilter,
+  ]);
 
   useEffect(() => {
     if (activeTestCase < 0) {
@@ -274,6 +281,7 @@ function useTestResultsAccordionStates({ testSuites }) {
     testCases,
     validationTagsRowsPerPage,
     validationTagsPage,
+    testCasesFilter,
   ]);
 
   useEffect(() => {
@@ -433,9 +441,9 @@ function useTestResultsAccordionStates({ testSuites }) {
         : 0,
     title: "Test Cases",
     onPassedClick: () =>
-      setFilterTestCase(filterTestCase === "passed" ? "any" : "passed"),
+      setTestCasesFilter(testCasesFilter === "passed" ? "any" : "passed"),
     onFailedClick: () =>
-      setFilterTestCase(filterTestCase === "failed" ? "any" : "failed"),
+      setTestCasesFilter(testCasesFilter === "failed" ? "any" : "failed"),
     actionElements: (
       <ShowInTable
         sx={{ color: "#ffca3a" }}
@@ -455,21 +463,19 @@ function useTestResultsAccordionStates({ testSuites }) {
     ),
   };
 
-  const secondColumnElements = testCases
-    .filter((data) => filterPredicate(filterTestCase, data))
-    .map((data, i) => (
-      <TCEntry
-        data={data}
-        key={data._id}
-        num={testCasesRowsPerPage * testCasesPage + i + 1}
-        onClick={() => {
-          setActiveTestCase(i);
-          setActiveValidationTag(-1);
-          setActiveValidationPoint(-1);
-        }}
-        active={activeTestCase === i}
-      />
-    ));
+  const secondColumnElements = testCases.map((data, i) => (
+    <TCEntry
+      data={data}
+      key={data._id}
+      num={testCasesRowsPerPage * testCasesPage + i + 1}
+      onClick={() => {
+        setActiveTestCase(i);
+        setActiveValidationTag(-1);
+        setActiveValidationPoint(-1);
+      }}
+      active={activeTestCase === i}
+    />
+  ));
 
   const thirdHeaderOptions = {
     total:
