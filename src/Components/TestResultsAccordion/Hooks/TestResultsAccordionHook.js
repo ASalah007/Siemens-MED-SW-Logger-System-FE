@@ -1,37 +1,81 @@
 import React, { useEffect, useState } from "react";
-import TSEntry from "./components/TSEntry.js";
-import TCEntry from "./components/TCEntry.js";
-import VTEntry from "./components/VTEntry.js";
-import VPEntry from "./components/VPEntry.js";
-import ShowInTable from "../ShowInTable/ShowInTable.js";
-import { formatDuration } from "../../Utils/utilities.js";
+import TSEntry from "../components/TSEntry.js";
+import TCEntry from "../components/TCEntry.js";
+import VTEntry from "../components/VTEntry.js";
+import VPEntry from "../components/VPEntry.js";
+import ShowInTable from "../../ShowInTable/ShowInTable.js";
+import { formatDuration } from "../../../Utils/utilities.js";
 import {
   fetchTestCases,
   fetchValidationPoints,
   fetchValidationTags,
-} from "../../Services/services.js";
-import ShowFilter from "../ShowFilter/ShowFilter.js";
+} from "../../../Services/services.js";
+import ShowFilter from "../../ShowFilter/ShowFilter.js";
+import { useTestResultsEntryState } from "./TestResultsEntryHook.js";
 
 export function useTestResultsAccordionStates({ testSuites }) {
-  const [testCases, setTestCases] = useState([]);
-  const [validationTags, setValidationTags] = useState([]);
-  const [validationPoints, setValidationPoints] = useState([]);
+  const [
+    testCases,
+    setTestCases,
+    activeTestCase,
+    setActiveTestCase,
+    testCasesFilter,
+    setTestCasesFilter,
+    testCasesTableView,
+    setTestCasesTableView,
+    testCasesPage,
+    setTestCasesPage,
+    testCasesRowsPerPage,
+    setTestCasesRowsPerPage,
+    testCaseLoading,
+    setTestCaseLoading,
+    handleTestCasesPageChange,
+    handleTestCasesRowsPerPageChange,
+  ] = useTestResultsEntryState();
+
+  const [
+    validationTags,
+    setValidationTags,
+    activeValidationTag,
+    setActiveValidationTag,
+    filterValidationTag,
+    setFilterValidationTag,
+    validationTagsTableView,
+    setValidationTagsTableView,
+    validationTagsPage,
+    setValidationTagsPage,
+    validationTagsRowsPerPage,
+    setValidationTagsRowsPerPage,
+    validationTagsLoading,
+    setValidationTagsLoading,
+    handleValidationTagsPageChange,
+    handleValidationTagsRowsPerPageChange,
+  ] = useTestResultsEntryState();
+
+  const [
+    validationPoints,
+    setValidationPoints,
+    activeValidationPoint,
+    setActiveValidationPoint,
+    filterValidationPoint,
+    setFilterValidationPoint,
+    validationPointsTableView,
+    setValidationPointsTableView,
+    validationPointsPage,
+    setValidationPointsPage,
+    validationPointsRowsPerPage,
+    setValidationPointsRowsPerPage,
+    validationPointsLoading,
+    setValidationPointsLoading,
+    handleValidationPointsPageChange,
+    handleValidationPointsRowsPerPageChange,
+  ] = useTestResultsEntryState();
 
   const [activeTestSuite, setActiveTestSuite] = useState(-1);
-  const [activeTestCase, setActiveTestCase] = useState(-1);
-  const [activeValidationTag, setActiveValidationTag] = useState(-1);
-  const [activeValidationPoint, setActiveValidationPoint] = useState(-1);
 
   const [filterTestSuite, setFilterTestSuite] = useState("any");
-  const [testCasesFilter, setTestCasesFilter] = useState("any");
-  const [filterValidationTag, setFilterValidationTag] = useState("any");
-  const [filterValidationPoint, setFilterValidationPoint] = useState("any");
 
   const [testSuitesTableView, setTestSuitesTableView] = useState(false);
-  const [testCasesTableView, setTestCasesTableView] = useState(false);
-  const [validationTagsTableView, setValidationTagsTableView] = useState(false);
-  const [validationPointsTableView, setValidationPointsTableView] =
-    useState(false);
 
   const [testSuitesSelectedFilters, setTestSuitesSelectedFilters] = useState(
     []
@@ -47,48 +91,6 @@ export function useTestResultsAccordionStates({ testSuites }) {
     setActiveTestSuite(-1);
     setTestSuitesRowsPerPage(newRows);
   };
-
-  const [testCasesPage, setTestCasesPage] = useState(0);
-  const [testCasesRowsPerPage, setTestCasesRowsPerPage] = useState(10);
-  const handleTestCasesPageChange = (newPage) => {
-    setTestCasesPage(newPage);
-    setActiveTestCase(-1);
-  };
-  const handleTestCasesRowsPerPageChange = (newRows) => {
-    setTestCasesRowsPerPage(newRows);
-    setActiveTestCase(-1);
-    setTestCasesPage(0);
-  };
-
-  const [validationTagsPage, setValidationTagsPage] = useState(0);
-  const [validationTagsRowsPerPage, setValidationTagsRowsPerPage] =
-    useState(10);
-  const handleValidationTagsPageChange = (newPage) => {
-    setValidationTagsPage(newPage);
-    setActiveValidationTag(-1);
-  };
-  const handleValidationTagsRowsPerPageChange = (newRows) => {
-    setValidationTagsRowsPerPage(newRows);
-    setActiveValidationTag(-1);
-    setValidationTagsPage(0);
-  };
-
-  const [validationPointsPage, setValidationPointsPage] = useState(0);
-  const [validationPointsRowsPerPage, setValidationPointsRowsPerPage] =
-    useState(10);
-  const handleValidationPointsPageChange = (newPage) => {
-    setValidationPointsPage(newPage);
-    setActiveValidationPoint(-1);
-  };
-  const handleValidationPointsRowsPerPageChange = (newRows) => {
-    setValidationPointsRowsPerPage(newRows);
-    setActiveValidationPoint(-1);
-    setValidationPointsPage(0);
-  };
-
-  const [testCaseLoading, setTestCaseLoading] = useState(false);
-  const [validationTagsLoading, setValidationTagsLoading] = useState(false);
-  const [validationPointsLoading, setValidationPointsLoading] = useState(false);
 
   const testCasesCount =
     activeTestSuite > -1 ? testSuites[activeTestSuite].TestCasesCount : 0;

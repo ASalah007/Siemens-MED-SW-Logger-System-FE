@@ -1,6 +1,6 @@
 import HAccordion from "./components/HAccordion.js";
 import React from "react";
-import { useTestResultsAccordionStates } from "./TestResultsAccordionHook.js";
+import { useTestResultsAccordionStates } from "./Hooks/TestResultsAccordionHook.js";
 
 export default function TestResultsAccordion({ testSuites }) {
   const {
