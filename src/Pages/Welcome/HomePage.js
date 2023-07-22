@@ -1,11 +1,16 @@
-import { Button, FormControl, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  FormControl,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import ParticlesBackground from "./ParticlesBackground";
-import { LoadingButton } from "@mui/lab";
 import { fetchDatabases } from "../../Services/services";
 import Nav from "../../Components/Navbar/Nav";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
@@ -19,6 +24,7 @@ function HomePage() {
     sessionStorage.setItem("connectedDatabase", database);
     setConnectedDatabase(database);
   }
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -27,10 +33,15 @@ function HomePage() {
     fetchDatabases().then((databases) => {
       setDatabases(databases);
       setDatabase(databases[0]);
+      setLoading(false);
     });
   }, [connectedDatabase, navigate]);
 
-  return (
+  return loading ? (
+    <div className="grow bg-white flex justify-center items-center h-screen">
+      <CircularProgress thickness={3} />
+    </div>
+  ) : (
     <div className="grow bg-white flex flex-col h-screen">
       <Nav />
       <ParticlesBackground />
