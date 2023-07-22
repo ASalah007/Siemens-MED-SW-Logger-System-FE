@@ -7,6 +7,7 @@ const urls = {
   getTestCases: "testCases/testSuite/{testSuitId}",
   getValidationTags: "validationTags/testCases/{testCaseId}",
   getValidationPoints: "validationPoints/validationtag/{validationTagId}",
+  getSearchPageOptions: "search/",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = BASEURL + v));
@@ -61,4 +62,42 @@ export async function fetchValidationPoints(validationTagId, limit, page) {
     params: { databaseName: connectedDatabase, limit, page },
   });
   return response.data["results"];
+}
+
+export async function fetchSearchPageOptions() {
+  const connectedDatabase = sessionStorage.getItem("connectedDatabase");
+  if (!connectedDatabase) return {};
+
+  const response = await axios.get(urls.getSearchPageOptions, {
+    params: { databaseName: connectedDatabase },
+  });
+  const obj = response.data.data;
+  const newObj = {
+    testSuites: {
+      "Meta Data": {
+        Owner: obj.test_suites.owner,
+        Version: obj.test_suites.version,
+        Machine: obj.test_suites.machine,
+        "Compilation Mode": obj.test_suites.compilation_Mode,
+        Platform: obj.test_suites.platform,
+        Solution: obj.test_suites.solution,
+        "Tool name": obj.test_suites.tool_name,
+      },
+    },
+    validationPoints: {
+      Levels: {
+        Mac: obj.validation_point.mac,
+        Direction: obj.validation_point.direction,
+        "Packet Identifier": obj.validation_point.packet_identifier,
+      },
+    },
+    validationTags: {
+      "Meta Data": {
+        Name: obj.validation_tag.name,
+        "Executable Path": obj.validation_tag.executable_path,
+      },
+    },
+  };
+  console.log(newObj);
+  return newObj;
 }

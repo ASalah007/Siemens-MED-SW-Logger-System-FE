@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "../../Components/Navbar/Nav";
 import SearchResultsAccordion from "../../Components/SearchResultsAccordion/SearchResultsAccordion";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -18,63 +18,52 @@ import {
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import searchImage from "../../Resources/search.svg";
+import { fetchSearchPageOptions } from "../../Services/services";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const testSuitesFilters = {
   "Meta Data": [
-    ["Id", false],
-    ["Owner", true],
-    ["Version", true],
-    ["Machine", true],
-    ["Compilation Mode", true],
-    ["Platform", true],
-    ["Solution", true],
-    ["Tool name", true],
-    ["Status", true],
+    "Id",
+    "Owner",
+    "Version",
+    "Machine",
+    "Compilation Mode",
+    "Platform",
+    "Solution",
+    "Tool name",
   ],
 
   "SA Configuration": [
-    ["mii_enum", true],
-    ["miiLaneNumber", false],
-    ["miiLaneWidth", false],
-    ["miiSpeed", false],
-    ["compiledFEC", true],
-    ["miiWireDelay", false],
+    "mii_enum",
+    "miiLaneNumber",
+    "miiLaneWidth",
+    "miiSpeed",
+    "compiledFEC",
+    "miiWireDelay",
   ],
 
   "MPG Configuration": [
-    ["compiledFEC", true],
-    ["mpgPortIdOffset", false],
-    ["mpgPortsNumber", false],
-    ["mpgLanesNumber", false],
-    ["mpgMaxLanesNumberList", false],
-    ["mpgLaneWidth", false],
-    ["mpgMaxLaneWidthList", false],
-    ["mpgOneG_ENABLED", false],
-    ["mpgWireDelay", false],
+    "compiledFEC",
+    "mpgPortIdOffset",
+    "mpgPortsNumber",
+    "mpgLanesNumber",
+    "mpgMaxLanesNumberList",
+    "mpgLaneWidth",
+    "mpgMaxLaneWidthList",
+    "mpgOneG_ENABLED",
+    "mpgWireDelay",
   ],
 };
 const testCasesFilters = {
-  "Meta Data": [
-    ["Streaming Type", true],
-    ["Packet Per Burst", false],
-  ],
+  "Meta Data": ["Streaming Type", "Packet Per Burst"],
 };
 const validationTagsFilters = {
-  "Meta Data": [
-    ["Description", false],
-    ["Executable Path", false],
-    ["Type", true],
-  ],
+  "Meta Data": ["Description", "Executable Path", "Name"],
 };
 const validationPointsFilters = {
-  Levels: [
-    ["Mac", false],
-    ["Direction", true],
-    ["Packet Identifier", false],
-  ],
+  Levels: ["Mac", "Direction", "Packet Identifier"],
 };
 
 function createObjectByKeys(filters) {
@@ -105,6 +94,12 @@ export default function SearchPage() {
   const [validationPointsValues, setValidationPointsValues] = useState(
     createObjectByKeys(validationPointsFilters)
   );
+
+  const [options, setOptions] = useState({});
+  useEffect(() => {
+    fetchSearchPageOptions().then((data) => setOptions(data));
+  }, []);
+
   const [returnResult, setReturnResult] = useState();
 
   function clearSearch() {
@@ -176,24 +171,28 @@ export default function SearchPage() {
               filters={testSuitesFilters}
               values={testSuitesValues}
               setValue={setTestSuitesValues}
+              options={options.testSuites}
             />
             <FilterAccordion
               title="Test Cases Filters"
               filters={testCasesFilters}
               values={testCasesValues}
               setValue={setTestCasesValues}
+              options={options.testCases}
             />
             <FilterAccordion
               title="Validation Tags Filters"
               filters={validationTagsFilters}
               values={validationTagsValues}
               setValue={setValidationTagsValues}
+              options={options.validationTags}
             />
             <FilterAccordion
               title="Validation Points Filters"
               filters={validationPointsFilters}
               values={validationPointsValues}
               setValue={setValidationPointsValues}
+              options={options.validationPoints}
             />
           </div>
         </div>
@@ -211,7 +210,7 @@ function FilterItem({ label, children }) {
   );
 }
 
-function FilterAccordion({ title, filters, values, setValue }) {
+function FilterAccordion({ title, filters, values, setValue, options = {} }) {
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -223,7 +222,7 @@ function FilterAccordion({ title, filters, values, setValue }) {
             <div className="py-5">
               <Divider>{k}</Divider>
               <div className="flex flex-col gap-4">
-                {v.map(([l, ac]) => (
+                {v.map((l) => (
                   <FilterItem label={l}>
                     {
                       <Autocomplete
@@ -239,7 +238,7 @@ function FilterAccordion({ title, filters, values, setValue }) {
                             return nw;
                           })
                         }
-                        options={ac ? ["o1", "o2", "o3"] : []}
+                        options={options[k] ? options[k][l] || [] : []}
                         renderOption={(props, option, { selected }) => (
                           <li {...props}>
                             <Checkbox
