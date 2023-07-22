@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "../../Components/Navbar/Nav";
 import ParticlesBackground from "../Welcome/ParticlesBackground";
 import { Link, useNavigate } from "react-router-dom";
@@ -58,12 +58,15 @@ export default function ConnectedPage() {
     sessionStorage.getItem("connectedDatabase")
   );
   const navigate = useNavigate();
-  if (!connectedDatabase) navigate("/");
 
   function disconnect() {
     setConnectedDatabase(null);
     sessionStorage.removeItem("connectedDatabase");
   }
+
+  useEffect(() => {
+    if (!connectedDatabase) navigate("/");
+  }, [connectedDatabase, navigate]);
 
   return (
     <div className="grow bg-white flex flex-col h-screen">

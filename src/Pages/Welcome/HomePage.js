@@ -5,7 +5,7 @@ import ParticlesBackground from "./ParticlesBackground";
 import { LoadingButton } from "@mui/lab";
 import { fetchDatabases } from "../../Services/services";
 import Nav from "../../Components/Navbar/Nav";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
@@ -15,20 +15,20 @@ function HomePage() {
     sessionStorage.getItem("connectedDatabase")
   );
 
-  const navigate = useNavigate();
-
-  if (connectedDatabase) navigate("/connected");
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);
     setConnectedDatabase(database);
   }
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (connectedDatabase) navigate("/connected");
     fetchDatabases().then((databases) => {
       setDatabases(databases);
       setDatabase(databases[0]);
     });
-  }, []);
+  }, [connectedDatabase, navigate]);
 
   return (
     <div className="grow bg-white flex flex-col h-screen">
