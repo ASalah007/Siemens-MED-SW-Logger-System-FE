@@ -287,11 +287,11 @@ export function useTestResultsAccordionStates({
     title: "Test Suites",
     onPassedClick: () => {
       setTestSuitesFilter(testSuitesFilter === "passed" ? "any" : "passed");
-      setTestSuitesPage(0);
+      setActiveTestSuite(-1);
     },
     onFailedClick: () => {
       setTestSuitesFilter(testSuitesFilter === "failed" ? "any" : "failed");
-      setTestSuitesPage(0);
+      setActiveTestSuite(-1);
     },
     actionElements: (
       <div className="flex">
@@ -348,11 +348,11 @@ export function useTestResultsAccordionStates({
     title: "Test Cases",
     onPassedClick: () => {
       setTestCasesFilter(testCasesFilter === "passed" ? "any" : "passed");
-      setTestCasesPage(0);
+      setActiveTestCase(-1);
     },
     onFailedClick: () => {
       setTestCasesFilter(testCasesFilter === "failed" ? "any" : "failed");
-      setTestCasesPage(0);
+      setActiveTestCase(-1);
     },
     actionElements: (
       <ShowInTable
@@ -397,15 +397,17 @@ export function useTestResultsAccordionStates({
     title: "Validation Tags",
     onPassedClick: () => {
       setValidationTagsFilter(
-        validationTagsFilter === "passed" ? "any" : "passed}"
+        validationTagsFilter === "passed" ? "any" : "passed"
       );
       setValidationTagsPage(0);
+      setActiveValidationTag(-1);
     },
     onFailedClick: () => {
       setValidationTagsFilter(
         validationTagsFilter === "failed" ? "any" : "failed"
       );
       setValidationTagsPage(0);
+      setActiveValidationTag(-1);
     },
     actionElements: (
       <ShowInTable
@@ -452,13 +454,13 @@ export function useTestResultsAccordionStates({
       setValidationPointsFilter(
         validationPointsFilter === "passed" ? "any" : "passed"
       );
-      setValidationPointsPage(0);
+      setActiveValidationPoint(-1);
     },
     onFailedClick: () => {
       setValidationPointsFilter(
         validationPointsFilter === "failed" ? "any" : "failed"
       );
-      setValidationPointsPage(0);
+      setActiveValidationPoint(-1);
     },
     actionElements: (
       <ShowInTable
