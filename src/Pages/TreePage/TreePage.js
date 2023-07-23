@@ -32,7 +32,7 @@ function TreePage() {
       testSuitesPage + 1,
       testSuitesFilter
     ).then((data) => {
-      setTestSuites(data);
+      setTestSuites(data.testSuites);
       setTestSuiteLoading(false);
     });
   }, [
