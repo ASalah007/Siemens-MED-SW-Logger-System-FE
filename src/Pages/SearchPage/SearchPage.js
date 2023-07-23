@@ -172,6 +172,7 @@ export default function SearchPage() {
               values={testSuitesValues}
               setValue={setTestSuitesValues}
               options={options.testSuites}
+              defaultExpanded
             />
             <FilterAccordion
               title="Test Cases Filters"
@@ -210,13 +211,20 @@ function FilterItem({ label, children }) {
   );
 }
 
-function FilterAccordion({ title, filters, values, setValue, options = {} }) {
+function FilterAccordion({
+  title,
+  filters,
+  values,
+  setValue,
+  options = {},
+  defaultExpanded,
+}) {
   return (
-    <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+    <Accordion elevation={0} defaultExpanded={defaultExpanded}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ p: 0 }}>
         <Typography>{title}</Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails sx={{ p: 0 }}>
         {Object.entries(filters).map(([k, v]) => {
           return (
             <div className="py-5">
