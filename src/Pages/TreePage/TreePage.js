@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TestResultsAccordion from "../../Components/TestResultsAccordion/TestResultsAccordion.js";
-import { CircularProgress } from "@mui/material";
-import { fetchTestSuites } from "../../Services/services.js";
+import { fetchStatistics, fetchTestSuites } from "../../Services/services.js";
 import Nav from "../../Components/Navbar/Nav.js";
 import { useTestResultsEntryState } from "../../Components/TestResultsAccordion/Hooks/TestResultsEntryHook.js";
 
@@ -25,6 +24,15 @@ function TreePage() {
     handleTestSuitesRowsPerPageChange,
   ] = useTestResultsEntryState();
 
+  const [testSuitesStatistics, setTestSuitesStatistics] = useState({});
+  let testSuitesCount =
+    testSuitesFilter === "any"
+      ? testSuitesStatistics.total
+      : testSuitesFilter === "passed"
+      ? testSuitesStatistics.passed
+      : testSuitesStatistics.failed;
+  testSuitesCount = testSuitesCount || 0;
+
   useEffect(() => {
     setTestSuiteLoading(true);
     fetchTestSuites(
@@ -43,12 +51,17 @@ function TreePage() {
     setTestSuites,
   ]);
 
+  useEffect(() => {
+    fetchStatistics().then((data) => setTestSuitesStatistics(data.testSuite));
+  }, []);
+
   return (
     <div className="bg-white flex flex-col grow h-screen overflow-hidden">
       <Nav />
       <TestResultsAccordion
         testSuites={testSuites}
-        testSuitesCount={100}
+        testSuitesCount={testSuitesCount}
+        testSuitesStatistics={testSuitesStatistics}
         setTestSuites={setTestSuites}
         activeTestSuite={activeTestSuite}
         setActiveTestSuite={setActiveTestSuite}

@@ -25,6 +25,7 @@ export function useTestResultsAccordionStates({
   testSuitesFilter,
   setTestSuitesFilter,
   testSuitesCount,
+  testSuitesStatistics,
   handleTestSuitesPageChange,
   handleTestSuitesRowsPerPageChange,
 }) {
@@ -88,25 +89,6 @@ export function useTestResultsAccordionStates({
   const [testSuitesSelectedFilters, setTestSuitesSelectedFilters] = useState(
     []
   );
-
-  function getCount(data, active, filter, failed, passed, total) {
-    let count = 0;
-    if (active > -1) {
-      switch (filter) {
-        case "failed":
-          count = data[active][failed];
-          break;
-
-        case "passed":
-          count = data[active][passed];
-          break;
-
-        default:
-          count = data[active][total];
-      }
-    }
-    return count;
-  }
 
   let validationTagsCount = getCount(
     testCases,
@@ -300,8 +282,8 @@ export function useTestResultsAccordionStates({
   TSData.map((e, i) => e.map((b, j) => filteringOptions[j].add(b)));
 
   const firstHeaderOptions = {
-    failed: testSuites.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
-    total: testSuites.length,
+    failed: testSuitesStatistics.failed,
+    total: testSuitesStatistics.total,
     title: "Test Suites",
     onPassedClick: () => {
       setTestSuitesFilter(testSuitesFilter === "passed" ? "any" : "passed");
@@ -547,4 +529,23 @@ export function useTestResultsAccordionStates({
     validationTagsLoading,
     validationPointsLoading,
   };
+}
+
+export function getCount(data, active, filter, failed, passed, total) {
+  let count = 0;
+  if (active > -1) {
+    switch (filter) {
+      case "failed":
+        count = data[active][failed];
+        break;
+
+      case "passed":
+        count = data[active][passed];
+        break;
+
+      default:
+        count = data[active][total];
+    }
+  }
+  return count;
 }
