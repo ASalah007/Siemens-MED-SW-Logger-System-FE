@@ -1,7 +1,9 @@
 import React from "react";
 import HAccordion from "../TestResultsAccordion/components/HAccordion";
 
-function SearchResultsAccordion() {
+function SearchResultsAccordion({ data, returnResult }) {
+  console.log(data);
+
   const firstHeaderOptions = {
     failed: 0,
     total: 0,

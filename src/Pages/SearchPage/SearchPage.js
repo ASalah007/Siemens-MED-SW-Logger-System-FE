@@ -18,21 +18,21 @@ import {
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import searchImage from "../../Resources/search.svg";
-import { fetchSearchPageOptions } from "../../Services/services";
+import { fetchSearch, fetchSearchPageOptions } from "../../Services/services";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const testSuitesFilters = {
   "Meta Data": [
-    "Id",
-    "Owner",
-    "Version",
-    "Machine",
-    "Compilation Mode",
-    "Platform",
-    "Solution",
-    "Tool name",
+    "id",
+    "owner",
+    "version",
+    "machine",
+    "compilation_mode",
+    "platform",
+    "solution",
+    "tool_name",
   ],
 
   "SA Configuration": [
@@ -57,20 +57,20 @@ const testSuitesFilters = {
   ],
 };
 const testCasesFilters = {
-  "Meta Data": ["Streaming Type", "Packet Per Burst"],
+  "Meta Data": ["Streaming Type", "Packet Per Burst", "status"],
 };
 const validationTagsFilters = {
-  "Meta Data": ["Description", "Executable Path", "Name"],
+  "Meta Data": ["Description", "executable_path", "name"],
 };
 const validationPointsFilters = {
-  Levels: ["Mac", "Direction", "Packet Identifier"],
+  Levels: ["mac", "direction", "packet_identifier"],
 };
 
 function createObjectByKeys(filters) {
   // [["a",true], [...]] => {"a": [], "":[]}
   function transformArray(arr) {
     return arr.reduce((acc, ele) => {
-      acc[ele[0]] = [];
+      acc[ele] = [];
       return acc;
     }, {});
   }
@@ -95,12 +95,14 @@ export default function SearchPage() {
     createObjectByKeys(validationPointsFilters)
   );
 
+  const [data, setData] = useState(null);
+
   const [options, setOptions] = useState({});
   useEffect(() => {
     fetchSearchPageOptions().then((data) => setOptions(data));
   }, []);
 
-  const [returnResult, setReturnResult] = useState();
+  const [returnResult, setReturnResult] = useState("testSuite");
 
   function clearSearch() {
     setTestSuitesValues(createObjectByKeys(testSuitesFilters));
@@ -111,22 +113,15 @@ export default function SearchPage() {
   const [searched, setSearched] = useState(false);
 
   function search() {
-    console.log({
+    fetchSearch(
       returnResult,
-      testSuites: {
-        ...testSuitesValues["Meta Data"],
-        design_info: {
-          dut_instance_info: {
-            sa_configuration: testSuitesValues["SA Configuration"],
-            mpg_configuration: testSuitesValues["MPG Configuration"],
-          },
-        },
-      },
-      testCases: testCasesValues["Meta Data"],
-      validationTags: validationTagsValues,
-      validationPoints: { levels: validationPointsValues.Levels },
+      testSuitesValues,
+      validationTagsValues,
+      validationPointsValues
+    ).then((data) => {
+      setData(data.results);
+      setSearched(true);
     });
-    setSearched(true);
   }
 
   return (
@@ -136,7 +131,7 @@ export default function SearchPage() {
       <div className="grow flex overflow-hidden">
         <div className="grow flex items-stretch justify-center">
           {searched ? (
-            <SearchResultsAccordion />
+            <SearchResultsAccordion data={data} returnResult={returnResult} />
           ) : (
             <img src={searchImage} alt="img" />
           )}
@@ -153,15 +148,14 @@ export default function SearchPage() {
 
           <FilterItem label="Return Result">
             <Select
-              defaultValue="TS"
               size="small"
               value={returnResult}
               onChange={(e) => setReturnResult(e.target.value)}
             >
-              <MenuItem value="TS">Test Suites</MenuItem>
-              <MenuItem value="TC">Test Cases</MenuItem>
-              <MenuItem value="VT">Validation Tags</MenuItem>
-              <MenuItem value="VP">Validation Points</MenuItem>
+              <MenuItem value="testSuite">Test Suites</MenuItem>
+              <MenuItem value="testCase">Test Cases</MenuItem>
+              <MenuItem value="validationTag">Validation Tags</MenuItem>
+              <MenuItem value="validationPoint">Validation Points</MenuItem>
             </Select>
           </FilterItem>
 
@@ -246,7 +240,8 @@ function FilterAccordion({
                             return nw;
                           })
                         }
-                        options={options[k] ? options[k][l] || [] : []}
+                        // options={options[k] ? options[k][l] || [] : []}
+                        options={["op1", "op2"]}
                         renderOption={(props, option, { selected }) => (
                           <li {...props}>
                             <Checkbox

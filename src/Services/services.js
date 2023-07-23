@@ -9,6 +9,7 @@ const urls = {
   getValidationPoints: "validationPoints/validationtag/{validationTagId}",
   getSearchPageOptions: "search/",
   getStatistics: "statistics/",
+  search: "search/",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = BASEURL + v));
@@ -125,4 +126,50 @@ export async function fetchStatistics() {
   });
 
   return response.data.data;
+}
+
+export async function fetchSearch(
+  returnResult,
+  testSuitesValues,
+  validationTagsValues,
+  validationPointsValues,
+  limit,
+  page
+) {
+  const databaseName = sessionStorage.getItem("connectedDatabase");
+  if (!databaseName) return {};
+  let url = urls.search;
+  url += `?databaseName=${databaseName}`;
+  if (limit) url += `&limit=${limit}`;
+  if (page) url += `&page=${page}`;
+
+  const body = {
+    select: returnResult,
+    testSuites: {
+      ...testSuitesValues["Meta Data"],
+      status: [],
+      _id: "",
+      design_info: {
+        dut_instance_info: {
+          sa_configuration: testSuitesValues["SA Configuration"],
+          mpg_configuration: testSuitesValues["MPG Configuration"],
+        },
+      },
+    },
+    testCases: { _id: "", status: [] },
+    validationTags: {
+      ...validationTagsValues["Meta Data"],
+      status: [],
+      _id: "",
+    },
+    validationPoints: {
+      ...validationPointsValues.Levels,
+      status: [],
+      _id: "",
+    },
+  };
+
+  const response = await axios.post(url, body);
+  console.log(response.data);
+  return response.data;
 }
