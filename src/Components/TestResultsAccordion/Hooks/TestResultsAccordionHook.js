@@ -6,29 +6,16 @@ import VPEntry from "../components/VPEntry.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
 import { formatDuration } from "../../../Utils/utilities.js";
 import {
+  fetchStatistics,
   fetchTestCases,
+  fetchTestSuites,
   fetchValidationPoints,
   fetchValidationTags,
 } from "../../../Services/services.js";
 import ShowFilter from "../../ShowFilter/ShowFilter.js";
 import { useTestResultsEntryState } from "./TestResultsEntryHook.js";
 
-export function useTestResultsAccordionStates({
-  testSuites,
-  activeTestSuite,
-  setActiveTestSuite,
-  testSuitesTableView,
-  setTestSuitesTableView,
-  testSuitesPage,
-  setTestSuitesPage,
-  testSuitesRowsPerPage,
-  testSuitesFilter,
-  setTestSuitesFilter,
-  testSuitesCount,
-  testSuitesStatistics,
-  handleTestSuitesPageChange,
-  handleTestSuitesRowsPerPageChange,
-}) {
+export function useTestResultsAccordionStates({}) {
   const [
     testCases,
     setTestCases,
@@ -85,6 +72,58 @@ export function useTestResultsAccordionStates({
     handleValidationPointsPageChange,
     handleValidationPointsRowsPerPageChange,
   ] = useTestResultsEntryState();
+
+  const [
+    testSuites,
+    setTestSuites,
+    activeTestSuite,
+    setActiveTestSuite,
+    testSuitesFilter,
+    setTestSuitesFilter,
+    testSuitesTableView,
+    setTestSuitesTableView,
+    testSuitesPage,
+    setTestSuitesPage,
+    testSuitesRowsPerPage,
+    setTestSuitesRowsPerPage,
+    testSuiteLoading,
+    setTestSuiteLoading,
+    handleTestSuitesPageChange,
+    handleTestSuitesRowsPerPageChange,
+  ] = useTestResultsEntryState();
+
+  const [testSuitesStatistics, setTestSuitesStatistics] = useState({});
+
+  let testSuitesCount =
+    testSuitesFilter === "any"
+      ? testSuitesStatistics.total
+      : testSuitesFilter === "passed"
+      ? testSuitesStatistics.passed
+      : testSuitesStatistics.failed;
+
+  testSuitesCount = testSuitesCount || 0;
+
+  useEffect(() => {
+    setTestSuiteLoading(true);
+    fetchTestSuites(
+      testSuitesRowsPerPage,
+      testSuitesPage + 1,
+      testSuitesFilter
+    ).then((data) => {
+      setTestSuites(data.testSuites);
+      setTestSuiteLoading(false);
+    });
+  }, [
+    testSuitesRowsPerPage,
+    testSuitesPage,
+    testSuitesFilter,
+    setTestSuiteLoading,
+    setTestSuites,
+  ]);
+
+  useEffect(() => {
+    fetchStatistics().then((data) => setTestSuitesStatistics(data.testSuite));
+  }, []);
 
   const [testSuitesSelectedFilters, setTestSuitesSelectedFilters] = useState(
     []
@@ -226,6 +265,7 @@ export function useTestResultsAccordionStates({
       .filter(([k, v]) => k !== "design_info")
       .flatMap(([k, v]) => v),
   ]);
+  console.log("data: ", TSData);
 
   const TCColumns = ["id", "status", "duration", "failed VTs"];
   const TCData = testCases.map((e, i) => [
@@ -268,7 +308,10 @@ export function useTestResultsAccordionStates({
     const f = data.map((e) =>
       e.reduce(
         (acc, ele, i) =>
-          (filters[i].length === 0 || filters[i].includes(ele)) && acc,
+          (!filters[i] ||
+            filters[i].length === 0 ||
+            filters[i].includes(ele)) &&
+          acc,
         true
       )
     );
@@ -530,6 +573,13 @@ export function useTestResultsAccordionStates({
     testCaseLoading,
     validationTagsLoading,
     validationPointsLoading,
+
+    testSuitesCount,
+    testSuitesPage,
+    testSuitesRowsPerPage,
+    handleTestSuitesPageChange,
+    handleTestSuitesRowsPerPageChange,
+    testSuiteLoading,
   };
 }
 

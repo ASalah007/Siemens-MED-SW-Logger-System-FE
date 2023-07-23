@@ -4,15 +4,6 @@ import { useTestResultsAccordionStates } from "./Hooks/TestResultsAccordionHook.
 
 export default function TestResultsAccordion(props) {
   const {
-    testSuitesCount,
-    testSuitesPage,
-    testSuitesRowsPerPage,
-    handleTestSuitesPageChange,
-    handleTestSuitesRowsPerPageChange,
-    testSuiteLoading,
-  } = props;
-
-  const {
     firstColumnElements,
     firstHeaderOptions,
 
@@ -52,6 +43,13 @@ export default function TestResultsAccordion(props) {
     testCaseLoading,
     validationTagsLoading,
     validationPointsLoading,
+
+    testSuitesCount,
+    testSuitesPage,
+    testSuitesRowsPerPage,
+    handleTestSuitesPageChange,
+    handleTestSuitesRowsPerPageChange,
+    testSuiteLoading,
   } = useTestResultsAccordionStates(props);
 
   return (
