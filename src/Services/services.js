@@ -8,6 +8,7 @@ const urls = {
   getValidationTags: "validationTags/testCases/{testCaseId}",
   getValidationPoints: "validationPoints/validationtag/{validationTagId}",
   getSearchPageOptions: "search/",
+  getStatistics: "statistics/",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = BASEURL + v));
@@ -113,4 +114,15 @@ export async function fetchSearchPageOptions() {
     },
   };
   return newObj;
+}
+
+export async function fetchStatistics() {
+  const databaseName = sessionStorage.getItem("connectedDatabase");
+  if (!databaseName) return {};
+
+  const response = await axios.get(urls.getStatistics, {
+    params: { databaseName },
+  });
+
+  return response.data.data;
 }

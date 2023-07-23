@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Nav from "../../Components/Navbar/Nav";
 import ParticlesBackground from "../Welcome/ParticlesBackground";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
+import { fetchStatistics } from "../../Services/services";
 
 const ts = [
   {
@@ -57,6 +58,8 @@ export default function ConnectedPage() {
   const [connectedDatabase, setConnectedDatabase] = useState(
     sessionStorage.getItem("connectedDatabase")
   );
+  const [data, setData] = useState(null);
+
   const navigate = useNavigate();
 
   function disconnect() {
@@ -68,6 +71,12 @@ export default function ConnectedPage() {
     if (!connectedDatabase) navigate("/");
   }, [connectedDatabase, navigate]);
 
+  useEffect(() => {
+    fetchStatistics().then((data) => {
+      setData(data);
+    });
+  }, []);
+
   return (
     <div className="grow bg-white flex flex-col h-screen">
       <Nav />
@@ -78,10 +87,16 @@ export default function ConnectedPage() {
         </div>
 
         <div className="flex items-center gap-8 mb-5">
-          <PieChart data={ts} title="Test Suites" />
-          <PieChart data={tc} title="Test Cases" />
-          <PieChart data={vt} title="Validation Tags" />
-          <PieChart data={vp} title="Validation Points" />
+          {!data ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <PieChart data={data.testSuite} title="Test Suites" />
+              <PieChart data={data.testCase} title="Test Cases" />
+              <PieChart data={data.validationTag} title="Validation Tags" />
+              <PieChart data={data.validationPoint} title="Validation Points" />
+            </>
+          )}
         </div>
 
         <div className="flex flex-col items-center gap-6">
@@ -117,6 +132,20 @@ export default function ConnectedPage() {
   );
 }
 function PieChart({ data, title }) {
+  const d = [
+    {
+      color: "#ff595e",
+      id: "Fail",
+      value: data.failed,
+    },
+    {
+      color: "#6ede87",
+      id: "Pass",
+      value: data.passed,
+    },
+  ];
+  if (!data.passed) d.pop();
+  if (!data.failed) d.shift();
   return (
     <div className="h-44 w-44 flex flex-col items-center gap-1">
       <ResponsivePie
@@ -124,7 +153,7 @@ function PieChart({ data, title }) {
         animate
         innerRadius={0.45}
         colors={{ datum: "data.color" }}
-        data={data}
+        data={d}
         legends={[]}
         margin={{
           top: 10,
