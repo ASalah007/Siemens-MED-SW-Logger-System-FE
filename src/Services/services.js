@@ -44,27 +44,37 @@ export async function fetchTestCases(testSuitId, limit, page, filter) {
   return response.data["results"];
 }
 
-export async function fetchValidationTags(testCaseId, limit, page) {
+export async function fetchValidationTags(testCaseId, limit, page, filter) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
 
+  const params = { databaseName: connectedDatabase, limit, page };
+  if (filter === "passed") params.status = true;
+  else if (filter === "failed") params.status = false;
+
   const url = urls.getValidationTags.replace("{testCaseId}", testCaseId);
-  const response = await axios.get(url, {
-    params: { databaseName: connectedDatabase, limit, page },
-  });
+  const response = await axios.get(url, { params });
   return response.data["results"];
 }
 
-export async function fetchValidationPoints(validationTagId, limit, page) {
+export async function fetchValidationPoints(
+  validationTagId,
+  limit,
+  page,
+  filter
+) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
   const url = urls.getValidationPoints.replace(
     "{validationTagId}",
     validationTagId
   );
-  const response = await axios.get(url, {
-    params: { databaseName: connectedDatabase, limit, page },
-  });
+
+  const params = { databaseName: connectedDatabase, limit, page };
+  if (filter === "passed") params.status = true;
+  else if (filter === "failed") params.status = false;
+
+  const response = await axios.get(url, { params });
   return response.data["results"];
 }
 
@@ -102,6 +112,5 @@ export async function fetchSearchPageOptions() {
       },
     },
   };
-  console.log(newObj);
   return newObj;
 }

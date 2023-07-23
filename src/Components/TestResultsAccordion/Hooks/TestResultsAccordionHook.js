@@ -52,8 +52,8 @@ export function useTestResultsAccordionStates({
     setValidationTags,
     activeValidationTag,
     setActiveValidationTag,
-    filterValidationTag,
-    setFilterValidationTag,
+    validationTagsFilter,
+    setValidationTagsFilter,
     validationTagsTableView,
     setValidationTagsTableView,
     validationTagsPage,
@@ -71,8 +71,8 @@ export function useTestResultsAccordionStates({
     setValidationPoints,
     activeValidationPoint,
     setActiveValidationPoint,
-    filterValidationPoint,
-    setFilterValidationPoint,
+    validationPointsFilter,
+    setValidationPointsFilter,
     validationPointsTableView,
     setValidationPointsTableView,
     validationPointsPage,
@@ -89,16 +89,51 @@ export function useTestResultsAccordionStates({
     []
   );
 
-  const testCasesCount =
-    activeTestSuite > -1 ? testSuites[activeTestSuite].TestCasesCount : 0;
+  function getCount(data, active, filter, failed, passed, total) {
+    let count = 0;
+    if (active > -1) {
+      switch (filter) {
+        case "failed":
+          count = data[active][failed];
+          break;
 
-  const validationTagsCount =
-    activeTestCase > -1 ? testCases[activeTestCase].ValidationTagsCount : 0;
+        case "passed":
+          count = data[active][passed];
+          break;
 
-  const validationPointsCount =
-    activeValidationTag > -1
-      ? validationTags[activeValidationTag].ValidationPointsCount
-      : 0;
+        default:
+          count = data[active][total];
+      }
+    }
+    return count;
+  }
+
+  let validationTagsCount = getCount(
+    testCases,
+    activeTestCase,
+    testCasesFilter,
+    "failedValidationTagsCount",
+    "passedValidationTagsCount",
+    "ValidationTagsCount"
+  );
+
+  let testCasesCount = getCount(
+    testSuites,
+    activeTestSuite,
+    testCasesFilter,
+    "failedTestCasesCount",
+    "passedTestCasesCount",
+    "TestCasesCount"
+  );
+
+  let validationPointsCount = getCount(
+    validationTags,
+    activeValidationTag,
+    validationPointsFilter,
+    "failedValidationPointsCount",
+    "passedValidationPointsCount",
+    "ValidationPointsCount"
+  );
 
   function reset(type) {
     switch (type) {
@@ -111,13 +146,13 @@ export function useTestResultsAccordionStates({
       case "VT":
         setValidationTags([]);
         setActiveValidationTag(-1);
-        setFilterValidationTag("any");
+        setValidationTagsFilter("any");
         setValidationTagsPage(0);
       // eslint-disable-next-line no-fallthrough
       case "VP":
         setValidationPoints([]);
         setActiveValidationPoint(-1);
-        setFilterValidationPoint("any");
+        setValidationPointsFilter("any");
         setValidationPointsPage(0);
         break;
 
@@ -158,7 +193,8 @@ export function useTestResultsAccordionStates({
     fetchValidationTags(
       testCases[activeTestCase]._id,
       validationTagsRowsPerPage,
-      validationTagsPage + 1
+      validationTagsPage + 1,
+      validationTagsFilter
     ).then((data) => {
       setValidationTags(data);
       setValidationTagsLoading(false);
@@ -169,6 +205,7 @@ export function useTestResultsAccordionStates({
     validationTagsRowsPerPage,
     validationTagsPage,
     testCasesFilter,
+    validationTagsFilter,
   ]);
 
   useEffect(() => {
@@ -180,7 +217,8 @@ export function useTestResultsAccordionStates({
     fetchValidationPoints(
       validationTags[activeValidationTag]._id,
       validationPointsRowsPerPage,
-      validationPointsPage + 1
+      validationPointsPage + 1,
+      validationPointsFilter
     ).then((data) => {
       setValidationPoints(data);
       setValidationPointsLoading(false);
@@ -190,6 +228,7 @@ export function useTestResultsAccordionStates({
     validationTags,
     validationPointsRowsPerPage,
     validationPointsPage,
+    validationPointsFilter,
   ]);
 
   const TSColumns = ["id", "status", "duration"].concat(
@@ -264,10 +303,14 @@ export function useTestResultsAccordionStates({
     failed: testSuites.reduce((acc, ele) => (ele.status ? acc : acc + 1), 0),
     total: testSuites.length,
     title: "Test Suites",
-    onPassedClick: () =>
-      setTestSuitesFilter(testSuitesFilter === "passed" ? "any" : "passed"),
-    onFailedClick: () =>
-      setTestSuitesFilter(testSuitesFilter === "failed" ? "any" : "failed"),
+    onPassedClick: () => {
+      setTestSuitesFilter(testSuitesFilter === "passed" ? "any" : "passed");
+      setTestSuitesPage(0);
+    },
+    onFailedClick: () => {
+      setTestSuitesFilter(testSuitesFilter === "failed" ? "any" : "failed");
+      setTestSuitesPage(0);
+    },
     actionElements: (
       <div className="flex">
         <ShowInTable
@@ -296,11 +339,6 @@ export function useTestResultsAccordionStates({
       </div>
     ),
   };
-  function filterPredicate(filterOption, data) {
-    if (filterOption === "passed" && data.status) return true;
-    if (filterOption === "failed" && !data.status) return true;
-    return filterOption === "any";
-  }
   let firstColumnElements = testSuites.map((data, i) => (
     <TSEntry
       data={data}
@@ -326,10 +364,14 @@ export function useTestResultsAccordionStates({
         ? testSuites[activeTestSuite].failedTestCasesCount
         : 0,
     title: "Test Cases",
-    onPassedClick: () =>
-      setTestCasesFilter(testCasesFilter === "passed" ? "any" : "passed"),
-    onFailedClick: () =>
-      setTestCasesFilter(testCasesFilter === "failed" ? "any" : "failed"),
+    onPassedClick: () => {
+      setTestCasesFilter(testCasesFilter === "passed" ? "any" : "passed");
+      setTestCasesPage(0);
+    },
+    onFailedClick: () => {
+      setTestCasesFilter(testCasesFilter === "failed" ? "any" : "failed");
+      setTestCasesPage(0);
+    },
     actionElements: (
       <ShowInTable
         sx={{ color: "#ffca3a" }}
@@ -371,14 +413,18 @@ export function useTestResultsAccordionStates({
         ? testCases[activeTestCase].failedValidationTagsCount
         : 0,
     title: "Validation Tags",
-    onPassedClick: () =>
-      setFilterValidationTag(
-        filterValidationTag === "passed" ? "any" : "passed"
-      ),
-    onFailedClick: () =>
-      setFilterValidationTag(
-        filterValidationTag === "failed" ? "any" : "failed"
-      ),
+    onPassedClick: () => {
+      setValidationTagsFilter(
+        validationTagsFilter === "passed" ? "any" : "passed}"
+      );
+      setValidationTagsPage(0);
+    },
+    onFailedClick: () => {
+      setValidationTagsFilter(
+        validationTagsFilter === "failed" ? "any" : "failed"
+      );
+      setValidationTagsPage(0);
+    },
     actionElements: (
       <ShowInTable
         sx={{ color: "#ffca3a" }}
@@ -397,20 +443,18 @@ export function useTestResultsAccordionStates({
       />
     ),
   };
-  const thirdColumnElements = validationTags
-    .filter((data) => filterPredicate(filterValidationTag, data))
-    .map((data, i) => (
-      <VTEntry
-        data={data}
-        key={data._id}
-        num={validationTagsRowsPerPage * validationPointsPage + i + 1}
-        onClick={() => {
-          setActiveValidationTag(i);
-          setActiveValidationPoint(-1);
-        }}
-        active={activeValidationTag === i}
-      />
-    ));
+  const thirdColumnElements = validationTags.map((data, i) => (
+    <VTEntry
+      data={data}
+      key={data._id}
+      num={validationTagsRowsPerPage * validationPointsPage + i + 1}
+      onClick={() => {
+        setActiveValidationTag(i);
+        setActiveValidationPoint(-1);
+      }}
+      active={activeValidationTag === i}
+    />
+  ));
 
   const fourthHeaderOptions = {
     total:
@@ -422,14 +466,18 @@ export function useTestResultsAccordionStates({
         ? validationTags[activeValidationTag].failedValidationPointsCount
         : 0,
     title: "Validation Points",
-    onPassedClick: () =>
-      setFilterValidationPoint(
-        filterValidationPoint === "passed" ? "any" : "passed"
-      ),
-    onFailedClick: () =>
-      setFilterValidationPoint(
-        filterValidationPoint === "failed" ? "any" : "failed"
-      ),
+    onPassedClick: () => {
+      setValidationPointsFilter(
+        validationPointsFilter === "passed" ? "any" : "passed"
+      );
+      setValidationPointsPage(0);
+    },
+    onFailedClick: () => {
+      setValidationPointsFilter(
+        validationPointsFilter === "failed" ? "any" : "failed"
+      );
+      setValidationPointsPage(0);
+    },
     actionElements: (
       <ShowInTable
         sx={{ color: "#ffca3a" }}
@@ -448,19 +496,18 @@ export function useTestResultsAccordionStates({
       />
     ),
   };
-  const fourthColumnElements = validationPoints
-    .filter((data) => filterPredicate(filterValidationPoint, data))
-    .map((data, i) => (
-      <VPEntry
-        data={data}
-        key={data._id}
-        num={validationPointsRowsPerPage * validationPointsPage + i + 1}
-        onClick={() => {
-          setActiveValidationPoint(i);
-        }}
-        active={activeValidationPoint === i}
-      />
-    ));
+
+  const fourthColumnElements = validationPoints.map((data, i) => (
+    <VPEntry
+      data={data}
+      key={data._id}
+      num={validationPointsRowsPerPage * validationPointsPage + i + 1}
+      onClick={() => {
+        setActiveValidationPoint(i);
+      }}
+      active={activeValidationPoint === i}
+    />
+  ));
 
   return {
     firstColumnElements,
