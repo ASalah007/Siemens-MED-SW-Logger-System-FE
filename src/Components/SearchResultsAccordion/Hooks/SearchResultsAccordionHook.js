@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useAccordionStates from "../../TestResultsAccordion/Hooks/AccordionHook";
 import { fetchSearch, fetchStatistics } from "../../../Services/services";
 

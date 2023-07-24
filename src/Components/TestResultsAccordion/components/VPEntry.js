@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Folder from "../../Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
-import { formatDuration } from "../../../Utils/utilities.js";
 
 function VPEntry({ data, num, onClick, active }) {
   const [resultsTableView, setResultsTableView] = useState(false);

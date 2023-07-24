@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import TSEntry from "../components/TSEntry.js";
 import TCEntry from "../components/TCEntry.js";
 import VTEntry from "../components/VTEntry.js";
