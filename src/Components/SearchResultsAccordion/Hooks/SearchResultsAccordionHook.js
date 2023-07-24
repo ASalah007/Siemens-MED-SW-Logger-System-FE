@@ -129,7 +129,6 @@ export default function useSearchResultsAccordionStates({
     testCasesRowsPerPage,
     testCasesPage,
     testCasesFilter,
-    testSuites,
     filterValues,
     setActiveValidationTag,
     setTestCases,
@@ -165,7 +164,6 @@ export default function useSearchResultsAccordionStates({
     returnResult,
     setActiveValidationPoint,
     setValidationTags,
-    testCases,
     validationTagsFilter,
     validationTagsPage,
     validationTagsRowsPerPage,
@@ -204,7 +202,6 @@ export default function useSearchResultsAccordionStates({
     validationPointsFilter,
     validationPointsPage,
     validationPointsRowsPerPage,
-    validationTags,
   ]);
 
   useEffect(() => {
