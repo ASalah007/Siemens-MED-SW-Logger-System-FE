@@ -6,54 +6,6 @@ import { Button, CircularProgress } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
 import { fetchStatistics } from "../../Services/services";
 
-const ts = [
-  {
-    color: "#ff595e",
-    id: "Fail",
-    value: 32,
-  },
-  {
-    color: "#6ede87",
-    id: "Pass",
-    value: 45,
-  },
-];
-const tc = [
-  {
-    color: "#ff595e",
-    id: "Fail",
-    value: 10,
-  },
-  {
-    color: "#6ede87",
-    id: "Pass",
-    value: 20,
-  },
-];
-const vt = [
-  {
-    color: "#ff595e",
-    id: "Fail",
-    value: 95,
-  },
-  {
-    color: "#6ede87",
-    id: "Pass",
-    value: 13,
-  },
-];
-const vp = [
-  {
-    color: "#ff595e",
-    id: "Fail",
-    value: 50,
-  },
-  {
-    color: "#6ede87",
-    id: "Pass",
-    value: 100,
-  },
-];
 export default function ConnectedPage() {
   const [connectedDatabase, setConnectedDatabase] = useState(
     sessionStorage.getItem("connectedDatabase")

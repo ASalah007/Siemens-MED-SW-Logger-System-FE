@@ -19,7 +19,7 @@ import {
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import searchImage from "../../Resources/search.svg";
-import { fetchSearch, fetchSearchPageOptions } from "../../Services/services";
+import { fetchSearchPageOptions } from "../../Services/services";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -94,8 +94,6 @@ export default function SearchPage() {
   const [validationPointsValues, setValidationPointsValues] = useState(
     createObjectByKeys(validationPointsFilters)
   );
-
-  const [data, setData] = useState(null);
 
   const [options, setOptions] = useState({});
   useEffect(() => {
