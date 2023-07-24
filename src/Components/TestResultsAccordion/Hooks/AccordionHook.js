@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import TSEntry from "../components/TSEntry.js";
 import TCEntry from "../components/TCEntry.js";
 import VTEntry from "../components/VTEntry.js";
@@ -169,7 +169,6 @@ export default function useAccordionStates({
       .filter(([k, v]) => k !== "design_info")
       .flatMap(([k, v]) => v),
   ]);
-  console.log("data: ", TSData);
 
   const TCColumns = ["id", "status", "duration", "failed VTs"];
   const TCData = testCases.map((e, i) => [
@@ -500,6 +499,10 @@ export default function useAccordionStates({
     setActiveValidationPoint,
     setActiveValidationTag,
 
+    testSuitesFilter,
+    testCasesFilter,
+    validationTagsFilter,
+    validationPointsFilter,
     reset,
   };
 }
