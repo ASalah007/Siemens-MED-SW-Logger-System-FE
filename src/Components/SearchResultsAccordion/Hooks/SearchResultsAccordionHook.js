@@ -111,7 +111,7 @@ export default function useSearchResultsAccordionStates({
       returnResult !== "testCase" && activeTestSuite > -1
         ? testSuites[activeTestSuite]._id
         : "";
-    setActiveValidationTag(-1);
+    reset("TC");
     fetchSearch({
       returnResult: "testCase",
       ...filterValues,
@@ -150,7 +150,7 @@ export default function useSearchResultsAccordionStates({
         ? testCases[activeTestCase]._id
         : "";
 
-    setActiveValidationPoint(-1);
+    reset("VT");
     fetchSearch({
       returnResult: "validationTag",
       ...filterValues,
@@ -187,6 +187,7 @@ export default function useSearchResultsAccordionStates({
         ? validationTags[activeValidationTag]._id
         : "";
 
+    reset("VP");
     fetchSearch({
       returnResult: "validationPoint",
       ...filterValues,
