@@ -8,8 +8,8 @@ import {
 } from "../../../Services/services.js";
 import useAccordionStates from "./AccordionHook.js";
 
-export function useTestResultsAccordionStates({}) {
-  const states = useAccordionStates();
+export function useTestResultsAccordionStates() {
+  const states = useAccordionStates({});
   const {
     reset,
     testSuitesRowsPerPage,

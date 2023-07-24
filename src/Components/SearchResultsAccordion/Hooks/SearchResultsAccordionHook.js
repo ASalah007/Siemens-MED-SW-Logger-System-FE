@@ -88,6 +88,7 @@ export default function useSearchResultsAccordionStates({
     }).then((data) => {
       setTestSuites(data.results);
       setTestSuiteLoading(false);
+      //   states.testSuitesCount = data.resultsLength;
     });
   }, [
     testSuitesRowsPerPage,
@@ -118,7 +119,10 @@ export default function useSearchResultsAccordionStates({
       limit: testCasesRowsPerPage,
       page: testCasesPage + 1,
       status: testCasesFilter,
-    }).then((data) => setTestCases(data.results));
+    }).then((data) => {
+      setTestCases(data.results);
+      //   states.testCasesCount = data.resultsLength;
+    });
   }, [
     returnResult,
     activeTestSuite,

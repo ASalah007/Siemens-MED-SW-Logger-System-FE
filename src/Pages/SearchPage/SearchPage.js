@@ -109,6 +109,7 @@ export default function SearchPage() {
     setTestCasesValues(createObjectByKeys(testCasesFilters));
     setValidationTagsValues(createObjectByKeys(validationTagsFilters));
     setValidationPointsValues(createObjectByKeys(validationPointsFilters));
+    setSearched(false);
   }
   const [searched, setSearched] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -166,37 +167,39 @@ export default function SearchPage() {
             </Select>
           </FilterItem>
 
-          <div>
-            <FilterAccordion
-              title="Test Suites Filters"
-              filters={testSuitesFilters}
-              values={testSuitesValues}
-              setValue={setTestSuitesValues}
-              options={options.testSuites}
-              defaultExpanded
-            />
-            <FilterAccordion
-              title="Test Cases Filters"
-              filters={testCasesFilters}
-              values={testCasesValues}
-              setValue={setTestCasesValues}
-              options={options.testCases}
-            />
-            <FilterAccordion
-              title="Validation Tags Filters"
-              filters={validationTagsFilters}
-              values={validationTagsValues}
-              setValue={setValidationTagsValues}
-              options={options.validationTags}
-            />
-            <FilterAccordion
-              title="Validation Points Filters"
-              filters={validationPointsFilters}
-              values={validationPointsValues}
-              setValue={setValidationPointsValues}
-              options={options.validationPoints}
-            />
-          </div>
+          {!searched && (
+            <div>
+              <FilterAccordion
+                title="Test Suites Filters"
+                filters={testSuitesFilters}
+                values={testSuitesValues}
+                setValue={setTestSuitesValues}
+                options={options.testSuites}
+                defaultExpanded
+              />
+              <FilterAccordion
+                title="Test Cases Filters"
+                filters={testCasesFilters}
+                values={testCasesValues}
+                setValue={setTestCasesValues}
+                options={options.testCases}
+              />
+              <FilterAccordion
+                title="Validation Tags Filters"
+                filters={validationTagsFilters}
+                values={validationTagsValues}
+                setValue={setValidationTagsValues}
+                options={options.validationTags}
+              />
+              <FilterAccordion
+                title="Validation Points Filters"
+                filters={validationPointsFilters}
+                values={validationPointsValues}
+                setValue={setValidationPointsValues}
+                options={options.validationPoints}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
