@@ -11,6 +11,7 @@ function HAccordionHeader({
   onMinimize,
   onPassedClick,
   onFailedClick,
+  nostats = false,
 }) {
   return (
     <div className="bg-[#2D3047] flex flex-col pb-4 pt-2 shadow h-28 overflow-hidden">
@@ -25,20 +26,22 @@ function HAccordionHeader({
           </Tooltip>
         </div>
       </div>
-      <div className="flex justify-between px-8">
-        <div
-          className="text-fail font-bold hover:cursor-pointer select-none"
-          onClick={() => onFailedClick && onFailedClick()}
-        >
-          Failed: {failed}/{total}
+      {!nostats && (
+        <div className="flex justify-between px-8">
+          <div
+            className="text-fail font-bold hover:cursor-pointer select-none"
+            onClick={() => onFailedClick && onFailedClick()}
+          >
+            Failed: {failed}/{total}
+          </div>
+          <div
+            className="text-success font-bold hover:cursor-pointer select-none"
+            onClick={() => onPassedClick && onPassedClick()}
+          >
+            Passed: {total - failed}/{total}
+          </div>
         </div>
-        <div
-          className="text-success font-bold hover:cursor-pointer select-none"
-          onClick={() => onPassedClick && onPassedClick()}
-        >
-          Passed: {total - failed}/{total}
-        </div>
-      </div>
+      )}
     </div>
   );
 }

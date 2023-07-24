@@ -7,7 +7,7 @@ import { IconButton, Tooltip } from "@mui/material";
 function Nav() {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   return (
-    <div className="flex justify-between h-16 items-center px-5 shrink-0 bg-[#08607b] text-white z-[99999]">
+    <div className="flex justify-between h-16 items-center px-5 shrink-0 bg-[#08607b] text-white z-10 ">
       <div>
         <Link to="/" className="flex gap-2 items-center text-xl">
           <BarChartRoundedIcon sx={{ fontSize: "2.25rem" }} />

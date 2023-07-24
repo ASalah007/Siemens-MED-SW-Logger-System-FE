@@ -39,6 +39,7 @@ function VPEntry({ data, num, onClick, active }) {
             {title}
           </span>
         }
+        onClick={onClick}
         actionElements={
           <ShowInTable
             onClick={() => setResultsTableView(true)}

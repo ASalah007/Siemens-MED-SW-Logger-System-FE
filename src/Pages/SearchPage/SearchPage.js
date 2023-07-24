@@ -9,6 +9,7 @@ import {
   Autocomplete,
   Button,
   Checkbox,
+  CircularProgress,
   Divider,
   MenuItem,
   Select,
@@ -67,7 +68,6 @@ const validationPointsFilters = {
 };
 
 function createObjectByKeys(filters) {
-  // [["a",true], [...]] => {"a": [], "":[]}
   function transformArray(arr) {
     return arr.reduce((acc, ele) => {
       acc[ele] = [];
@@ -111,17 +111,10 @@ export default function SearchPage() {
     setValidationPointsValues(createObjectByKeys(validationPointsFilters));
   }
   const [searched, setSearched] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function search() {
-    fetchSearch(
-      returnResult,
-      testSuitesValues,
-      validationTagsValues,
-      validationPointsValues
-    ).then((data) => {
-      setData(data.results);
-      setSearched(true);
-    });
+    setSearched(true);
   }
 
   return (
@@ -131,7 +124,18 @@ export default function SearchPage() {
       <div className="grow flex overflow-hidden">
         <div className="grow flex items-stretch justify-center">
           {searched ? (
-            <SearchResultsAccordion data={data} returnResult={returnResult} />
+            <SearchResultsAccordion
+              returnResult={returnResult}
+              filterValues={{
+                testSuitesValues,
+                validationTagsValues,
+                validationPointsValues,
+              }}
+            />
+          ) : loading ? (
+            <div className="grow flex items-center justify-center">
+              <CircularProgress thickness={5} />
+            </div>
           ) : (
             <img src={searchImage} alt="img" />
           )}
@@ -150,7 +154,10 @@ export default function SearchPage() {
             <Select
               size="small"
               value={returnResult}
-              onChange={(e) => setReturnResult(e.target.value)}
+              onChange={(e) => {
+                setReturnResult(e.target.value);
+                setSearched(false);
+              }}
             >
               <MenuItem value="testSuite">Test Suites</MenuItem>
               <MenuItem value="testCase">Test Cases</MenuItem>

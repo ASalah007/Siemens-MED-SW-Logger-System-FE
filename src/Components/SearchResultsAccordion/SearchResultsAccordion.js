@@ -1,35 +1,17 @@
 import React from "react";
 import HAccordion from "../TestResultsAccordion/components/HAccordion";
+import useSearchResultsAccordionStates from "./Hooks/SearchResultsAccordionHook";
 
-function SearchResultsAccordion({ data, returnResult }) {
-  console.log(data);
+function SearchResultsAccordion(props) {
+  const states = useSearchResultsAccordionStates(props);
 
-  const firstHeaderOptions = {
-    failed: 0,
-    total: 0,
-    title: "Test Suites",
-  };
-  const secondHeaderOptions = {
-    failed: 0,
-    total: 0,
-    title: "Test Cases",
-  };
-  const thirdHeaderOptions = {
-    failed: 0,
-    total: 0,
-    title: "Validation Tags",
-  };
-  const fourthHeaderOptions = {
-    failed: 0,
-    total: 0,
-    title: "Validation Points",
-  };
   return (
     <HAccordion
-      firstHeaderOptions={firstHeaderOptions}
-      secondHeaderOptions={secondHeaderOptions}
-      thirdHeaderOptions={thirdHeaderOptions}
-      fourthHeaderOptions={fourthHeaderOptions}
+      {...states}
+      firstColumnPlaceHolder="Test Suites"
+      secondColumnPlaceHolder="Test Cases"
+      thirdColumnPlaceHolder="Validation Tags"
+      fourthColumnPlaceHolder="Validation Points"
     />
   );
 }

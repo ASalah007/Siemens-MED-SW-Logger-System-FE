@@ -128,14 +128,20 @@ export async function fetchStatistics() {
   return response.data.data;
 }
 
-export async function fetchSearch(
+export async function fetchSearch({
   returnResult,
   testSuitesValues,
   validationTagsValues,
   validationPointsValues,
+  testSuiteId = "",
+  testCaseId = "",
+  validationTagId = "",
+  validationPointId = "",
+
   limit,
-  page
-) {
+  page,
+  filter,
+}) {
   const databaseName = sessionStorage.getItem("connectedDatabase");
   if (!databaseName) return {};
   let url = urls.search;
@@ -143,12 +149,16 @@ export async function fetchSearch(
   if (limit) url += `&limit=${limit}`;
   if (page) url += `&page=${page}`;
 
+  let status = [];
+  if (filter === "passed") status = [true];
+  if (filter === "failed") status = [false];
+
   const body = {
     select: returnResult,
     testSuites: {
       ...testSuitesValues["Meta Data"],
-      status: [],
-      _id: "",
+      status,
+      _id: testSuiteId,
       design_info: {
         dut_instance_info: {
           sa_configuration: testSuitesValues["SA Configuration"],
@@ -156,16 +166,16 @@ export async function fetchSearch(
         },
       },
     },
-    testCases: { _id: "", status: [] },
+    testCases: { _id: testCaseId, status },
     validationTags: {
       ...validationTagsValues["Meta Data"],
-      status: [],
-      _id: "",
+      status,
+      _id: validationTagId,
     },
     validationPoints: {
       ...validationPointsValues.Levels,
-      status: [],
-      _id: "",
+      status,
+      _id: validationPointId,
     },
   };
 
