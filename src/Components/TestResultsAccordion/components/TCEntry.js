@@ -56,7 +56,9 @@ function TCEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  const title = `TC ${num} -- ${failedCount} -- ${duration} `;
+  let title = `TC ${num} `;
+  if (data.ValidationTagsCount) title += `-- ${failedCount} `;
+  if (duration) title += `-- ${duration}`;
 
   return (
     <div>

@@ -12,7 +12,10 @@ function VTEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  const title = `${data.metaData.name} -- ${failedCount} -- ${duration} `;
+  let title = `${data.metaData.name} `;
+  if (data.ValidationPointsCount) title += `-- ${failedCount}`;
+  if (duration) title += `-- ${duration} `;
+
   return (
     <div>
       <Folder

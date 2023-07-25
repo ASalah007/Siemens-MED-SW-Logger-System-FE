@@ -38,7 +38,9 @@ function TSEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  const title = `TS ${num} -- ${failedCount} -- ${duration} `;
+  let title = `TS ${num}`;
+  if (data.TestCasesCount) title += `-- ${failedCount} `;
+  if (duration) title += `-- ${duration}`;
 
   return (
     <div className="">
