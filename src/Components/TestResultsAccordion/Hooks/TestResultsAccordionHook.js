@@ -51,7 +51,6 @@ export function useTestResultsAccordionStates() {
   } = states;
 
   useEffect(() => {
-    console.log(testSuitesFilter);
     setTestSuiteLoading(true);
     fetchTestSuites(
       testSuitesRowsPerPage,

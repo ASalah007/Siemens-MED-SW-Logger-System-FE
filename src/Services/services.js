@@ -180,6 +180,5 @@ export async function fetchSearch({
   };
 
   const response = await axios.post(url, body);
-  console.log(response.data);
   return response.data;
 }
