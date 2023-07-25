@@ -48,32 +48,6 @@ export default function useSearchResultsAccordionStates({
     fetchStatistics().then((data) => setTestSuitesStatistics(data.testSuite));
   }, [setTestSuitesStatistics]);
 
-  //   useEffect(() => {
-  //     switch (returnResult) {
-  //       case "testSuite":
-  //         setTestSuites(data);
-  //         break;
-  //       case "testCase":
-  //         setTestCases(data);
-  //         break;
-  //       case "validationTag":
-  //         setValidationTags(data);
-  //         break;
-  //       case "validationPoint":
-  //         setValidationPoints(data);
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }, [
-  //     returnResult,
-  //     data,
-  //     setTestSuites,
-  //     setTestCases,
-  //     setValidationTags,
-  //     setValidationPoints,
-  //   ]);
-
   useEffect(() => {
     if (returnResult !== "testSuite") return;
     setTestSuiteLoading(true);
@@ -88,7 +62,7 @@ export default function useSearchResultsAccordionStates({
     }).then((data) => {
       setTestSuites(data.results);
       setTestSuiteLoading(false);
-      //   states.testSuitesCount = data.resultsLength;
+      // states.testSuitesCount = data.resultsLength;
     });
   }, [
     testSuitesRowsPerPage,
@@ -121,7 +95,7 @@ export default function useSearchResultsAccordionStates({
       status: testCasesFilter,
     }).then((data) => {
       setTestCases(data.results);
-      //   states.testCasesCount = data.resultsLength;
+      states.testCasesCount = data.resultsLength;
     });
   }, [
     returnResult,

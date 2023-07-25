@@ -29,6 +29,8 @@ export default function useAccordionStates({
     setTestCaseLoading,
     handleTestCasesPageChange,
     handleTestCasesRowsPerPageChange,
+    testCasesCount,
+    setTestCasesCount,
   ] = useTestResultsEntryState();
 
   const [
@@ -48,6 +50,8 @@ export default function useAccordionStates({
     setValidationTagsLoading,
     handleValidationTagsPageChange,
     handleValidationTagsRowsPerPageChange,
+    validationTagsCount,
+    setValidationTagsCount,
   ] = useTestResultsEntryState();
 
   const [
@@ -67,6 +71,8 @@ export default function useAccordionStates({
     setValidationPointsLoading,
     handleValidationPointsPageChange,
     handleValidationPointsRowsPerPageChange,
+    validationPointsCount,
+    setValidationPointsCount,
   ] = useTestResultsEntryState();
 
   const [
@@ -86,49 +92,17 @@ export default function useAccordionStates({
     setTestSuiteLoading,
     handleTestSuitesPageChange,
     handleTestSuitesRowsPerPageChange,
+    testSuitesCount,
+    setTestSuitesCount,
   ] = useTestResultsEntryState();
 
   const [testSuitesStatistics, setTestSuitesStatistics] = useState({});
-
-  let testSuitesCount =
-    testSuitesFilter === "any"
-      ? testSuitesStatistics.total
-      : testSuitesFilter === "passed"
-      ? testSuitesStatistics.passed
-      : testSuitesStatistics.failed;
-
-  testSuitesCount = testSuitesCount || 0;
 
   const [testSuitesSelectedFilters, setTestSuitesSelectedFilters] = useState(
     []
   );
 
-  let validationTagsCount = getCount(
-    testCases,
-    activeTestCase,
-    validationTagsFilter,
-    "failedValidationTagsCount",
-    "passedValidationTagsCount",
-    "ValidationTagsCount"
-  );
 
-  let testCasesCount = getCount(
-    testSuites,
-    activeTestSuite,
-    testCasesFilter,
-    "failedTestCasesCount",
-    "passedTestCasesCount",
-    "TestCasesCount"
-  );
-
-  let validationPointsCount = getCount(
-    validationTags,
-    activeValidationTag,
-    validationPointsFilter,
-    "failedValidationPointsCount",
-    "passedValidationPointsCount",
-    "ValidationPointsCount"
-  );
 
   function reset(type) {
     switch (type) {
@@ -510,24 +484,12 @@ export default function useAccordionStates({
     validationTagsFilter,
     validationPointsFilter,
     reset,
+
+    setTestSuitesCount,
+    setTestCasesCount,
+    setValidationTagsCount,
+    setValidationPointsCount,
+
+    testSuitesStatistics,
   };
-}
-
-export function getCount(data, active, filter, failed, passed, total) {
-  let count = 0;
-  if (active > -1) {
-    switch (filter) {
-      case "failed":
-        count = data[active][failed];
-        break;
-
-      case "passed":
-        count = data[active][passed];
-        break;
-
-      default:
-        count = data[active][total];
-    }
-  }
-  return count;
 }

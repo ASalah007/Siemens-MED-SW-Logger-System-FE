@@ -42,6 +42,12 @@ export function useTestResultsAccordionStates() {
     setActiveTestCase,
     setActiveValidationTag,
     setActiveValidationPoint,
+
+    setTestSuitesCount,
+    setTestCasesCount,
+    setValidationTagsCount,
+    setValidationPointsCount,
+    testSuitesStatistics,
   } = states;
 
   useEffect(() => {
@@ -64,8 +70,21 @@ export function useTestResultsAccordionStates() {
   ]);
 
   useEffect(() => {
-    fetchStatistics().then((data) => setTestSuitesStatistics(data.testSuite));
+    fetchStatistics().then((data) => {
+      setTestSuitesStatistics(data.testSuite);
+    });
   }, []);
+
+  useEffect(() => {
+    let testSuitesCount =
+      testSuitesFilter === "any"
+        ? testSuitesStatistics.total
+        : testSuitesFilter === "passed"
+        ? testSuitesStatistics.passed
+        : testSuitesStatistics.failed;
+    testSuitesCount = testSuitesCount || 0;
+    setTestSuitesCount(testSuitesCount);
+  }, [setTestSuitesCount, testSuitesFilter, testSuitesStatistics]);
 
   useEffect(() => {
     if (activeTestSuite < 0) {
@@ -90,6 +109,18 @@ export function useTestResultsAccordionStates() {
     testSuites,
     testCasesFilter,
   ]);
+
+  useEffect(() => {
+    let TCCount = getCount(
+      testSuites,
+      activeTestSuite,
+      testCasesFilter,
+      "failedTestCasesCount",
+      "passedTestCasesCount",
+      "TestCasesCount"
+    );
+    setTestCasesCount(TCCount);
+  }, [activeTestSuite, setTestCasesCount, testCasesFilter, testSuites]);
 
   useEffect(() => {
     if (activeTestCase < 0) {
@@ -117,6 +148,18 @@ export function useTestResultsAccordionStates() {
   ]);
 
   useEffect(() => {
+    let VTCount = getCount(
+      testCases,
+      activeTestCase,
+      validationTagsFilter,
+      "failedValidationTagsCount",
+      "passedValidationTagsCount",
+      "ValidationTagsCount"
+    );
+    setValidationTagsCount(VTCount);
+  }, [activeTestCase, setValidationTagsCount, testCases, validationTagsFilter]);
+
+  useEffect(() => {
     if (activeValidationTag < 0) {
       reset("VP");
       return;
@@ -140,5 +183,41 @@ export function useTestResultsAccordionStates() {
     validationPointsFilter,
   ]);
 
+  useEffect(() => {
+    let VPCount = getCount(
+      validationTags,
+      activeValidationTag,
+      validationPointsFilter,
+      "failedValidationPointsCount",
+      "passedValidationPointsCount",
+      "ValidationPointsCount"
+    );
+    setValidationPointsCount(VPCount);
+  }, [
+    activeValidationTag,
+    setValidationPointsCount,
+    validationPointsFilter,
+    validationTags,
+  ]);
+
   return states;
+}
+
+export function getCount(data, active, filter, failed, passed, total) {
+  let count = 0;
+  if (active > -1) {
+    switch (filter) {
+      case "failed":
+        count = data[active][failed];
+        break;
+
+      case "passed":
+        count = data[active][passed];
+        break;
+
+      default:
+        count = data[active][total];
+    }
+  }
+  return count;
 }

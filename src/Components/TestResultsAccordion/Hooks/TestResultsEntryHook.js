@@ -8,6 +8,7 @@ export function useTestResultsEntryState() {
   const [elementsPage, setElementsPage] = useState(0);
   const [elementsRowsPerPage, setElementsRowsPerPage] = useState(10);
   const [elementsLoading, setElementsLoading] = useState(false);
+  const[elementsCount, setElementsCount] = useState(0)
   const handleElementsPageChange = (newPage) => {
     setActiveElement(-1);
     setElementsPage(newPage);
@@ -34,5 +35,7 @@ export function useTestResultsEntryState() {
     setElementsLoading,
     handleElementsPageChange,
     handleElementsRowsPerPageChange,
+    elementsCount,
+    setElementsCount,
   ];
 }

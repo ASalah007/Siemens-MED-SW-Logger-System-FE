@@ -4,6 +4,7 @@ import useSearchResultsAccordionStates from "./Hooks/SearchResultsAccordionHook"
 
 function SearchResultsAccordion(props) {
   const s = useSearchResultsAccordionStates(props);
+  console.log("count: ", s.testCasesCount);
 
   return (
     <HAccordion
