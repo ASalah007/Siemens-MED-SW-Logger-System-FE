@@ -102,8 +102,6 @@ export default function useAccordionStates({
     []
   );
 
-
-
   function reset(type) {
     switch (type) {
       case "TC":
@@ -137,7 +135,7 @@ export default function useAccordionStates({
 
   const TSData = testSuites.map((e, i) => [
     i + 1,
-    e.status ? "pass" : "fail",
+    e.status ? "🟢" : "🔴",
     formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
     ...Object.entries(e.metaData)
       .filter(([k, v]) => k !== "design_info")
@@ -147,7 +145,7 @@ export default function useAccordionStates({
   const TCColumns = ["id", "status", "duration", "failed VTs"];
   const TCData = testCases.map((e, i) => [
     i + 1,
-    e.status ? "pass" : "fail",
+    e.status ? "🟢" : "🔴",
     formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
     `${e.failedValidationTagsCount}/${e.ValidationTagsCount}`,
   ]);
@@ -162,7 +160,7 @@ export default function useAccordionStates({
   ];
   const VTData = validationTags.map((e) => [
     e.metaData.name,
-    e.status ? "pass" : "fail",
+    e.status ? "🟢" : "🔴",
     formatDuration(new Date(e.end_date) - new Date(e.creation_date)),
     e?.metaData?.metaData?.Description,
     e?.metaData?.metaData && e.metaData.metaData["Executable Path"],
@@ -172,7 +170,7 @@ export default function useAccordionStates({
   const VPColumns = ["id", "status", "mac", "direction", "failed results"];
   const VPData = validationPoints.map((e, i) => [
     i + 1,
-    e.status ? "pass" : "fail",
+    e.status ? "🟢" : "🔴",
     e.levels.mac,
     e.levels.direction,
     `${e.results.reduce((acc, ele) => (acc += ele.status === "fail"), 0)}/${

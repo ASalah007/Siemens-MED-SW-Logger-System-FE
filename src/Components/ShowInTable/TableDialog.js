@@ -44,9 +44,9 @@ function TableDialog(props) {
     },
     setRowProps: (row, rowIndex) => {
       let bg = "";
-      if (row[1] === "false" || row[1] === "fail") bg = "bg-red-200";
+      // if (row[1] === "false" || row[1] === "fail") bg = "bg-red-200";
       // else if (row[1] === "true" || row[1] === "pass") bg = "bg-green-200";
-      else if (rowIndex % 2 === 1) bg = "bg-gray-200";
+      if (rowIndex % 2 === 1) bg = "bg-gray-200";
 
       return {
         className: bg,
