@@ -221,6 +221,7 @@ function FilterAccordion({
   options = {},
   defaultExpanded,
 }) {
+  console.log("here: ", options);
   return (
     <Accordion elevation={0} defaultExpanded={defaultExpanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ p: 0 }}>
@@ -248,8 +249,8 @@ function FilterAccordion({
                             return nw;
                           })
                         }
-                        // options={options[k] ? options[k][l] || [] : []}
-                        options={["op1", "op2"]}
+                        options={(options[k] ? options[k][l] || [] : [])}
+                        // options={["op1", "op2"]}
                         renderOption={(props, option, { selected }) => (
                           <li {...props}>
                             <Checkbox

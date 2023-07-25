@@ -90,28 +90,13 @@ export async function fetchSearchPageOptions() {
   const obj = response.data.data;
   const newObj = {
     testSuites: {
-      "Meta Data": {
-        Owner: obj.test_suites.owner,
-        Version: obj.test_suites.version,
-        Machine: obj.test_suites.machine,
-        "Compilation Mode": obj.test_suites.compilation_Mode,
-        Platform: obj.test_suites.platform,
-        Solution: obj.test_suites.solution,
-        "Tool name": obj.test_suites.tool_name,
-      },
+      "Meta Data": obj.test_suites,
     },
     validationPoints: {
-      Levels: {
-        Mac: obj.validation_point.mac,
-        Direction: obj.validation_point.direction,
-        "Packet Identifier": obj.validation_point.packet_identifier,
-      },
+      Levels: obj.validation_point,
     },
     validationTags: {
-      "Meta Data": {
-        Name: obj.validation_tag.name,
-        "Executable Path": obj.validation_tag.executable_path,
-      },
+      "Meta Data": obj.validation_tag,
     },
   };
   return newObj;

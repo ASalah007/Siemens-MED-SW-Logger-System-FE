@@ -2,6 +2,7 @@ import {
   Button,
   CircularProgress,
   FormControl,
+  IconButton,
   MenuItem,
   Select,
 } from "@mui/material";
@@ -11,6 +12,8 @@ import ParticlesBackground from "./ParticlesBackground";
 import { fetchDatabases } from "../../Services/services";
 import Nav from "../../Components/Navbar/Nav";
 import { useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
@@ -63,10 +66,16 @@ function HomePage() {
                 value={database}
                 onChange={(e) => setDatabase(e.target.value)}
                 sx={{ width: "250px" }}
+                renderValue={(v) => v}
               >
                 {databases.map((d) => (
                   <MenuItem value={d} key={d}>
-                    {d}
+                    <div className="flex justify-between items-center w-full">
+                      <div>{d}</div>
+                      <IconButton>
+                        <DeleteOutlineIcon color="error" />
+                      </IconButton>
+                    </div>
                   </MenuItem>
                 ))}
               </Select>
