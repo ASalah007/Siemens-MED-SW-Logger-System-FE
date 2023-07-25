@@ -6,205 +6,170 @@ export default function useSearchResultsAccordionStates({
   returnResult,
   filterValues,
 }) {
-  const states = useAccordionStates({ nostats: true, nofilter: true });
-  const {
-    testSuites,
-    setTestSuites,
-    testCases,
-    setTestCases,
-    validationTags,
-    setValidationTags,
-    setValidationPoints,
-    setTestSuitesStatistics,
-
-    reset,
-    testSuitesRowsPerPage,
-    testSuitesPage,
-    testSuitesFilter,
-    setTestSuiteLoading,
-    activeTestSuite,
-    testCasesRowsPerPage,
-    testCasesPage,
-    testCasesFilter,
-    activeValidationTag,
-    validationPointsRowsPerPage,
-    validationPointsPage,
-    validationPointsFilter,
-    setTestCaseLoading,
-    activeTestCase,
-    validationTagsRowsPerPage,
-    validationTagsPage,
-    setValidationTagsLoading,
-    validationTagsFilter,
-    setValidationPointsLoading,
-    validationPoints,
-    activeValidationPoint,
-    setActiveTestCase,
-    setActiveValidationTag,
-    setActiveValidationPoint,
-
-    setTestSuitesCount,
-    setTestCasesCount,
-    setValidationTagsCount,
-    setValidationPointsCount,
-  } = states;
+  const s = useAccordionStates({ nostats: true, nofilter: true });
 
   useEffect(() => {
-    fetchStatistics().then((data) => setTestSuitesStatistics(data.testSuite));
-  }, [setTestSuitesStatistics]);
+    fetchStatistics().then((data) => s.setTestSuitesStatistics(data.testSuite));
+  }, [s.setTestSuitesStatistics]);
 
   useEffect(() => {
     if (returnResult !== "testSuite") return;
-    setTestSuiteLoading(true);
+    s.setTestSuiteLoading(true);
 
-    setActiveTestCase(-1);
+    s.setActiveTestCase(-1);
     fetchSearch({
       returnResult,
       ...filterValues,
-      limit: testSuitesRowsPerPage,
-      page: testSuitesPage + 1,
-      status: testSuitesFilter,
+      limit: s.testSuitesRowsPerPage,
+      page: s.testSuitesPage + 1,
+      status: s.testSuitesFilter,
     }).then((data) => {
-      setTestSuites(data.results);
-      setTestSuiteLoading(false);
-      setTestSuitesCount(data.resultsLength); //TODO total count not pagged count
+      s.setTestSuites(data.results);
+      s.setTestSuiteLoading(false);
+      s.setTestSuitesCount(data.resultsLength); //TODO total count not pagged count
     });
   }, [
-    testSuitesRowsPerPage,
-    testSuitesPage,
-    testSuitesFilter,
-    setTestSuiteLoading,
-    setTestSuites,
+    s.testSuitesRowsPerPage,
+    s.testSuitesPage,
+    s.testSuitesFilter,
+    s.setTestSuiteLoading,
+    s.setTestSuites,
     returnResult,
     filterValues,
-    setActiveTestCase,
+    s.setActiveTestCase,
   ]);
 
   // test cases effects
   useEffect(() => {
     if (returnResult === "validationPoint" || returnResult === "validationTag")
       return;
-    if (returnResult !== "testCase" && activeTestSuite < 0) return;
+    if (returnResult !== "testCase" && s.activeTestSuite < 0) return;
 
     const testSuiteId =
-      returnResult !== "testCase" && activeTestSuite > -1
-        ? testSuites[activeTestSuite]._id
+      returnResult !== "testCase" && s.activeTestSuite > -1
+        ? s.testSuites[s.activeTestSuite]._id
         : "";
-    reset("TC");
+    s.reset("TC");
     fetchSearch({
       returnResult: "testCase",
       ...filterValues,
       testSuiteId,
-      limit: testCasesRowsPerPage,
-      page: testCasesPage + 1,
-      status: testCasesFilter,
+      limit: s.testCasesRowsPerPage,
+      page: s.testCasesPage + 1,
+      status: s.testCasesFilter,
     }).then((data) => {
-      setTestCases(data.results);
-      setTestCasesCount(data.resultsLength); // TODO this should be the total count not pagged check with awam
+      s.setTestCases(data.results);
+      s.setTestCasesCount(data.resultsLength); // TODO this should be the total count not pagged check with awam
     });
   }, [
     returnResult,
-    activeTestSuite,
-    testCasesRowsPerPage,
-    testCasesPage,
-    testCasesFilter,
+    s.activeTestSuite,
+    s.testCasesRowsPerPage,
+    s.testCasesPage,
+    s.testCasesFilter,
     filterValues,
-    setActiveValidationTag,
-    setTestCases,
+    s.setActiveValidationTag,
+    s.setTestCases,
   ]);
 
   useEffect(() => {
-    if (activeTestCase !== -1 && returnResult === "testCase") {
-      setTestSuites([testCases[activeTestCase].parent.testSuite]);
-      setTestSuitesCount(1);
+    if (s.activeTestCase !== -1 && returnResult === "testCase") {
+      s.setTestSuites([s.testCases[s.activeTestCase].parent.testSuite]);
+      s.setTestSuitesCount(1);
     }
-  }, [activeTestCase]);
+  }, [s.activeTestCase]);
 
   // validation tag effects
   useEffect(() => {
     if (returnResult === "validationPoint") return;
-    if (returnResult !== "validationTag" && activeTestCase < 0) return;
+    if (returnResult !== "validationTag" && s.activeTestCase < 0) return;
 
     const testCaseId =
-      returnResult !== "validationTag" && activeTestCase > -1
-        ? testCases[activeTestCase]._id
+      returnResult !== "validationTag" && s.activeTestCase > -1
+        ? s.testCases[s.activeTestCase]._id
         : "";
 
-    reset("VT");
+    s.reset("VT");
     fetchSearch({
       returnResult: "validationTag",
       ...filterValues,
       testCaseId,
-      limit: validationTagsRowsPerPage,
-      page: validationTagsPage + 1,
-      status: validationTagsFilter,
+      limit: s.validationTagsRowsPerPage,
+      page: s.validationTagsPage + 1,
+      status: s.validationTagsFilter,
     }).then((data) => {
-      setValidationTags(data.results);
-      setValidationTagsCount(data.resultsLength); // TODO total count not pagged count
+      s.setValidationTags(data.results);
+      s.setValidationTagsCount(data.resultsLength); // TODO total count not pagged count
     });
   }, [
-    activeTestCase,
+    s.activeTestCase,
     filterValues,
     returnResult,
-    setActiveValidationPoint,
-    setValidationTags,
-    validationTagsFilter,
-    validationTagsPage,
-    validationTagsRowsPerPage,
+    s.setActiveValidationPoint,
+    s.setValidationTags,
+    s.validationTagsFilter,
+    s.validationTagsPage,
+    s.validationTagsRowsPerPage,
   ]);
 
   useEffect(() => {
-    if (activeValidationTag !== -1 && returnResult === "validationTag") {
-      setTestSuites([validationTags[activeValidationTag].parent.testSuite]);
-      setTestCases([validationTags[activeValidationTag].parent.testCase]);
-      setTestSuitesCount(1);
-      setTestCasesCount(1);
+    if (s.activeValidationTag !== -1 && returnResult === "validationTag") {
+      s.setTestSuites([
+        s.validationTags[s.activeValidationTag].parent.testSuite,
+      ]);
+      s.setTestCases([s.validationTags[s.activeValidationTag].parent.testCase]);
+      s.setTestSuitesCount(1);
+      s.setTestCasesCount(1);
     }
-  }, [activeValidationTag]);
+  }, [s.activeValidationTag]);
 
   // validation point effects
   useEffect(() => {
-    if (returnResult !== "validationPoint" && activeValidationTag < 0) return;
+    if (returnResult !== "validationPoint" && s.activeValidationTag < 0) return;
 
     const validationTagId =
-      returnResult !== "validationPoint" && activeValidationTag > -1
-        ? validationTags[activeValidationTag]._id
+      returnResult !== "validationPoint" && s.activeValidationTag > -1
+        ? s.validationTags[s.activeValidationTag]._id
         : "";
 
-    reset("VP");
+    s.reset("VP");
     fetchSearch({
       returnResult: "validationPoint",
       ...filterValues,
       validationTagId,
-      limit: validationPointsRowsPerPage,
-      page: validationPointsPage + 1,
-      status: validationPointsFilter,
+      limit: s.validationPointsRowsPerPage,
+      page: s.validationPointsPage + 1,
+      status: s.validationPointsFilter,
     }).then((data) => {
-      setValidationPoints(data.results);
-      setValidationPointsCount(data.resultsLength); // TODO same here
+      s.setValidationPoints(data.results);
+      s.setValidationPointsCount(data.resultsLength); // TODO same here
     });
   }, [
-    activeValidationTag,
+    s.activeValidationTag,
     filterValues,
     returnResult,
-    setValidationPoints,
-    validationPointsFilter,
-    validationPointsPage,
-    validationPointsRowsPerPage,
+    s.setValidationPoints,
+    s.validationPointsFilter,
+    s.validationPointsPage,
+    s.validationPointsRowsPerPage,
   ]);
 
   useEffect(() => {
-    if (activeValidationPoint !== -1 && returnResult === "validationPoint") {
-      setTestSuites([validationPoints[activeValidationPoint].parent.testSuite]);
-      setTestCases([validationPoints[activeValidationPoint].parent.testCase]);
-      setValidationTags([
-        validationPoints[activeValidationPoint].parent.validationTag,
+    if (s.activeValidationPoint !== -1 && returnResult === "validationPoint") {
+      s.setTestSuites([
+        s.validationPoints[s.activeValidationPoint].parent.testSuite,
       ]);
-      setTestSuitesCount(1);
-      setTestCasesCount(1);
-      setValidationTagsCount(1);
+      s.setTestCases([
+        s.validationPoints[s.activeValidationPoint].parent.testCase,
+      ]);
+      s.setValidationTags([
+        s.validationPoints[s.activeValidationPoint].parent.validationTag,
+      ]);
+      s.setTestSuitesCount(1);
+      s.setTestCasesCount(1);
+      s.setValidationTagsCount(1);
     }
-  }, [activeValidationPoint]);
+  }, [s.activeValidationPoint]);
 
-  return states;
+  return s;
 }

@@ -9,197 +9,163 @@ import {
 import useAccordionStates from "./AccordionHook.js";
 
 export function useTestResultsAccordionStates() {
-  const states = useAccordionStates({});
-  const {
-    reset,
-    testSuitesRowsPerPage,
-    testSuitesPage,
-    testSuitesFilter,
-    setTestSuiteLoading,
-    setTestSuites,
-    activeTestSuite,
-    testCasesRowsPerPage,
-    testCasesPage,
-    testSuites,
-    testCasesFilter,
-    activeValidationTag,
-    validationTags,
-    validationPointsRowsPerPage,
-    validationPointsPage,
-    validationPointsFilter,
-    setTestSuitesStatistics,
-    setTestCaseLoading,
-    setTestCases,
-    activeTestCase,
-    testCases,
-    validationTagsRowsPerPage,
-    validationTagsPage,
-    setValidationTags,
-    setValidationTagsLoading,
-    validationTagsFilter,
-    setValidationPoints,
-    setValidationPointsLoading,
-    setActiveTestCase,
-    setActiveValidationTag,
-    setActiveValidationPoint,
-
-    setTestSuitesCount,
-    setTestCasesCount,
-    setValidationTagsCount,
-    setValidationPointsCount,
-    testSuitesStatistics,
-  } = states;
+  const s = useAccordionStates({});
 
   useEffect(() => {
-    setTestSuiteLoading(true);
+    s.setTestSuiteLoading(true);
     fetchTestSuites(
-      testSuitesRowsPerPage,
-      testSuitesPage + 1,
-      testSuitesFilter
+      s.testSuitesRowsPerPage,
+      s.testSuitesPage + 1,
+      s.testSuitesFilter
     ).then((data) => {
-      setTestSuites(data.testSuites);
-      setTestSuiteLoading(false);
+      s.setTestSuites(data.testSuites);
+      s.setTestSuiteLoading(false);
     });
   }, [
-    testSuitesRowsPerPage,
-    testSuitesPage,
-    testSuitesFilter,
-    setTestSuiteLoading,
-    setTestSuites,
+    s.testSuitesRowsPerPage,
+    s.testSuitesPage,
+    s.testSuitesFilter,
+    s.setTestSuiteLoading,
+    s.setTestSuites,
   ]);
 
   useEffect(() => {
     fetchStatistics().then((data) => {
-      setTestSuitesStatistics(data.testSuite);
+      s.setTestSuitesStatistics(data.testSuite);
     });
   }, []);
 
   useEffect(() => {
     let testSuitesCount =
-      testSuitesFilter === "any"
-        ? testSuitesStatistics.total
-        : testSuitesFilter === "passed"
-        ? testSuitesStatistics.passed
-        : testSuitesStatistics.failed;
+      s.testSuitesFilter === "any"
+        ? s.testSuitesStatistics.total
+        : s.testSuitesFilter === "passed"
+        ? s.testSuitesStatistics.passed
+        : s.testSuitesStatistics.failed;
     testSuitesCount = testSuitesCount || 0;
-    setTestSuitesCount(testSuitesCount);
-  }, [setTestSuitesCount, testSuitesFilter, testSuitesStatistics]);
+    s.setTestSuitesCount(testSuitesCount);
+  }, [s.setTestSuitesCount, s.testSuitesFilter, s.testSuitesStatistics]);
 
   useEffect(() => {
-    if (activeTestSuite < 0) {
-      reset("TC");
+    if (s.activeTestSuite < 0) {
+      s.reset("TC");
       return;
     }
-    setActiveTestCase(-1);
-    setTestCaseLoading(true);
+    s.setActiveTestCase(-1);
+    s.setTestCaseLoading(true);
     fetchTestCases(
-      testSuites[activeTestSuite]._id,
-      testCasesRowsPerPage,
-      testCasesPage + 1,
-      testCasesFilter
+      s.testSuites[s.activeTestSuite]._id,
+      s.testCasesRowsPerPage,
+      s.testCasesPage + 1,
+      s.testCasesFilter
     ).then((data) => {
-      setTestCases(data);
-      setTestCaseLoading(false);
+      s.setTestCases(data);
+      s.setTestCaseLoading(false);
     });
   }, [
-    activeTestSuite,
-    testCasesRowsPerPage,
-    testCasesPage,
-    testSuites,
-    testCasesFilter,
+    s.activeTestSuite,
+    s.testCasesRowsPerPage,
+    s.testCasesPage,
+    s.testSuites,
+    s.testCasesFilter,
   ]);
 
   useEffect(() => {
     let TCCount = getCount(
-      testSuites,
-      activeTestSuite,
-      testCasesFilter,
+      s.testSuites,
+      s.activeTestSuite,
+      s.testCasesFilter,
       "failedTestCasesCount",
       "passedTestCasesCount",
       "TestCasesCount"
     );
-    setTestCasesCount(TCCount);
-  }, [activeTestSuite, setTestCasesCount, testCasesFilter, testSuites]);
+    s.setTestCasesCount(TCCount);
+  }, [s.activeTestSuite, s.setTestCasesCount, s.testCasesFilter, s.testSuites]);
 
   useEffect(() => {
-    if (activeTestCase < 0) {
-      reset("VT");
+    if (s.activeTestCase < 0) {
+      s.reset("VT");
       return;
     }
-    setValidationTagsLoading(true);
-    setActiveValidationTag(-1);
+    s.setValidationTagsLoading(true);
+    s.setActiveValidationTag(-1);
     fetchValidationTags(
-      testCases[activeTestCase]._id,
-      validationTagsRowsPerPage,
-      validationTagsPage + 1,
-      validationTagsFilter
+      s.testCases[s.activeTestCase]._id,
+      s.validationTagsRowsPerPage,
+      s.validationTagsPage + 1,
+      s.validationTagsFilter
     ).then((data) => {
-      setValidationTags(data);
-      setValidationTagsLoading(false);
+      s.setValidationTags(data);
+      s.setValidationTagsLoading(false);
     });
   }, [
-    activeTestCase,
-    testCases,
-    validationTagsRowsPerPage,
-    validationTagsPage,
-    testCasesFilter,
-    validationTagsFilter,
+    s.activeTestCase,
+    s.testCases,
+    s.validationTagsRowsPerPage,
+    s.validationTagsPage,
+    s.testCasesFilter,
+    s.validationTagsFilter,
   ]);
 
   useEffect(() => {
     let VTCount = getCount(
-      testCases,
-      activeTestCase,
-      validationTagsFilter,
+      s.testCases,
+      s.activeTestCase,
+      s.validationTagsFilter,
       "failedValidationTagsCount",
       "passedValidationTagsCount",
       "ValidationTagsCount"
     );
-    setValidationTagsCount(VTCount);
-  }, [activeTestCase, setValidationTagsCount, testCases, validationTagsFilter]);
+    s.setValidationTagsCount(VTCount);
+  }, [
+    s.activeTestCase,
+    s.setValidationTagsCount,
+    s.testCases,
+    s.validationTagsFilter,
+  ]);
 
   useEffect(() => {
-    if (activeValidationTag < 0) {
-      reset("VP");
+    if (s.activeValidationTag < 0) {
+      s.reset("VP");
       return;
     }
-    setValidationPointsLoading(true);
-    setActiveValidationPoint(-1);
+    s.setValidationPointsLoading(true);
+    s.setActiveValidationPoint(-1);
     fetchValidationPoints(
-      validationTags[activeValidationTag]._id,
-      validationPointsRowsPerPage,
-      validationPointsPage + 1,
-      validationPointsFilter
+      s.validationTags[s.activeValidationTag]._id,
+      s.validationPointsRowsPerPage,
+      s.validationPointsPage + 1,
+      s.validationPointsFilter
     ).then((data) => {
-      setValidationPoints(data);
-      setValidationPointsLoading(false);
+      s.setValidationPoints(data);
+      s.setValidationPointsLoading(false);
     });
   }, [
-    activeValidationTag,
-    validationTags,
-    validationPointsRowsPerPage,
-    validationPointsPage,
-    validationPointsFilter,
+    s.activeValidationTag,
+    s.validationTags,
+    s.validationPointsRowsPerPage,
+    s.validationPointsPage,
+    s.validationPointsFilter,
   ]);
 
   useEffect(() => {
     let VPCount = getCount(
-      validationTags,
-      activeValidationTag,
-      validationPointsFilter,
+      s.validationTags,
+      s.activeValidationTag,
+      s.validationPointsFilter,
       "failedValidationPointsCount",
       "passedValidationPointsCount",
       "ValidationPointsCount"
     );
-    setValidationPointsCount(VPCount);
+    s.setValidationPointsCount(VPCount);
   }, [
-    activeValidationTag,
-    setValidationPointsCount,
-    validationPointsFilter,
-    validationTags,
+    s.activeValidationTag,
+    s.setValidationPointsCount,
+    s.validationPointsFilter,
+    s.validationTags,
   ]);
 
-  return states;
+  return s;
 }
 
 export function getCount(data, active, filter, failed, passed, total) {

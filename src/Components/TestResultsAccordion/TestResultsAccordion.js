@@ -3,106 +3,59 @@ import React from "react";
 import { useTestResultsAccordionStates } from "./Hooks/TestResultsAccordionHook.js";
 
 export default function TestResultsAccordion(props) {
-  const {
-    firstColumnElements,
-    firstHeaderOptions,
-
-    secondColumnElements,
-    secondHeaderOptions,
-
-    thirdColumnElements,
-    thirdHeaderOptions,
-
-    fourthColumnElements,
-    fourthHeaderOptions,
-
-    activeTestSuite,
-    activeTestCase,
-    activeValidationTag,
-    activeValidationPoint,
-    validationTags,
-
-    testCasesCount,
-    testCasesPage,
-    testCasesRowsPerPage,
-    handleTestCasesPageChange,
-    handleTestCasesRowsPerPageChange,
-
-    validationTagsCount,
-    validationTagsPage,
-    validationTagsRowsPerPage,
-    handleValidationTagsPageChange,
-    handleValidationTagsRowsPerPageChange,
-
-    validationPointsCount,
-    validationPointsPage,
-    validationPointsRowsPerPage,
-    handleValidationPointsPageChange,
-    handleValidationPointsRowsPerPageChange,
-
-    testCaseLoading,
-    validationTagsLoading,
-    validationPointsLoading,
-
-    testSuitesCount,
-    testSuitesPage,
-    testSuitesRowsPerPage,
-    handleTestSuitesPageChange,
-    handleTestSuitesRowsPerPageChange,
-    testSuiteLoading,
-  } = useTestResultsAccordionStates(props);
+  const s = useTestResultsAccordionStates(props);
 
   return (
     <div className="flex flex-col grow max-h-full">
       <HAccordion
-        firstColumnElements={firstColumnElements}
-        firstHeaderOptions={firstHeaderOptions}
+        firstColumnElements={s.firstColumnElements}
+        firstHeaderOptions={s.firstHeaderOptions}
         firstColumnPlaceHolder={
-          "Test Suit " + (activeTestSuite >= 0 ? activeTestSuite : "")
+          "Test Suit " + (s.activeTestSuite >= 0 ? s.activeTestSuite : "")
         }
-        firstColumnCount={testSuitesCount}
-        firstColumnPage={testSuitesPage}
-        firstColumnRowsPerPage={testSuitesRowsPerPage}
-        firstColumnLoading={testSuiteLoading}
-        onFirstColumnPageChange={handleTestSuitesPageChange}
-        onFirstColumnRowsPerPageChange={handleTestSuitesRowsPerPageChange}
-        secondColumnElements={secondColumnElements}
-        secondHeaderOptions={secondHeaderOptions}
+        firstColumnCount={s.testSuitesCount}
+        firstColumnPage={s.testSuitesPage}
+        firstColumnRowsPerPage={s.testSuitesRowsPerPage}
+        firstColumnLoading={s.testSuiteLoading}
+        onFirstColumnPageChange={s.handleTestSuitesPageChange}
+        onFirstColumnRowsPerPageChange={s.handleTestSuitesRowsPerPageChange}
+        secondColumnElements={s.secondColumnElements}
+        secondHeaderOptions={s.secondHeaderOptions}
         secondColumnPlaceHolder={
-          "Test Case " + (activeTestCase >= 0 ? activeTestCase : "")
+          "Test Case " + (s.activeTestCase >= 0 ? s.activeTestCase : "")
         }
-        secondColumnCount={testCasesCount}
-        secondColumnPage={testCasesPage}
-        secondColumnRowsPerPage={testCasesRowsPerPage}
-        secondColumnLoading={testCaseLoading}
-        onSecondColumnPageChange={handleTestCasesPageChange}
-        onSecondColumnRowsPerPageChange={handleTestCasesRowsPerPageChange}
-        thirdColumnElements={thirdColumnElements}
-        thirdHeaderOptions={thirdHeaderOptions}
+        secondColumnCount={s.testCasesCount}
+        secondColumnPage={s.testCasesPage}
+        secondColumnRowsPerPage={s.testCasesRowsPerPage}
+        secondColumnLoading={s.testCaseLoading}
+        onSecondColumnPageChange={s.handleTestCasesPageChange}
+        onSecondColumnRowsPerPageChange={s.handleTestCasesRowsPerPageChange}
+        thirdColumnElements={s.thirdColumnElements}
+        thirdHeaderOptions={s.thirdHeaderOptions}
         thirdColumnPlaceHolder={
-          activeValidationTag >= 0
-            ? validationTags[activeValidationTag].metaData.name
+          s.activeValidationTag >= 0
+            ? s.validationTags[s.activeValidationTag].metaData.name
             : "Validation Tag"
         }
-        thirdColumnCount={validationTagsCount}
-        thirdColumnPage={validationTagsPage}
-        thirdColumnRowsPerPage={validationTagsRowsPerPage}
-        thirdColumnLoading={validationTagsLoading}
-        onThirdColumnPageChange={handleValidationTagsPageChange}
-        onThirdColumnRowsPerPageChange={handleValidationTagsRowsPerPageChange}
-        fourthColumnElements={fourthColumnElements}
-        fourthHeaderOptions={fourthHeaderOptions}
+        thirdColumnCount={s.validationTagsCount}
+        thirdColumnPage={s.validationTagsPage}
+        thirdColumnRowsPerPage={s.validationTagsRowsPerPage}
+        thirdColumnLoading={s.validationTagsLoading}
+        onThirdColumnPageChange={s.handleValidationTagsPageChange}
+        onThirdColumnRowsPerPageChange={s.handleValidationTagsRowsPerPageChange}
+        fourthColumnElements={s.fourthColumnElements}
+        fourthHeaderOptions={s.fourthHeaderOptions}
         fourthColumnPlaceHolder={
           "Validation Point " +
-          (activeValidationPoint >= 0 ? activeValidationPoint : "")
+          (s.activeValidationPoint >= 0 ? s.activeValidationPoint : "")
         }
-        fourthColumnCount={validationPointsCount}
-        fourthColumnPage={validationPointsPage}
-        fourthColumnRowsPerPage={validationPointsRowsPerPage}
-        fourthColumnLoading={validationPointsLoading}
-        onFourthColumnPageChange={handleValidationPointsPageChange}
+        fourthColumnCount={s.validationPointsCount}
+        fourthColumnPage={s.validationPointsPage}
+        fourthColumnRowsPerPage={s.validationPointsRowsPerPage}
+        fourthColumnLoading={s.validationPointsLoading}
+        onFourthColumnPageChange={s.handleValidationPointsPageChange}
         onFourthColumnRowsPerPageChange={
-          handleValidationPointsRowsPerPageChange
+          s.handleValidationPointsRowsPerPageChange
         }
       />
     </div>
