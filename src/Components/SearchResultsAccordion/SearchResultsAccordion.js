@@ -56,6 +56,7 @@ function SearchResultsAccordion(props) {
       onFourthColumnRowsPerPageChange={
         s.handleValidationPointsRowsPerPageChange
       }
+      nostats
     />
   );
 }

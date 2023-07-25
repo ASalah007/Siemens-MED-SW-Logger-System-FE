@@ -48,6 +48,8 @@ function HAccordion({
   secondColumnLoading,
   thirdColumnLoading,
   fourthColumnLoading,
+
+  nostats,
 }) {
   const [divsWidth, setDivsWidth] = useState([]);
   const divsRef = [useRef(), useRef(), useRef(), useRef()];
@@ -121,6 +123,7 @@ function HAccordion({
           total={firstHeaderOptions.total}
           failed={firstHeaderOptions.failed}
           title={firstColumnPlaceHolder}
+          nostats={nostats}
         />
       )}
       {minimized[1] && (
@@ -129,6 +132,7 @@ function HAccordion({
           total={secondHeaderOptions.total}
           failed={secondHeaderOptions.failed}
           title={secondColumnPlaceHolder}
+          nostats={nostats}
         />
       )}
       {minimized[2] && (
@@ -137,6 +141,7 @@ function HAccordion({
           total={thirdHeaderOptions.total}
           failed={thirdHeaderOptions.failed}
           title={thirdColumnPlaceHolder}
+          nostats={nostats}
         />
       )}
       {minimized[3] && (
@@ -145,6 +150,7 @@ function HAccordion({
           total={fourthHeaderOptions.total}
           failed={fourthHeaderOptions.failed}
           title={fourthColumnPlaceHolder}
+          nostats={nostats}
         />
       )}
 
@@ -328,7 +334,7 @@ function HAccordion({
   );
 }
 
-function MinimizedColumn({ total, failed, onMaximize, title }) {
+function MinimizedColumn({ total, failed, onMaximize, title, nostats }) {
   return (
     <div className="flex flex-col border-r">
       <div className="bg-[#2D3047] flex flex-col gap-1 h-28 items-center p-1">
@@ -337,12 +343,16 @@ function MinimizedColumn({ total, failed, onMaximize, title }) {
             <KeyboardDoubleArrowRightIcon sx={{ color: "#ffca3a" }} />
           </IconButton>
         </Tooltip>
-        <div className="text-fail font-bold">
-          {failed}/{total}
-        </div>
-        <div className="text-success font-bold">
-          {total - failed}/{total}
-        </div>
+        {!nostats && (
+          <>
+            <div className="text-fail font-bold">
+              {failed}/{total}
+            </div>
+            <div className="text-success font-bold">
+              {total - failed}/{total}
+            </div>
+          </>
+        )}
       </div>
       <div className="flex justify-center items-center w-8 grow">
         <div className="-rotate-90 text-2xl whitespace-nowrap">{title}</div>
