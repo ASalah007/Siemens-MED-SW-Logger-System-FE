@@ -106,7 +106,7 @@ export default function useAccordionStates({
   let validationTagsCount = getCount(
     testCases,
     activeTestCase,
-    testCasesFilter,
+    validationTagsFilter,
     "failedValidationTagsCount",
     "passedValidationTagsCount",
     "ValidationTagsCount"
@@ -234,10 +234,12 @@ export default function useAccordionStates({
     onPassedClick: () => {
       setTestSuitesFilter(testSuitesFilter === "passed" ? "any" : "passed");
       setActiveTestSuite(-1);
+      setTestSuitesPage(0);
     },
     onFailedClick: () => {
       setTestSuitesFilter(testSuitesFilter === "failed" ? "any" : "failed");
       setActiveTestSuite(-1);
+      setTestSuitesPage(0);
     },
     nostats,
     actionElements: (
@@ -295,10 +297,12 @@ export default function useAccordionStates({
     onPassedClick: () => {
       setTestCasesFilter(testCasesFilter === "passed" ? "any" : "passed");
       setActiveTestCase(-1);
+      setTestCasesPage(0);
     },
     onFailedClick: () => {
       setTestCasesFilter(testCasesFilter === "failed" ? "any" : "failed");
       setActiveTestCase(-1);
+      setTestCasesPage(0);
     },
     nostats,
     actionElements: (
@@ -400,12 +404,14 @@ export default function useAccordionStates({
         validationPointsFilter === "passed" ? "any" : "passed"
       );
       setActiveValidationPoint(-1);
+      setValidationPointsPage(0);
     },
     onFailedClick: () => {
       setValidationPointsFilter(
         validationPointsFilter === "failed" ? "any" : "failed"
       );
       setActiveValidationPoint(-1);
+      setValidationPointsPage(0);
     },
     nostats,
     actionElements: (
