@@ -42,6 +42,11 @@ export default function useSearchResultsAccordionStates({
     setActiveTestCase,
     setActiveValidationTag,
     setActiveValidationPoint,
+
+    setTestSuitesCount,
+    setTestCasesCount,
+    setValidationTagsCount,
+    setValidationPointsCount,
   } = states;
 
   useEffect(() => {
@@ -62,7 +67,7 @@ export default function useSearchResultsAccordionStates({
     }).then((data) => {
       setTestSuites(data.results);
       setTestSuiteLoading(false);
-      // states.testSuitesCount = data.resultsLength;
+      setTestSuitesCount(data.resultsLength); //TODO total count not pagged count
     });
   }, [
     testSuitesRowsPerPage,
@@ -95,7 +100,7 @@ export default function useSearchResultsAccordionStates({
       status: testCasesFilter,
     }).then((data) => {
       setTestCases(data.results);
-      states.testCasesCount = data.resultsLength;
+      setTestCasesCount(data.resultsLength); // TODO this should be the total count not pagged check with awam
     });
   }, [
     returnResult,
@@ -109,8 +114,10 @@ export default function useSearchResultsAccordionStates({
   ]);
 
   useEffect(() => {
-    if (activeTestCase !== -1 && returnResult === "testCase")
+    if (activeTestCase !== -1 && returnResult === "testCase") {
       setTestSuites([testCases[activeTestCase].parent.testSuite]);
+      setTestSuitesCount(1);
+    }
   }, [activeTestCase]);
 
   // validation tag effects
@@ -131,7 +138,10 @@ export default function useSearchResultsAccordionStates({
       limit: validationTagsRowsPerPage,
       page: validationTagsPage + 1,
       status: validationTagsFilter,
-    }).then((data) => setValidationTags(data.results));
+    }).then((data) => {
+      setValidationTags(data.results);
+      setValidationTagsCount(data.resultsLength); // TODO total count not pagged count
+    });
   }, [
     activeTestCase,
     filterValues,
@@ -147,6 +157,8 @@ export default function useSearchResultsAccordionStates({
     if (activeValidationTag !== -1 && returnResult === "validationTag") {
       setTestSuites([validationTags[activeValidationTag].parent.testSuite]);
       setTestCases([validationTags[activeValidationTag].parent.testCase]);
+      setTestSuitesCount(1);
+      setTestCasesCount(1);
     }
   }, [activeValidationTag]);
 
@@ -167,7 +179,10 @@ export default function useSearchResultsAccordionStates({
       limit: validationPointsRowsPerPage,
       page: validationPointsPage + 1,
       status: validationPointsFilter,
-    }).then((data) => setValidationPoints(data.results));
+    }).then((data) => {
+      setValidationPoints(data.results);
+      setValidationPointsCount(data.resultsLength); // TODO same here
+    });
   }, [
     activeValidationTag,
     filterValues,
@@ -185,6 +200,9 @@ export default function useSearchResultsAccordionStates({
       setValidationTags([
         validationPoints[activeValidationPoint].parent.validationTag,
       ]);
+      setTestSuitesCount(1);
+      setTestCasesCount(1);
+      setValidationTagsCount(1);
     }
   }, [activeValidationPoint]);
 
