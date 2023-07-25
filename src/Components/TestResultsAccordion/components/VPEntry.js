@@ -9,8 +9,13 @@ function VPEntry({ data, num, onClick, active }) {
   let resultsData = [];
 
   if (data.results) {
+    console.log("results: ", data.results[0]);
     resultsColumns = Object.keys(data.results[0]);
-    resultsData = data.results.map((e) => Object.values(e));
+    resultsData = data.results.map((e) => {
+      const v = Object.values(e);
+      v[1] = v[1] === "pass" ? "🟢" : "🔴";
+      return v;
+    });
   }
 
   const failedCount =
