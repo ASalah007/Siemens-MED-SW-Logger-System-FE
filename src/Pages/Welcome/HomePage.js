@@ -1,19 +1,25 @@
 import {
+  Alert,
   Button,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   FormControl,
   IconButton,
   MenuItem,
   Select,
+  Snackbar,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import ParticlesBackground from "./ParticlesBackground";
-import { fetchDatabases } from "../../Services/services";
+import { deleteDatabase, fetchDatabases } from "../../Services/services";
 import Nav from "../../Components/Navbar/Nav";
 import { useNavigate } from "react-router-dom";
-import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ConfirmedDelete from "../../Components/CofirmedDelete/ConfirmedDelete";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
@@ -22,14 +28,18 @@ function HomePage() {
   const [connectedDatabase, setConnectedDatabase] = useState(
     sessionStorage.getItem("connectedDatabase")
   );
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [databaseToDelete, setDatabaseToDelete] = useState(false);
+  const [deleteResult, setDeleteResult] = useState(false);
+  const [resultMessage, setResultMessage] = useState("");
 
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);
     setConnectedDatabase(database);
   }
-  const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (connectedDatabase) navigate("/connected");
@@ -72,13 +82,46 @@ function HomePage() {
                   <MenuItem value={d} key={d}>
                     <div className="flex justify-between items-center w-full">
                       <div>{d}</div>
-                      <IconButton>
+                      <IconButton
+                        onClick={() => {
+                          setOpenConfirmation(true);
+                          setDatabaseToDelete(d);
+                        }}
+                      >
                         <DeleteOutlineIcon color="error" />
                       </IconButton>
                     </div>
                   </MenuItem>
                 ))}
               </Select>
+              <Dialog
+                open={openConfirmation}
+                onClose={() => setOpenConfirmation(false)}
+                maxWidth="xs"
+              >
+                <DialogTitle>Are you Sure !</DialogTitle>
+                <DialogContent>
+                  Please note that this action can NOT be undone.
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setOpenConfirmation(false)} autoFocus>
+                    Cancel
+                  </Button>
+                  <Button
+                    color="error"
+                    onClick={() => {
+                      setOpenConfirmation(false);
+                      deleteDatabase(databaseToDelete).then((res) => {
+                        setDeleteResult(res.status);
+                        setResultMessage(res.messages);
+                        setOpenSnackbar(true);
+                      });
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </FormControl>
             <Button
               variant="contained"
@@ -108,6 +151,19 @@ function HomePage() {
           </div>
         </div>
       </div>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert
+          severity={deleteResult === "fail" ? "warning" : "success"}
+          sx={{ width: "100%" }}
+          onClose={() => setOpenSnackbar(false)}
+        >
+          {resultMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

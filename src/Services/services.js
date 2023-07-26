@@ -1,3 +1,4 @@
+import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 import axios from "axios";
 const BASEURL = "http://egc-med-tesla:8080/";
 
@@ -10,6 +11,7 @@ const urls = {
   getSearchPageOptions: "search/",
   getStatistics: "statistics/",
   search: "search/",
+  deleteDatabase: "database/urls",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = BASEURL + v));
@@ -166,4 +168,15 @@ export async function fetchSearch({
 
   const response = await axios.post(url, body);
   return response.data;
+}
+
+export async function deleteDatabase(databaseName) {
+  try {
+    const response = await axios.delete(urls.deleteDatabase, {
+      params: { databaseName },
+    });
+    return response.data;
+  } catch (err) {
+    return { status: "fail", message: err.message };
+  }
 }
