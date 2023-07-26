@@ -11,8 +11,8 @@ function VPEntry({ data, num, onClick, active }) {
   if (data.results) {
     resultsColumns = Object.keys(data.results[0]);
     resultsData = data.results.map((e) => {
-      if (e.status === "pass") e.status = "🟢";
-      if (e.status === "fail") e.status = "🔴";
+      if (e.status.toLowerCase() === "pass") e.status = "🟢";
+      if (e.status.toLowerCase() === "fail") e.status = "🔴";
 
       return Object.values(e);
     });
