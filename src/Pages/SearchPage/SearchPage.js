@@ -262,7 +262,26 @@ function FilterAccordion({
                             {option}
                           </li>
                         )}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            error={
+                              values[k][l].length > 0 &&
+                              values[k][l].some((el) => {
+                                if (!options[k] || !options[k][l]) return false;
+                                return !options[k][l].includes(el);
+                              })
+                            }
+                            helperText={
+                              values[k][l].length > 0 &&
+                              values[k][l].some((el) => {
+                                if (!options[k] || !options[k][l]) return false;
+                                return !options[k][l].includes(el);
+                              }) &&
+                              "there is an option that doesn't exist in the database"
+                            }
+                          />
+                        )}
                       />
                     }
                   </FilterItem>
