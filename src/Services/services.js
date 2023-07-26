@@ -144,7 +144,6 @@ export async function fetchSearch({
     select: returnResult,
     testSuites: {
       ...testSuitesValues["Meta Data"],
-      status,
       _id: testSuiteId,
       design_info: {
         dut_instance_info: {
@@ -153,19 +152,18 @@ export async function fetchSearch({
         },
       },
     },
-    testCases: { _id: testCaseId, status },
+    testCases: { _id: testCaseId, status: [] }, //TODO change this
     validationTags: {
       ...validationTagsValues["Meta Data"],
-      status,
       _id: validationTagId,
     },
     validationPoints: {
       ...validationPointsValues.Levels,
-      status,
       _id: validationPointId,
     },
   };
 
+  console.log(body);
   const response = await axios.post(url, body);
   return response.data;
 }

@@ -34,6 +34,7 @@ const testSuitesFilters = {
     "platform",
     "solution",
     "tool_name",
+    "status",
   ],
 
   // "SA Configuration": [
@@ -58,13 +59,13 @@ const testSuitesFilters = {
   // ],
 };
 const testCasesFilters = {
-  "Meta Data": ["Streaming Type", "Packet Per Burst", "status"],
+  "Meta Data": ["status"],
 };
 const validationTagsFilters = {
-  "Meta Data": ["Description", "executable_path", "name"],
+  "Meta Data": ["Description", "executable_path", "name", "status"],
 };
 const validationPointsFilters = {
-  Levels: ["mac", "direction", "packet_identifier"],
+  Levels: ["mac", "direction", "packet_identifier", "status"],
 };
 
 function createObjectByKeys(filters) {
@@ -249,7 +250,13 @@ function FilterAccordion({
                             return nw;
                           })
                         }
-                        options={options[k] ? options[k][l] || [] : []}
+                        options={
+                          options[k]
+                            ? options[k][l]
+                              ? options[k][l].map((e) => String(e))
+                              : []
+                            : []
+                        }
                         // options={["op1", "op2"]}
                         renderOption={(props, option, { selected }) => (
                           <li {...props}>
@@ -269,14 +276,18 @@ function FilterAccordion({
                               values[k][l].length > 0 &&
                               values[k][l].some((el) => {
                                 if (!options[k] || !options[k][l]) return false;
-                                return !options[k][l].includes(el);
+                                return !options[k][l]
+                                  .map((e) => String(e))
+                                  .includes(el);
                               })
                             }
                             helperText={
                               values[k][l].length > 0 &&
                               values[k][l].some((el) => {
                                 if (!options[k] || !options[k][l]) return false;
-                                return !options[k][l].includes(el);
+                                return !options[k][l]
+                                  .map((e) => String(e))
+                                  .includes(el);
                               }) &&
                               "there is an option that doesn't exist in the database"
                             }
