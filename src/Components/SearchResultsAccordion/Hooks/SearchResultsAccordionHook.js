@@ -51,6 +51,7 @@ export default function useSearchResultsAccordionStates({
         ? s.testSuites[s.activeTestSuite]._id
         : "";
     s.reset("TC");
+    s.setTestCaseLoading(true);
     fetchSearch({
       returnResult: "testCase",
       ...filterValues,
@@ -61,6 +62,7 @@ export default function useSearchResultsAccordionStates({
     }).then((data) => {
       s.setTestCases(data.results);
       s.setTestCasesCount(data.resultsLength); // TODO this should be the total count not pagged check with awam
+      s.setTestCaseLoading(false);
     });
   }, [
     returnResult,
@@ -91,6 +93,7 @@ export default function useSearchResultsAccordionStates({
         : "";
 
     s.reset("VT");
+    s.setValidationTagsLoading(true);
     fetchSearch({
       returnResult: "validationTag",
       ...filterValues,
@@ -101,6 +104,7 @@ export default function useSearchResultsAccordionStates({
     }).then((data) => {
       s.setValidationTags(data.results);
       s.setValidationTagsCount(data.resultsLength); // TODO total count not pagged count
+      s.setValidationTagsLoading(false);
     });
   }, [
     s.activeTestCase,
@@ -134,6 +138,7 @@ export default function useSearchResultsAccordionStates({
         : "";
 
     s.reset("VP");
+    s.setValidationPointsLoading(true);
     fetchSearch({
       returnResult: "validationPoint",
       ...filterValues,
@@ -144,6 +149,7 @@ export default function useSearchResultsAccordionStates({
     }).then((data) => {
       s.setValidationPoints(data.results);
       s.setValidationPointsCount(data.resultsLength); // TODO same here
+      s.setValidationPointsLoading(false);
     });
   }, [
     s.activeValidationTag,
