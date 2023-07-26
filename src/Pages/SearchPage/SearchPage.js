@@ -36,26 +36,26 @@ const testSuitesFilters = {
     "tool_name",
   ],
 
-  "SA Configuration": [
-    "mii_enum",
-    "miiLaneNumber",
-    "miiLaneWidth",
-    "miiSpeed",
-    "compiledFEC",
-    "miiWireDelay",
-  ],
+  // "SA Configuration": [
+  //   "mii_enum",
+  //   "miiLaneNumber",
+  //   "miiLaneWidth",
+  //   "miiSpeed",
+  //   "compiledFEC",
+  //   "miiWireDelay",
+  // ],
 
-  "MPG Configuration": [
-    "compiledFEC",
-    "mpgPortIdOffset",
-    "mpgPortsNumber",
-    "mpgLanesNumber",
-    "mpgMaxLanesNumberList",
-    "mpgLaneWidth",
-    "mpgMaxLaneWidthList",
-    "mpgOneG_ENABLED",
-    "mpgWireDelay",
-  ],
+  // "MPG Configuration": [
+  //   "compiledFEC",
+  //   "mpgPortIdOffset",
+  //   "mpgPortsNumber",
+  //   "mpgLanesNumber",
+  //   "mpgMaxLanesNumberList",
+  //   "mpgLaneWidth",
+  //   "mpgMaxLaneWidthList",
+  //   "mpgOneG_ENABLED",
+  //   "mpgWireDelay",
+  // ],
 };
 const testCasesFilters = {
   "Meta Data": ["Streaming Type", "Packet Per Burst", "status"],
@@ -107,13 +107,13 @@ export default function SearchPage() {
     setTestCasesValues(createObjectByKeys(testCasesFilters));
     setValidationTagsValues(createObjectByKeys(validationTagsFilters));
     setValidationPointsValues(createObjectByKeys(validationPointsFilters));
-    setSearched(false);
+    setSearched(0);
   }
-  const [searched, setSearched] = useState(false);
+  const [searched, setSearched] = useState(0);
   const [loading, setLoading] = useState(false);
 
   function search() {
-    setSearched(true);
+    setSearched((o) => o + 1);
   }
 
   return (
@@ -130,6 +130,7 @@ export default function SearchPage() {
                 validationTagsValues,
                 validationPointsValues,
               }}
+              searched={searched}
             />
           ) : loading ? (
             <div className="grow flex items-center justify-center">
@@ -155,7 +156,7 @@ export default function SearchPage() {
               value={returnResult}
               onChange={(e) => {
                 setReturnResult(e.target.value);
-                setSearched(false);
+                setSearched(0);
               }}
             >
               <MenuItem value="testSuite">Test Suites</MenuItem>
@@ -165,7 +166,7 @@ export default function SearchPage() {
             </Select>
           </FilterItem>
 
-          {!searched && (
+          {
             <div>
               <FilterAccordion
                 title="Test Suites Filters"
@@ -197,7 +198,7 @@ export default function SearchPage() {
                 options={options.validationPoints}
               />
             </div>
-          )}
+          }
         </div>
       </div>
     </div>
@@ -221,7 +222,6 @@ function FilterAccordion({
   options = {},
   defaultExpanded,
 }) {
-  console.log("here: ", options);
   return (
     <Accordion elevation={0} defaultExpanded={defaultExpanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ p: 0 }}>
@@ -249,7 +249,7 @@ function FilterAccordion({
                             return nw;
                           })
                         }
-                        options={(options[k] ? options[k][l] || [] : [])}
+                        options={options[k] ? options[k][l] || [] : []}
                         // options={["op1", "op2"]}
                         renderOption={(props, option, { selected }) => (
                           <li {...props}>

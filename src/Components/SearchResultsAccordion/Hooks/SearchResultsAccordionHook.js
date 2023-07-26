@@ -5,6 +5,7 @@ import { fetchSearch, fetchStatistics } from "../../../Services/services";
 export default function useSearchResultsAccordionStates({
   returnResult,
   filterValues,
+  searched,
 }) {
   const s = useAccordionStates({ nostats: true, nofilter: true });
 
@@ -35,8 +36,8 @@ export default function useSearchResultsAccordionStates({
     s.setTestSuiteLoading,
     s.setTestSuites,
     returnResult,
-    filterValues,
     s.setActiveTestCase,
+    searched,
   ]);
 
   // test cases effects
@@ -67,9 +68,9 @@ export default function useSearchResultsAccordionStates({
     s.testCasesRowsPerPage,
     s.testCasesPage,
     s.testCasesFilter,
-    filterValues,
     s.setActiveValidationTag,
     s.setTestCases,
+    searched,
   ]);
 
   useEffect(() => {
@@ -103,13 +104,13 @@ export default function useSearchResultsAccordionStates({
     });
   }, [
     s.activeTestCase,
-    filterValues,
     returnResult,
     s.setActiveValidationPoint,
     s.setValidationTags,
     s.validationTagsFilter,
     s.validationTagsPage,
     s.validationTagsRowsPerPage,
+    searched,
   ]);
 
   useEffect(() => {
@@ -146,12 +147,12 @@ export default function useSearchResultsAccordionStates({
     });
   }, [
     s.activeValidationTag,
-    filterValues,
     returnResult,
     s.setValidationPoints,
     s.validationPointsFilter,
     s.validationPointsPage,
     s.validationPointsRowsPerPage,
+    searched,
   ]);
 
   useEffect(() => {
