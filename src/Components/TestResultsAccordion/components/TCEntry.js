@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import Folder from "../../Folder.js";
+import Folder from "../../Folder/Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable";
 import { formatDuration } from "../../../Utils/utilities.js";
+import RFolder from "../../Folder/RFolder.js";
 
 function TCEntry({ data, num, onClick, active }) {
   const [dutTableView, setDutTableView] = useState(false);
@@ -113,7 +114,7 @@ function TCEntry({ data, num, onClick, active }) {
         )}
 
         {macsConfig && (
-          <Folder
+          <RFolder
             title="Macs Config"
             actionElements={
               <ShowInTable
@@ -125,27 +126,8 @@ function TCEntry({ data, num, onClick, active }) {
                 data={macsData}
               />
             }
-          >
-            {Object.keys(macsConfig).map((i) => (
-              <Folder title={`${i}`}>
-                {Object.keys(macsConfig[i]).map((j) => (
-                  <Folder title={j}>
-                    {Object.values(macsConfig[i][j]).every(
-                      (ele) => ele instanceof Object
-                    ) ? (
-                      Object.keys(macsConfig[i][j]).map((k) => (
-                        <Folder title={k}>
-                          <MiniTable data={macsConfig[i][j][k]} />
-                        </Folder>
-                      ))
-                    ) : (
-                      <MiniTable data={macsConfig[i][j]} />
-                    )}
-                  </Folder>
-                ))}
-              </Folder>
-            ))}
-          </Folder>
+            data={macsConfig}
+          />
         )}
 
         {mpgConfig && (
@@ -164,12 +146,7 @@ function TCEntry({ data, num, onClick, active }) {
           >
             {Object.entries(mpgConfig).map(([k, v]) => (
               <Folder title={k}>
-                <Folder title="FEC Config">
-                  <MiniTable
-                    keys={Object.keys(v.fec_configuration)}
-                    data={v.fec_configuration}
-                  />
-                </Folder>
+                <RFolder title="FEC Config" data={v.fec_configuration} />
 
                 <Folder
                   title="Ports Config"

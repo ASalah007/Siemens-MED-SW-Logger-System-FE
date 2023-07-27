@@ -1,7 +1,8 @@
 import React from "react";
-import Folder from "../../Folder.js";
+import Folder from "../../Folder/Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 import { formatDuration } from "../../../Utils/utilities.js";
+import RFolder from "../../Folder/RFolder.js";
 
 function VTEntry({ data, num, onClick, active }) {
   const failedCount =
@@ -33,12 +34,7 @@ function VTEntry({ data, num, onClick, active }) {
         onClick={onClick}
       >
         {data?.metaData?.metaData && (
-          <Folder title="Meta Data">
-            <MiniTable
-              keys={Object.keys(data.metaData.metaData)}
-              data={data.metaData.metaData}
-            />
-          </Folder>
+          <RFolder title="Meta Data" data={data.metaData.metaData} />
         )}
       </Folder>
     </div>

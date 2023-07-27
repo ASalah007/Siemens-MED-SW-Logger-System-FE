@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Folder from "../../Folder.js";
+import Folder from "../../Folder/Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
+import RFolder from "../../Folder/RFolder.js";
 
 function VPEntry({ data, num, onClick, active }) {
   const [resultsTableView, setResultsTableView] = useState(false);
@@ -55,12 +56,8 @@ function VPEntry({ data, num, onClick, active }) {
           />
         }
       >
-        <Folder title="Meta Data">
-          <MiniTable keys={Object.keys(data.metaData)} data={data.metaData} />
-        </Folder>
-        <Folder title="Levels">
-          <MiniTable keys={Object.keys(data.levels)} data={data.levels} />
-        </Folder>
+        <RFolder title="Meta Data" data={data.metaData} />
+        <RFolder title="Levels" data={data.levels} />
       </Folder>
     </div>
   );

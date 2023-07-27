@@ -16,7 +16,7 @@ import ReactFlow, {
   useOnSelectionChange,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import Folder from "../Folder";
+import Folder from "../Folder/Folder";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import CustomEdgeStartEnd from "../ConnectivityMap/CustomEdgeStartEnd";
 
