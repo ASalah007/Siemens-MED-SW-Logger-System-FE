@@ -88,7 +88,7 @@ function HomePage() {
                           setDatabaseToDelete(d);
                         }}
                       >
-                        <DeleteOutlineIcon color="error" />
+                        <DeleteOutlineIcon className="text-fail" />
                       </IconButton>
                     </div>
                   </MenuItem>
