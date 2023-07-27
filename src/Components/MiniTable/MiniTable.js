@@ -2,8 +2,13 @@ import { Paper } from "@mui/material";
 import React from "react";
 
 export default function MiniTable({ keys, data }) {
+  if (!keys) keys = Object.keys(data);
+
   return (
-    <Paper elevation={2} sx={{ maxWidth: "max-content", mb: "6px" }}>
+    <Paper
+      elevation={2}
+      sx={{ maxWidth: "max-content", mb: "6px", minWidth: "max-content" }}
+    >
       <table>
         <thead>
           <tr className="bg-[#08607b] text-white text-xl">

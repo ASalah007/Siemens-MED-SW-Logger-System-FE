@@ -126,14 +126,21 @@ function TCEntry({ data, num, onClick, active }) {
               />
             }
           >
-            {Object.keys(macsConfig).map((k) => (
-              <Folder title={`${k}`}>
-                {Object.keys(macsConfig[k]).map((e) => (
-                  <Folder title={e}>
-                    <MiniTable
-                      keys={Object.keys(macsConfig[k][e])}
-                      data={macsConfig[k][e]}
-                    />
+            {Object.keys(macsConfig).map((i) => (
+              <Folder title={`${i}`}>
+                {Object.keys(macsConfig[i]).map((j) => (
+                  <Folder title={j}>
+                    {Object.values(macsConfig[i][j]).every(
+                      (ele) => ele instanceof Object
+                    ) ? (
+                      Object.keys(macsConfig[i][j]).map((k) => (
+                        <Folder title={k}>
+                          <MiniTable data={macsConfig[i][j][k]} />
+                        </Folder>
+                      ))
+                    ) : (
+                      <MiniTable data={macsConfig[i][j]} />
+                    )}
                   </Folder>
                 ))}
               </Folder>

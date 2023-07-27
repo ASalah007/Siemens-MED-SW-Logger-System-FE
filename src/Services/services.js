@@ -1,4 +1,3 @@
-import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 import axios from "axios";
 const BASEURL = "http://egc-med-tesla:8080/";
 
