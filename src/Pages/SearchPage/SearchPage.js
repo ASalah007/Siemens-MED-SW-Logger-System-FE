@@ -114,7 +114,11 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
 
   function search() {
-    setSearched((o) => o + 1);
+    const errs = document.getElementsByClassName("err");
+    if (errs.length > 0) {
+      setSearched(0);
+      errs[0].scrollIntoView();
+    } else setSearched((o) => o + 1);
   }
 
   return (
@@ -223,6 +227,15 @@ function FilterAccordion({
   options = {},
   defaultExpanded,
 }) {
+  const errCond = (k, l) => {
+    return (
+      values[k][l].length > 0 &&
+      values[k][l].some((el) => {
+        if (!options[k] || !options[k][l]) return false;
+        return !options[k][l].map((e) => String(e)).includes(el);
+      })
+    );
+  };
   return (
     <Accordion elevation={0} defaultExpanded={defaultExpanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ p: 0 }}>
@@ -272,24 +285,15 @@ function FilterAccordion({
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            error={
-                              values[k][l].length > 0 &&
-                              values[k][l].some((el) => {
-                                if (!options[k] || !options[k][l]) return false;
-                                return !options[k][l]
-                                  .map((e) => String(e))
-                                  .includes(el);
-                              })
-                            }
+                            error={errCond(k, l)}
                             helperText={
-                              values[k][l].length > 0 &&
-                              values[k][l].some((el) => {
-                                if (!options[k] || !options[k][l]) return false;
-                                return !options[k][l]
-                                  .map((e) => String(e))
-                                  .includes(el);
-                              }) &&
+                              errCond(k, l) &&
                               "there is an option that doesn't exist in the database"
+                            }
+                            className={
+                              errCond(k, l) &&
+                              values[k][l].length === 1 &&
+                              "err"
                             }
                           />
                         )}
