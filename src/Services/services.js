@@ -135,14 +135,11 @@ export async function fetchSearch({
   if (limit) url += `&limit=${limit}`;
   if (page) url += `&page=${page}`;
 
-  let status = [];
-  if (filter === "passed") status = [true];
-  if (filter === "failed") status = [false];
-
   const body = {
     select: returnResult,
     testSuites: {
       ...testSuitesValues["Meta Data"],
+      status: testSuitesValues["Meta Data"].status.map((s) => s === "true"),
       _id: testSuiteId,
       design_info: {
         dut_instance_info: {
@@ -154,10 +151,12 @@ export async function fetchSearch({
     testCases: { _id: testCaseId, status: [] }, //TODO change this
     validationTags: {
       ...validationTagsValues["Meta Data"],
+      status: validationTagsValues["Meta Data"].status.map((s) => s === "true"),
       _id: validationTagId,
     },
     validationPoints: {
       ...validationPointsValues.Levels,
+      status: validationPointsValues.Levels.status.map((s) => s === "true"),
       _id: validationPointId,
     },
   };
