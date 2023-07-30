@@ -169,7 +169,7 @@ export async function fetchSearch({
 export async function deleteDatabase(databaseName) {
   try {
     const response = await axios.delete(urls.deleteDatabase, {
-      params: { databaseName },
+      data: { databaseName },
     });
     return response.data;
   } catch (err) {

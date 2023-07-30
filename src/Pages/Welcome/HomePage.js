@@ -19,7 +19,6 @@ import { deleteDatabase, fetchDatabases } from "../../Services/services";
 import Nav from "../../Components/Navbar/Nav";
 import { useNavigate } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ConfirmedDelete from "../../Components/CofirmedDelete/ConfirmedDelete";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
@@ -113,8 +112,14 @@ function HomePage() {
                       setOpenConfirmation(false);
                       deleteDatabase(databaseToDelete).then((res) => {
                         setDeleteResult(res.status);
-                        setResultMessage(res.messages);
+                        setResultMessage(res.message);
                         setOpenSnackbar(true);
+                        setDatabases(
+                          databases.filter((e) => e !== databaseToDelete)
+                        );
+                        setDatabase(
+                          databases.filter((e) => e !== databaseToDelete)[0]
+                        );
                       });
                     }}
                   >
