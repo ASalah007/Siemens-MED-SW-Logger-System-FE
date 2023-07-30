@@ -6,7 +6,7 @@ function BasePage() {
   return (
     <div className="flex flex-col min-h-screen max-h-screen ">
       <Navbar />
-      <div className="grow flex flex-col overflow-hidden">
+      <div className="grow flex flex-col">
         <Outlet />
       </div>
     </div>
