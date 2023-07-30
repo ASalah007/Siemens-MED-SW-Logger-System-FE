@@ -2,7 +2,7 @@ import { flattenObject, getColumnName } from "./utilities";
 import { Link } from "react-router-dom";
 import LinkIcon from "@mui/icons-material/Link";
 export const dataRepresentation = (
-  data,
+  data = [],
   data_columns = [],
   filteredData = [],
   flattenedData = []

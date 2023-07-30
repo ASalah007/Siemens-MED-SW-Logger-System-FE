@@ -23,18 +23,19 @@ function TestSuiteHook() {
     fetch("http://egc-med-tesla:8080/TestSuites/")
       .then((response) => response.json())
       .then((data) => {
-        if (data && data.message !=="Client must be connected before running operations") {
-          setData(data);
-          setFilteredData(dataRepresentation(data));
-        }
-        else window.location.reload();
+        console.log("check me: ", data);
+        if (
+          data &&
+          data.message !== "Client must be connected before running operations"
+        ) {
+          setData(data.testSuites);
+          setFilteredData(dataRepresentation(data.testSuites));
+        } else window.location.reload();
       })
       .catch((error) => {
         console.error("error while fetching Testsuites data: ", error);
       });
   }, []);
-
-
 
   const {
     openDialogs,
@@ -50,7 +51,7 @@ function TestSuiteHook() {
     path,
     setPath,
   } = useNestedData();
-  
+
   const toggleDialog = () => {
     setOpenDialogs(!openDialogs);
     setConnectivityMap(false);
@@ -84,15 +85,10 @@ function TestSuiteHook() {
     setConnectivityMap(false);
     setPath(path.slice(0, path.length - 1));
   };
-  
 
-    totalTestSuites = data.length;
-    successfulTestSuites = data.filter(
-      (item) => item.status === true
-    ).length;
-    failedTestSuites = data.filter(
-      (item) => item.status === false
-    ).length;
+  totalTestSuites = data.length;
+  successfulTestSuites = data.filter((item) => item.status === true).length;
+  failedTestSuites = data.filter((item) => item.status === false).length;
 
   return [
     totalTestSuites,
