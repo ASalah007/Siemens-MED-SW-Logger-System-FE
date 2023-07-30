@@ -56,7 +56,7 @@ export const dataRepresentation = (
           testsuitId = data[tableMeta.rowIndex].id;
         }
         return (
-          <Link to={`/testcases?testsuitId=${testsuitId || ""}`}>
+          <Link to={`/old/testcases?testsuitId=${testsuitId || ""}`}>
             <LinkIcon className="custom-link" style={{ color: "black" }} />
           </Link>
         );

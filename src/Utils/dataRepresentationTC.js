@@ -27,7 +27,7 @@ export const dataRepresentationTC = (
         const testcaseId = data[tableMeta.rowIndex].id;
         return (
           <Link
-            to={`/validtags?testsuitId=${testsuitId}&testcaseId=${testcaseId}`}
+            to={`/old/validtags?testsuitId=${testsuitId}&testcaseId=${testcaseId}`}
           >
             <LinkIcon className="custom-link" style={{ color: "black" }} />
           </Link>

@@ -34,7 +34,6 @@ export default function Testsuit() {
     handleBackward,
   ] = TestSuiteHook();
 
-  console.log(filteredData);
   return (
     <Container key={Math.random()} maxWidth="x">
       <div className="StatisticsContainer">
