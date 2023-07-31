@@ -140,7 +140,7 @@ export async function fetchSearch({
     testSuites: {
       ...testSuitesValues["Meta Data"],
       status: testSuitesValues["Meta Data"].status.map((s) => s === "true"),
-      _id: testSuiteId,
+      _id: testSuiteId ? [testSuiteId] : testSuitesValues["Meta Data"].id,
       design_info: {
         dut_instance_info: {
           sa_configuration: testSuitesValues["SA Configuration"],
@@ -148,16 +148,16 @@ export async function fetchSearch({
         },
       },
     },
-    testCases: { _id: testCaseId, status: [] }, //TODO change this
+    testCases: { _id: [], status: [] }, //TODO change this
     validationTags: {
       ...validationTagsValues["Meta Data"],
       status: validationTagsValues["Meta Data"].status.map((s) => s === "true"),
-      _id: validationTagId,
+      _id: validationTagId ? validationPointId : [],
     },
     validationPoints: {
       ...validationPointsValues.Levels,
       status: validationPointsValues.Levels.status.map((s) => s === "true"),
-      _id: validationPointId,
+      _id: validationPointId ? validationPointId : [],
     },
   };
 
