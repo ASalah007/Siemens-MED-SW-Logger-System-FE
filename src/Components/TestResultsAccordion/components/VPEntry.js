@@ -19,17 +19,20 @@ function VPEntry({ data, num, onClick, active }) {
     });
   }
 
-  const failedCount =
-    (!data.status
-      ? data.results.reduce((acc, ele) => (acc += ele.status === "fail"), 0) +
-        "/"
-      : "") + data.results.length;
-
+  let failedCount = "";
+  if (data.results) {
+    failedCount =
+      (!data.status
+        ? data.results.reduce((acc, ele) => (acc += ele.status === "fail"), 0) +
+          "/"
+        : "") + data.results.length;
+    failedCount = "-- " + failedCount;
+  }
   const levels = Object.values(data.levels)
     .map((e, i) => (i > 0 ? "/" + e : e))
     .join("");
 
-  const title = `VP ${num} -- ${failedCount} -- (${levels})`;
+  const title = `VP ${num} ${failedCount} -- (${levels})`;
 
   return (
     <div>

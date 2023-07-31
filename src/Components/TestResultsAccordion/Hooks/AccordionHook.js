@@ -171,11 +171,13 @@ export default function useAccordionStates({
   const VPData = validationPoints.map((e, i) => [
     i + 1,
     e.status ? "🟢" : "🔴",
-    e.levels.mac,
-    e.levels.direction,
-    `${e.results.reduce((acc, ele) => (acc += ele.status === "fail"), 0)}/${
-      e.results.length
-    }`,
+    e?.levels?.mac,
+    e?.levels?.direction,
+    e.results
+      ? `${e.results.reduce((acc, ele) => (acc += ele.status === "fail"), 0)}/${
+          e.results.length
+        }`
+      : "N/A",
   ]);
 
   function applyFilters(arr, filters, data) {
