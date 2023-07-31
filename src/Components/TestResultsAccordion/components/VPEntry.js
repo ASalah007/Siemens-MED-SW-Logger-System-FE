@@ -19,7 +19,7 @@ function VPEntry({ data, num, onClick, active }) {
     });
   }
 
-  let failedCount = "";
+  let failedCount = "-- 0";
   if (data.results) {
     failedCount =
       (!data.status
