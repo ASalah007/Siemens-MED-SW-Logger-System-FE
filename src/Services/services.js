@@ -148,19 +148,19 @@ export async function fetchSearch({
         },
       },
     },
-    testCases: { _id: [], status: [] }, //TODO change this
+    testCases: { _id: testCaseId ? [testCaseId] : [], status: [] }, // TODO change this
     validationTags: {
       ...validationTagsValues["Meta Data"],
       status: validationTagsValues["Meta Data"].status.map((s) => s === "true"),
-      _id: validationTagId ? validationPointId : [],
+      _id: validationTagId ? [validationTagId] : [],
     },
     validationPoints: {
       ...validationPointsValues.Levels,
       mac: validationPointsValues.Levels.mac
-      .map((i) => parseInt(i))
-      .filter((i) => !isNaN(i)),
+        .map((i) => parseInt(i))
+        .filter((i) => !isNaN(i)),
       status: validationPointsValues.Levels.status.map((s) => s === "true"),
-      _id: validationPointId ? validationPointId : [],
+      _id: validationPointId ? [validationPointId] : [],
     },
   };
 
