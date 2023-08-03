@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
+import { titlize } from "../../Utils/utilities";
 
 function Folder({
   title,
@@ -13,6 +14,9 @@ function Folder({
 }) {
   const [collapsed, setCollapsed] = useState(!open);
   const ref = useRef();
+
+  if (typeof title === "string") title = titlize(title);
+
   return (
     <div className="flex flex-col gap-1">
       <div
@@ -37,7 +41,7 @@ function Folder({
         <div className="pr-2">{actionElements}</div>
       </div>
       {!collapsed && (
-        <div ref={ref} className="ml-[10px] pl-3 border-l-2 border-slate-300">
+        <div ref={ref} className="ml-[11px] pl-2 border-l-2 border-slate-300">
           {children}
         </div>
       )}

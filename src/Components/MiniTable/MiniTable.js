@@ -1,5 +1,6 @@
 import { Paper } from "@mui/material";
 import React from "react";
+import { titlize } from "../../Utils/utilities";
 
 export default function MiniTable({ keys, data }) {
   if (!keys) keys = Object.keys(data);
@@ -19,7 +20,7 @@ export default function MiniTable({ keys, data }) {
         <tbody>
           {keys.map((k, i) => (
             <tr className={"" + (i % 2 === 1 && "bg-gray-200")}>
-              <td className="p-1 pl-2">{k}</td>
+              <td className="p-1 pl-2">{titlize(k)}</td>
               <td className="p-1 pl-2">{data[k]}</td>
             </tr>
           ))}

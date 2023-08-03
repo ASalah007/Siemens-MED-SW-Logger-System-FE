@@ -10,6 +10,9 @@ import useAccordionStates from "./AccordionHook.js";
 
 export function useTestResultsAccordionStates() {
   const s = useAccordionStates({});
+  console.log("look here");
+  console.log(s.validationTags);
+  console.log(s.validationTagsFilter);
 
   useEffect(() => {
     s.setTestSuiteLoading(true);

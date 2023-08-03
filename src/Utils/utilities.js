@@ -234,3 +234,13 @@ export function getEdges(graph) {
 
   return edges;
 }
+
+export function titlize(title) {
+  title = title.toLowerCase();
+  title = title
+    .split("_")
+    .map((s) => s[0].toUpperCase() + s.slice(1))
+    .join(" ");
+
+  return title;
+}
