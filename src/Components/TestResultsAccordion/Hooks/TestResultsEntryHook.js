@@ -6,9 +6,9 @@ export function useTestResultsEntryState() {
   const [elementsFilter, setElementsFilter] = useState("any"); // any, passed, failed
   const [elementTableView, setElementsTableView] = useState(false);
   const [elementsPage, setElementsPage] = useState(0);
-  const [elementsRowsPerPage, setElementsRowsPerPage] = useState(10);
+  const [elementsRowsPerPage, setElementsRowsPerPage] = useState(25);
   const [elementsLoading, setElementsLoading] = useState(false);
-  const[elementsCount, setElementsCount] = useState(0)
+  const [elementsCount, setElementsCount] = useState(0);
   const handleElementsPageChange = (newPage) => {
     setActiveElement(-1);
     setElementsPage(newPage);
