@@ -156,6 +156,9 @@ export async function fetchSearch({
     },
     validationPoints: {
       ...validationPointsValues.Levels,
+      mac: validationPointsValues.Levels.mac
+      .map((i) => parseInt(i))
+      .filter((i) => !isNaN(i)),
       status: validationPointsValues.Levels.status.map((s) => s === "true"),
       _id: validationPointId ? validationPointId : [],
     },
