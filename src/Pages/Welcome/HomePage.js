@@ -66,7 +66,7 @@ function HomePage() {
 
         {/* Controls */}
         <div className="flex flex-col gap-12 items-center z-10 translate-y-10">
-          <div className="bg-gray-100 p-1 rounded-3xl border border-black flex gap-3 justify-between">
+          <div className="bg-gray-100 p-1 rounded-[28px] border border-black flex gap-3 justify-between">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
                 open={open}
@@ -132,7 +132,7 @@ function HomePage() {
               variant="contained"
               endIcon={<ArrowForwardRoundedIcon />}
               sx={{
-                borderRadius: "1.5rem",
+                borderRadius: "24px",
                 padding: "0 3.6rem",
                 backgroundColor: "#0F62FE",
               }}
