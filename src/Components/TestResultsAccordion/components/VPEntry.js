@@ -28,11 +28,16 @@ function VPEntry({ data, num, onClick, active }) {
         : "") + data.results.length;
     failedCount = "-- " + failedCount;
   }
-  const levels = Object.values(data.levels)
-    .map((e, i) => (i > 0 ? "/" + e : e))
-    .join("");
+  if (data.levels) {
+    var levels =
+      "-- (" +
+      Object.values(data.levels)
+        .map((e, i) => (i > 0 ? "/" + e : e))
+        .join("") +
+      ")";
+  }
 
-  const title = `VP ${num} ${failedCount} -- (${levels})`;
+  const title = `VP ${num} ${failedCount} ${levels || " "}`;
 
   return (
     <div>
@@ -60,7 +65,7 @@ function VPEntry({ data, num, onClick, active }) {
         }
       >
         <RFolder title="Meta Data" data={data.metaData} />
-        <RFolder title="Levels" data={data.levels} />
+        {data.Levels && <RFolder title="Levels" data={data.levels} />}
       </Folder>
     </div>
   );
