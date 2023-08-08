@@ -28,6 +28,10 @@ body {
   background-color: var(--body_background);
 }
 
+input{
+  all: unset
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

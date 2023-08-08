@@ -9,6 +9,8 @@ import HomePage from "./Pages/Welcome/HomePage.js";
 import BasePage from "./Pages/Base";
 import SearchPage from "./Pages/SearchPage/SearchPage";
 import ConnectedPage from "./Pages/ConnectedPage/ConnectedPage";
+import LoginPage from "./Pages/LoginPage/LoginPage";
+import SignupPage from "./Pages/SignupPage/SignupPage";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/tree" element={<TreePage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/connected" element={<ConnectedPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
     </DataBaseContextProvider>
