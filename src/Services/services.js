@@ -188,7 +188,13 @@ export async function signup(user) {
   try {
     const response = await axios.post(urls.signup, user);
     const cookies = new Cookies();
-    cookies.set("token", response.data.token);
+
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 30);
+    cookies.set("token", response.data.token, {
+      path: "/",
+      expires,
+    });
 
     return response.data;
   } catch (err) {
@@ -201,7 +207,13 @@ export async function login(credentials) {
   try {
     const response = await axios.post(urls.login, credentials);
     const cookies = new Cookies();
-    cookies.set("token", response.data.token);
+
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 30);
+    cookies.set("token", response.data.token, {
+      path: "/",
+      expires,
+    });
     console.log(response);
     return response.data;
   } catch (err) {
