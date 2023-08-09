@@ -4,39 +4,53 @@ import Folder from "./Folder";
 import MiniArray from "../MiniArray/MiniArray";
 
 export default function RFolder(props) {
-  const { data } = props;
+  let { data } = props;
 
-  if (!Array.isArray(data)) {
-    var values = getValues(data);
-    var objects = getObjects(data);
-  }
-  console.log(data);
-  console.log("oj:", objects);
+  let valuesObject = getValuesObject(data);
+  let objects = getObjects(data);
+  let valuesArray = getValuesArray(data);
 
   return (
     <Folder {...props}>
-      {Array.isArray(data) && <MiniArray data={data} title="Values" />}
+      {valuesArray && <MiniArray data={valuesArray} title="Values" />}
 
-      {!Array.isArray(data) && Object.keys(values).length ? (
-        <MiniTable data={values} />
-      ) : (
-        ""
-      )}
+      {valuesObject && <MiniTable data={valuesObject} />}
 
-      {!Array.isArray(data) && Object.keys(objects).length
-        ? Object.keys(objects).map((k) => <RFolder title={k} data={data[k]} />)
-        : ""}
+      {objects &&
+        Object.keys(objects).map((k) => <RFolder title={(data[k]?.id) || k} data={data[k]} />)}
     </Folder>
   );
 }
 
-function getValues(data) {
-  return Object.fromEntries(
+function getValuesObject(data) {
+  if (Array.isArray(data)) return null;
+  const o = Object.fromEntries(
     Object.entries(data).filter(([k, v]) => typeof v !== "object")
   );
+  if (Object.values(o).length) return o;
+  return null;
 }
+
 function getObjects(data) {
-  return Object.fromEntries(
+  if (Array.isArray(data)) {
+    const d = data.filter((e) => typeof e === "object");
+    if (d.length) return d;
+  }
+
+  const o = Object.fromEntries(
     Object.entries(data).filter(([k, v]) => typeof v === "object")
   );
+
+  if (Object.values(o).length) return o;
+
+  return null;
+}
+
+function getValuesArray(data) {
+  if (Array.isArray(data)) {
+    const d = data.filter((e) => typeof e !== "object");
+    if (d.length) return d;
+  }
+
+  return null;
 }

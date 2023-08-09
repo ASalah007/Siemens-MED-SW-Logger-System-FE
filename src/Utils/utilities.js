@@ -244,3 +244,8 @@ export function titlize(title) {
 
   return title;
 }
+
+export function ensureArray(objectOrArray) {
+  if (Array.isArray(objectOrArray)) return objectOrArray;
+  return Object.values(objectOrArray);
+}

@@ -16,7 +16,6 @@ function VTEntry({ data, num, onClick, active }) {
   let title = `${data.metaData.name} `;
   if (data.ValidationPointsCount) title += `-- ${failedCount}`;
   if (duration) title += `-- ${duration} `;
-  console.log(data);
 
   return (
     <div>
