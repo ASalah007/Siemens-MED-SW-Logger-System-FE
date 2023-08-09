@@ -11,6 +11,7 @@ import SearchPage from "./Pages/SearchPage/SearchPage";
 import ConnectedPage from "./Pages/ConnectedPage/ConnectedPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import SignupPage from "./Pages/SignupPage/SignupPage";
+import FOFPage from "./Pages/404Page/FOFPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/connected" element={<ConnectedPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="*" element={<FOFPage />} />
         </Routes>
       </BrowserRouter>
     </DataBaseContextProvider>
