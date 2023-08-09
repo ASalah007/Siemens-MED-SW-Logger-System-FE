@@ -56,7 +56,7 @@ function SignupForm() {
                   <ErrorMessage
                     name="email"
                     component="span"
-                    data-testid="emailError"
+                    className = " text-red-600 font-poppins text-sm font-light"
                   />
                 </div>
               </div>
@@ -76,7 +76,11 @@ function SignupForm() {
                     autoComplete="off"
                     data-testid="LoginFormPasswordInput"
                   />
-                  <ErrorMessage name="password" component="span" />
+                  <ErrorMessage 
+                  name="password" 
+                  component="span" 
+                  className = " text-red-600 font-poppins text-sm font-light"
+                  />
                 </div>
               </div>
             </div>
@@ -84,7 +88,7 @@ function SignupForm() {
             className="mx-auto w-full font-poppins uppercase mt-32 rounded-md bg-blue px-3 py-2 text-md font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
               Sign up
             </button>
-            <p className=" text-center font-poppins mt-2">Already have an account? 
+            <p className=" text-center font-poppins mt-2">Already have an account?  
               <a className="underline underline-offset-1 text-blue font-medium" href="/login">Login</a>
             </p>
           </Form>
