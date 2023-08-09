@@ -1,5 +1,7 @@
+import { RepeatOneSharp } from "@material-ui/icons";
 import axios from "axios";
-const BASEURL = "http://egc-med-bell:8080/";
+import Cookies from "universal-cookie";
+const BASEURL = "http://egc-med-tesla:8080/";
 
 const urls = {
   listDatabases: "database/urls",
@@ -11,6 +13,8 @@ const urls = {
   getStatistics: "statistics/",
   search: "search/",
   deleteDatabase: "database/urls",
+  signup: "signup/",
+  login: "login/",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = BASEURL + v));
@@ -177,5 +181,31 @@ export async function deleteDatabase(databaseName) {
     return response.data;
   } catch (err) {
     return { status: "fail", message: err.message };
+  }
+}
+
+export async function signup(user) {
+  try {
+    const response = await axios.post(urls.signup, user);
+    const cookies = new Cookies();
+    cookies.set("token", response.data.token);
+
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
+export async function login(credentials) {
+  try {
+    const response = await axios.post(urls.login, credentials);
+    const cookies = new Cookies();
+    cookies.set("token", response.data.token);
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return err;
   }
 }

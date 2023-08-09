@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
+import { signup } from "../../Services/services";
 
 function SignupForm() {
-
   const [errorMsg, setErrorMsg] = useState("");
 
   const initialValues = {
@@ -14,13 +13,15 @@ function SignupForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .matches("^[A-Za-z.]+@siemens\\.com\\s*$", "Please enter a valid Siemens email address")
+      .matches(
+        ".*@siemens\\.com\\s*$",
+        "Please enter a valid Siemens email address"
+      )
       .required("email is required"),
     password: Yup.string()
-    .min(8, "password must be at least 8 characters")
-    .required("Password is required"),
+      .min(8, "password must be at least 8 characters")
+      .required("Password is required"),
   });
-
 
   return (
     <div className="m-auto w-2/4">
@@ -33,9 +34,13 @@ function SignupForm() {
         </h3>
       </div>
 
-      <Formik 
-      initialValues={initialValues}
-      validationSchema={validationSchema}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(v) => {
+          signup({...v, name: "ahmed salah"}).then(data => console.log(data))
+        }}
+      >
         {({ values }) => (
           <Form>
             <div>
@@ -56,7 +61,7 @@ function SignupForm() {
                   <ErrorMessage
                     name="email"
                     component="span"
-                    className = " text-red-600 font-poppins text-sm font-light"
+                    className=" text-red-600 font-poppins text-sm font-light"
                   />
                 </div>
               </div>
@@ -76,20 +81,29 @@ function SignupForm() {
                     autoComplete="off"
                     data-testid="LoginFormPasswordInput"
                   />
-                  <ErrorMessage 
-                  name="password" 
-                  component="span" 
-                  className = " text-red-600 font-poppins text-sm font-light"
+                  <ErrorMessage
+                    name="password"
+                    component="span"
+                    className=" text-red-600 font-poppins text-sm font-light"
                   />
                 </div>
               </div>
             </div>
-            <button type="submit" data-testid="LoginFormSubmitButton" 
-            className="mx-auto w-full font-poppins uppercase mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
+            <button
+              type="submit"
+              data-testid="LoginFormSubmitButton"
+              className="mx-auto w-full font-poppins uppercase mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            >
               Sign up
             </button>
-            <p className=" text-center font-poppins mt-2">Already have an account? 
-              <a className="underline underline-offset-1 text-Blue font-medium" href="/login">Login</a>
+            <p className=" text-center font-poppins mt-2">
+              Already have an account?
+              <a
+                className="underline underline-offset-1 text-Blue font-medium"
+                href="/login"
+              >
+                Login
+              </a>
             </p>
           </Form>
         )}
