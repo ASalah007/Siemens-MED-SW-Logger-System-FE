@@ -20,6 +20,7 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import searchImage from "../../Resources/search.svg";
 import { fetchSearchPageOptions } from "../../Services/services";
+import { titlize } from "../../Utils/utilities";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -62,7 +63,7 @@ const testCasesFilters = {
   "Meta Data": ["status"],
 };
 const validationTagsFilters = {
-  "Meta Data": ["Description", "executable_path", "name", "status"],
+  "Meta Data": ["name", "status"],
 };
 const validationPointsFilters = {
   Levels: ["mac", "direction", "packet_identifier", "status"],
@@ -213,7 +214,7 @@ export default function SearchPage() {
 function FilterItem({ label, children }) {
   return (
     <div className="flex flex-col gap-1 whitespace-nowrap">
-      <div className="font-semibold text-gray-400">{label}</div>
+      <div className="font-semibold text-gray-400">{titlize(label)}</div>
       {children}
     </div>
   );
