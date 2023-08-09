@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Folder from "../../Folder/Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable";
-import { formatDuration } from "../../../Utils/utilities.js";
+import { ensureArray, formatDuration } from "../../../Utils/utilities.js";
 import RFolder from "../../Folder/RFolder.js";
 
 function TCEntry({ data, num, onClick, active }) {
@@ -13,10 +13,16 @@ function TCEntry({ data, num, onClick, active }) {
   const [portConfigTableView, setPortConfigTableView] = useState(false);
 
   const dutColumns = ["master_id", "slave_ids"];
-  const dutData = data.metaData.dut_master_slave_info.map((ele) => [
-    ele?.master_id,
-    ele?.slave_ids && ele.slave_ids.join(", "),
-  ]);
+  let masterSlaveInfo = data?.metaData?.dut_master_slave_info;
+
+  let dutData = [[]];
+  if (masterSlaveInfo) {
+    masterSlaveInfo = ensureArray(masterSlaveInfo);
+    dutData = masterSlaveInfo.map((ele) => [
+      ele?.master_id,
+      ele?.slave_ids && ele.slave_ids.join(", "),
+    ]);
+  }
 
   const macsConfig = data?.metaData?.macs_configuration;
   const mpgConfig = data?.metaData?.mpg_configuration;
@@ -47,8 +53,14 @@ function TCEntry({ data, num, onClick, active }) {
     ]);
   }
 
+  const macsInfo = data?.metaData?.macs_info;
+  console.log(macsInfo);
+  let macsInfoData = [];
+  if (macsInfo) {
+    const mi = Array.isArray(macsInfo) ? macsInfo : Object.values(macsInfo);
+    macsInfoData = mi.map((e) => Object.values(e));
+  }
   const macsInfoColumns = ["id", "mii_type"];
-  const macsInfoData = data.metaData.macs_info.map((e) => Object.values(e));
 
   const failedCount =
     (!data.status ? `${data.failedValidationTagsCount}/` : "") +
@@ -77,7 +89,7 @@ function TCEntry({ data, num, onClick, active }) {
         active={active}
         onClick={onClick}
       >
-        {data?.metaData?.dut_master_slave_info && (
+        {masterSlaveInfo && (
           <Folder
             noArrow
             title="DUT Master Slave Info"
@@ -95,11 +107,10 @@ function TCEntry({ data, num, onClick, active }) {
           ></Folder>
         )}
 
-        {data?.metaData?.macs_info && (
-          <Folder
-            noArrow
+        {macsInfo && (
+          <RFolder
             title="Macs Info"
-            onClick={() => setMacsInfoTableView(true)}
+            // onClick={() => setMacsInfoTableView(true)}
             actionElements={
               <ShowInTable
                 onClick={() => setMacsInfoTableView(true)}
@@ -110,7 +121,8 @@ function TCEntry({ data, num, onClick, active }) {
                 data={macsInfoData}
               />
             }
-          ></Folder>
+            data={macsInfo}
+          />
         )}
 
         {macsConfig && (

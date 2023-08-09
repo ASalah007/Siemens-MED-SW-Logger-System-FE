@@ -6,7 +6,7 @@ module.exports = {
       colors: {
         success: "#6ede87",
         fail: "#ff595e",
-        blue: "#1976D2",
+        Blue: "#1976D2",
       },
       backgroundImage: {
         home: "url('./Resources/cool-background.png')",

@@ -48,7 +48,7 @@ function SignupForm() {
                 </label>
                 <div className="mt-2">
                   <Field
-                    className="block w-full rounded-md border-0 p-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-Blue sm:text-sm sm:leading-6"
                     name="email"
                     autoComplete="off"
                     data-testid="LoginFormEmailInput"
@@ -70,7 +70,7 @@ function SignupForm() {
                 </label>
                 <div className="mt-2">
                   <Field
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-Blue sm:text-sm sm:leading-6"
                     name="password"
                     type="password"
                     autoComplete="off"
@@ -85,11 +85,11 @@ function SignupForm() {
               </div>
             </div>
             <button type="submit" data-testid="LoginFormSubmitButton" 
-            className="mx-auto w-full font-poppins uppercase mt-32 rounded-md bg-blue px-3 py-2 text-md font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
+            className="mx-auto w-full font-poppins uppercase mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
               Sign up
             </button>
-            <p className=" text-center font-poppins mt-2">Already have an account?  
-              <a className="underline underline-offset-1 text-blue font-medium" href="/login">Login</a>
+            <p className=" text-center font-poppins mt-2">Already have an account? 
+              <a className="underline underline-offset-1 text-Blue font-medium" href="/login">Login</a>
             </p>
           </Form>
         )}
