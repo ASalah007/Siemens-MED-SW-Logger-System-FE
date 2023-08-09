@@ -12,7 +12,7 @@ module.exports = {
         home: "url('./Resources/cool-background.png')",
       },
       fontFamily: {
-        'poppins': ['Poppins'],
+        'poppins': 'Poppins',
      }
     },
   },

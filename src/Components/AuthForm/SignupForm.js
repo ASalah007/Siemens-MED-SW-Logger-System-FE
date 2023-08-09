@@ -44,7 +44,7 @@ function SignupForm() {
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-black"
                 >
-                  email
+                  Email
                 </label>
                 <div className="mt-2">
                   <Field
@@ -66,7 +66,7 @@ function SignupForm() {
                   htmlFor="password"
                   className="block text-sm font-medium mt-6 leading-6 text-black"
                 >
-                  password
+                  Password
                 </label>
                 <div className="mt-2">
                   <Field
