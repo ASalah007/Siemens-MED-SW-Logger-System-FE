@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SignupForm from "../../Components/AuthForm/SignupForm"
 import AuthBanner from "../../Components/AuthBanner/AuthBanner";
-// import 'animate.css';
+import 'animate.css';
 
 
 function SignupPage() {
