@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        success: "#6ede87",
+        success: "#32de84",
         fail: "#ff595e",
         Blue: "#1976D2",
       },
@@ -12,8 +12,8 @@ module.exports = {
         home: "url('./Resources/cool-background.png')",
       },
       fontFamily: {
-        'poppins': 'Poppins',
-     }
+        poppins: "Poppins",
+      },
     },
   },
   plugins: [],
