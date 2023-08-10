@@ -38,9 +38,9 @@ function TSEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  let title = `TS ${num}`;
-  if (data.TestCasesCount) title += `-- ${failedCount} `;
-  if (duration) title += `-- ${duration}`;
+  let title = `Test Suite(${num})`;
+  // if (data.TestCasesCount) title += `-- ${failedCount} `;
+  // if (duration) title += `-- ${duration}`;
 
   return (
     <div className="">
@@ -71,8 +71,18 @@ function TSEntry({ data, num, onClick, active }) {
       >
         <Folder title="Meta Data" open>
           <MiniTable
-            keys={Object.keys(data.metaData).filter((k) => k !== "design_info")}
-            data={data.metaData}
+            keys={[
+              ...Object.keys(data.metaData).filter((k) => k !== "design_info"),
+              "Duration",
+              "Failed TCs",
+              "Total TCs",
+            ]}
+            data={{
+              ...data.metaData,
+              "Failed TCs": data.TestCasesCount,
+              "Total TCs": data.failedTestCasesCount,
+              Duration: duration,
+            }}
           />
         </Folder>
 
