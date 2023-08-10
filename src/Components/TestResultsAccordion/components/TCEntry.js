@@ -69,9 +69,9 @@ function TCEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  let title = `TC ${num} `;
-  if (data.ValidationTagsCount) title += `-- ${failedCount} `;
-  if (duration) title += `-- ${duration}`;
+  let title = `Test Case(${num})`;
+  // if (data.ValidationTagsCount) title += `-- ${failedCount} `;
+  // if (duration) title += `-- ${duration}`;
 
   return (
     <div>
@@ -89,23 +89,14 @@ function TCEntry({ data, num, onClick, active }) {
         active={active}
         onClick={onClick}
       >
-        {masterSlaveInfo && (
-          <Folder
-            noArrow
-            title="DUT Master Slave Info"
-            onClick={() => setDutTableView(true)}
-            actionElements={
-              <ShowInTable
-                onClick={() => setDutTableView(true)}
-                open={dutTableView}
-                onClose={() => setDutTableView(false)}
-                title="DUT Master Slave Info"
-                columns={dutColumns}
-                data={dutData}
-              />
-            }
-          ></Folder>
-        )}
+        <RFolder
+          title="Meta Data"
+          data={{
+            "Failed VTs": data.failedValidationTagsCount,
+            "Total VTs": data.ValidationTagsCount,
+            Duration: duration,
+          }}
+        />
 
         {macsInfo && (
           <RFolder
@@ -185,6 +176,25 @@ function TCEntry({ data, num, onClick, active }) {
             ))}
           </Folder>
         )}
+
+        {masterSlaveInfo && (
+          <Folder
+            noArrow
+            title="DUT Master Slave Info"
+            onClick={() => setDutTableView(true)}
+            actionElements={
+              <ShowInTable
+                onClick={() => setDutTableView(true)}
+                open={dutTableView}
+                onClose={() => setDutTableView(false)}
+                title="DUT Master Slave Info"
+                columns={dutColumns}
+                data={dutData}
+              />
+            }
+          ></Folder>
+        )}
+
       </Folder>
     </div>
   );

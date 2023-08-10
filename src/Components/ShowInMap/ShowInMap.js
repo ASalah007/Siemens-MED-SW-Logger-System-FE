@@ -5,6 +5,7 @@ import MapDialog from "./MapDialog";
 import { ReactFlowProvider } from "reactflow";
 
 function ShowInMap({ onClick, onClose, open, maps }) {
+  console.log(maps);
   return (
     <div>
       <Tooltip
