@@ -2,17 +2,23 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { login } from "../../Services/services";
+import LinearLoader from "../LinearLoader/LinearLoader.js";
+
 
 function LoginForm() {
+  const [loading, setLoading] = useState(false);
+
+
   const initialValues = {
     email: "",
     password: "",
   };
 
+
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .matches(
-        "^[A-Za-z.]+@siemens\\.com\\s*$",
+        "^[0-9A-Za-z.]+@siemens\\.com\\s*$",
         "Please enter a valid Siemens email address"
       )
       .required("email is required"),
@@ -20,6 +26,18 @@ function LoginForm() {
       .min(8, "password must be at least 8 characters")
       .required("Password is required"),
   });
+
+  function handleSubmit(values) {
+    setLoading(true);
+    login(values)
+      .then((data) => {
+        console.log(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <div className="m-auto w-2/4">
@@ -35,7 +53,7 @@ function LoginForm() {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(v) => login(v)}
+        onSubmit={(v) => handleSubmit(v) }
       >
         {({ values }) => (
           <Form>
@@ -101,6 +119,7 @@ function LoginForm() {
                 sign up
               </a>
             </p>
+            {loading && <LinearLoader color={"#1976D2"}/>}
           </Form>
         )}
       </Formik>

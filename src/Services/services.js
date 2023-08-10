@@ -198,8 +198,8 @@ export async function signup(user) {
 
     return response.data;
   } catch (err) {
-    console.log(err);
-    return err;
+    // console.log(err);
+    throw err;
   }
 }
 
@@ -218,6 +218,6 @@ export async function login(credentials) {
     return response.data;
   } catch (err) {
     console.log(err);
-    return err;
+    throw err;
   }
 }

@@ -2,32 +2,55 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { signup } from "../../Services/services";
+import LinearLoader from "../LinearLoader/LinearLoader.js";
+import GenericModal from "../GenericModal/GenericModal.js";
+
 
 function SignupForm() {
   const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
 
   const initialValues = {
     email: "",
     password: "",
+    name: "",
   };
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .matches(
-        "^[A-Za-z.]+@siemens\\.com\\s*$",
+        "^[0-9A-Za-z.]+@siemens\\.com\\s*$",
         "Please enter a valid Siemens email address"
       )
       .required("email is required"),
     password: Yup.string()
       .min(8, "password must be at least 8 characters")
       .required("Password is required"),
-      name: Yup.string()
+    name: Yup.string()
       .matches("\\w+\\s+\\w+", "Please enter your full name")
       .required("Full name is required"),
   });
 
+  function handleSubmit(values) {
+    setLoading(true);
+    signup(values)
+      .then((data) => {
+        // console.log(data);
+        setOpenModal(true);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setErrorMsg(err.message);
+      });
+  }
+
+
   return (
-    <div className="m-auto w-2/4">
+    <div className="m-auto w-2/4" onClick={() => setOpenModal(false)}>
+    {openModal && <GenericModal/>}
       <div className=" mt-10">
         <h1 className="font-poppins font-bold text-black text-5xl  uppercase">
           get started,
@@ -41,7 +64,7 @@ function SignupForm() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(v) => {
-          signup({...v}).then(data => console.log(data))
+          handleSubmit(v);
         }}
       >
         {({ values }) => (
@@ -89,6 +112,27 @@ function SignupForm() {
                 </div>
               </div>
 
+              {/* <div className="sm:col-span-3">
+                <label
+                  htmlFor="solution"
+                  className="block text-sm font-medium mt-6 leading-6 text-black"
+                >
+                  Solution
+                </label>
+                <div className="mt-2">
+                  <Field as="select" name="solution">
+                    <option value="ethernet">Ethernet</option>
+                    <option value="5g">5G</option>
+                    <option value="otn">OTN</option>
+                  </Field>
+                  <ErrorMessage
+                    name="solution"
+                    component="span"
+                    className=" text-red-600 font-poppins text-sm font-light"
+                  />
+                </div>
+              </div> */}
+
               <div className="sm:col-span-3">
                 <label
                   htmlFor="password"
@@ -111,10 +155,11 @@ function SignupForm() {
                 </div>
               </div>
             </div>
+            
             <button
               type="submit"
               data-testid="LoginFormSubmitButton"
-              className="mx-auto w-full font-poppins uppercase mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              className="mx-auto w-full font-poppins uppercase flex justify-center items-center mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               Sign up
             </button>
@@ -127,6 +172,7 @@ function SignupForm() {
                 Login
               </a>
             </p>
+            {loading && <LinearLoader color={"#1976D2"} />}
           </Form>
         )}
       </Formik>
