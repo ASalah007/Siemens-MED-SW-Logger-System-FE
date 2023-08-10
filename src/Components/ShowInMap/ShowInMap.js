@@ -5,11 +5,10 @@ import MapDialog from "./MapDialog";
 import { ReactFlowProvider } from "reactflow";
 
 function ShowInMap({ onClick, onClose, open, maps }) {
-  console.log(maps);
   return (
     <div>
       <Tooltip
-        title={"Show Connectivity Map"}
+        title={"DUT Connectivity Map"}
         placement="bottom"
         disableInteractive
       >
