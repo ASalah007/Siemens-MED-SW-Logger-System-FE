@@ -31,6 +31,12 @@ function TSEntry({ data, num, onClick, active }) {
   }
 
   const connMap = data?.metaData?.design_info?.dut_connectivity_map;
+  const dutMap = {};
+  if (connMap?.mpg_connectivity_map)
+    dutMap["MPG Connectivity Map"] = connMap.mpg_connectivity_map;
+
+  if (connMap?.sa_connectivity_map)
+    dutMap["SA Connectivity Map"] = connMap.sa_connectivity_map;
 
   const failedCount =
     (!data.status ? data.failedTestCasesCount + "/" : "") + data.TestCasesCount;
@@ -38,9 +44,9 @@ function TSEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  let title = `TS ${num}`;
-  if (data.TestCasesCount) title += `-- ${failedCount} `;
-  if (duration) title += `-- ${duration}`;
+  let title = `Test Suite(${num})`;
+  // if (data.TestCasesCount) title += `-- ${failedCount} `;
+  // if (duration) title += `-- ${duration}`;
 
   return (
     <div className="">
@@ -62,17 +68,24 @@ function TSEntry({ data, num, onClick, active }) {
             open={mapView}
             onClose={() => setMapView(false)}
             onClick={() => setMapView(true)}
-            maps={{
-              "MPG Connectivity Map": connMap?.mpg_connectivity_map,
-              "SA Connectivity Map": connMap?.sa_connectivity_map,
-            }}
+            maps={dutMap}
           />
         }
       >
         <Folder title="Meta Data" open>
           <MiniTable
-            keys={Object.keys(data.metaData).filter((k) => k !== "design_info")}
-            data={data.metaData}
+            keys={[
+              ...Object.keys(data.metaData).filter((k) => k !== "design_info"),
+              "Duration",
+              "Failed TCs",
+              "Total TCs",
+            ]}
+            data={{
+              ...data.metaData,
+              "Failed TCs": data.TestCasesCount,
+              "Total TCs": data.failedTestCasesCount,
+              Duration: duration,
+            }}
           />
         </Folder>
 

@@ -37,7 +37,7 @@ function VPEntry({ data, num, onClick, active }) {
       ")";
   }
 
-  const title = `VP ${num} ${failedCount} ${levels || " "}`;
+  const title = `Validation Point(${num})`;
 
   return (
     <div>
@@ -64,8 +64,8 @@ function VPEntry({ data, num, onClick, active }) {
           />
         }
       >
-        <RFolder title="Meta Data" data={data.metaData} />
-        {data.Levels && <RFolder title="Levels" data={data.levels} />}
+        <RFolder title="Meta Data" data={{ ...data.metaData }} />
+        {data.levels && <RFolder title="Levels" data={data.levels} />}
       </Folder>
     </div>
   );

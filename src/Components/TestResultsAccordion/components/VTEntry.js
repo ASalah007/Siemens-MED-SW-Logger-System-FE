@@ -1,7 +1,7 @@
 import React from "react";
 import Folder from "../../Folder/Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
-import { formatDuration } from "../../../Utils/utilities.js";
+import { formatDuration, titlize } from "../../../Utils/utilities.js";
 import RFolder from "../../Folder/RFolder.js";
 
 function VTEntry({ data, num, onClick, active }) {
@@ -13,9 +13,9 @@ function VTEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  let title = `${data.metaData.name} `;
-  if (data.ValidationPointsCount) title += `-- ${failedCount}`;
-  if (duration) title += `-- ${duration} `;
+  let title = titlize(data.metaData.name);
+  // if (data.ValidationPointsCount) title += `-- ${failedCount}`;
+  // if (duration) title += `-- ${duration} `;
 
   return (
     <div>
@@ -34,7 +34,15 @@ function VTEntry({ data, num, onClick, active }) {
         onClick={onClick}
       >
         {data?.metaData?.metaData && (
-          <RFolder title="Meta Data" data={data.metaData.metaData} />
+          <RFolder
+            title="Meta Data"
+            data={{
+              Duration: duration,
+              "Failed VPs": data.failedValidationPointsCount,
+              "Total VPs": data.ValidationPointsCount,
+              ...data.metaData.metaData,
+            }}
+          />
         )}
       </Folder>
     </div>

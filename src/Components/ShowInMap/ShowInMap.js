@@ -8,7 +8,7 @@ function ShowInMap({ onClick, onClose, open, maps }) {
   return (
     <div>
       <Tooltip
-        title={"Show Connectivity Map"}
+        title={"DUT Connectivity Map"}
         placement="bottom"
         disableInteractive
       >

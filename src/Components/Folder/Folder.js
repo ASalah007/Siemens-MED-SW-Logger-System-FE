@@ -33,10 +33,10 @@ function Folder({
           {collapsed ? <ArrowRightRoundedIcon /> : <ArrowDropDownRoundedIcon />}
         </div>
         <div
-          className={"grow px-1 self-stretch flex items-center"}
+          className="grow px-1 self-stretch flex items-center whitespace-nowrap max-w-full pr-8"
           onClick={onClick ? onClick : () => setCollapsed((o) => !o)}
         >
-          {title}
+          <div className="truncate">{title}</div>
         </div>
         <div className="pr-2">{actionElements}</div>
       </div>
