@@ -6,6 +6,7 @@ import LinearLoader from "../LinearLoader/LinearLoader.js";
 
 
 function LoginForm() {
+  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
 
@@ -35,12 +36,12 @@ function LoginForm() {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        setErrorMsg(err.message);
       });
   }
 
   return (
-    <div className="m-auto w-2/4">
+    <div className="m-auto w-fit">
       <div className=" mt-10">
         <h1 className="font-poppins font-bold text-black text-5xl  uppercase">
           welcome back,
@@ -67,7 +68,7 @@ function LoginForm() {
                 </label>
                 <div className="mt-2">
                   <Field
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-Blue sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-Blue sm:text-sm sm:leading-6"
                     name="email"
                     autoComplete="off"
                     data-testid="LoginFormEmailInput"
@@ -89,7 +90,7 @@ function LoginForm() {
                 </label>
                 <div className="mt-2">
                   <Field
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-Blue sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-Blue sm:text-sm sm:leading-6"
                     name="password"
                     type="password"
                     autoComplete="off"
@@ -106,7 +107,10 @@ function LoginForm() {
             <button
               type="submit"
               data-testid="LoginFormSubmitButton"
-              className="mx-auto w-full font-poppins uppercase mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-Blue"
+              className= {`${!(validationSchema.isValidSync(values)) ? "bg-blue-300 ": "hover:bg-opacity-90"} mx-auto w-full font-poppins uppercase flex justify-center items-center mt-16 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
+
+              disabled={!(validationSchema.isValidSync(values))}
+
             >
               Login
             </button>
