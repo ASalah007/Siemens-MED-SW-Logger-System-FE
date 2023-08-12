@@ -50,6 +50,7 @@ function HAccordion({
   fourthColumnLoading,
 
   nostats,
+  paginationFreeMode,
 }) {
   const [divsWidth, setDivsWidth] = useState([]);
   const divsRef = [useRef(), useRef(), useRef(), useRef()];
@@ -176,6 +177,7 @@ function HAccordion({
               rowsPerPage={firstColumnRowsPerPage}
               onPageChange={onFirstColumnPageChange}
               onRowsPerPageChange={onFirstColumnRowsPerPageChange}
+              freeMode={paginationFreeMode}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
@@ -223,6 +225,7 @@ function HAccordion({
               rowsPerPage={secondColumnRowsPerPage}
               onPageChange={onSecondColumnPageChange}
               onRowsPerPageChange={onSecondColumnRowsPerPageChange}
+              freeMode={paginationFreeMode}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
@@ -270,6 +273,7 @@ function HAccordion({
               rowsPerPage={thirdColumnRowsPerPage}
               onPageChange={onThirdColumnPageChange}
               onRowsPerPageChange={onThirdColumnRowsPerPageChange}
+              freeMode={paginationFreeMode}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">
@@ -317,6 +321,7 @@ function HAccordion({
               rowsPerPage={fourthColumnRowsPerPage}
               onPageChange={onFourthColumnPageChange}
               onRowsPerPageChange={onFourthColumnRowsPerPageChange}
+              freeMode={paginationFreeMode}
             />
           </div>
           <div className="overflow-y-auto flex gap-2 flex-col pt-5 pb-12">

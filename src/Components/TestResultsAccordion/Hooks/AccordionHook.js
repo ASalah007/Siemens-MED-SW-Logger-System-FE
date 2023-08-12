@@ -102,25 +102,25 @@ export default function useAccordionStates({
     []
   );
 
-  function reset(type) {
+  function reset(type, excludePage = false) {
     switch (type) {
       case "TC":
         setTestCases([]);
         setActiveTestCase(-1);
         setTestCasesFilter("any");
-        setTestCasesPage(0);
+        if (!excludePage && type === "TC") setTestCasesPage(0);
       // eslint-disable-next-line no-fallthrough
       case "VT":
         setValidationTags([]);
         setActiveValidationTag(-1);
         setValidationTagsFilter("any");
-        setValidationTagsPage(0);
+        if (!excludePage && type === "VT") setValidationTagsPage(0);
       // eslint-disable-next-line no-fallthrough
       case "VP":
         setValidationPoints([]);
         setActiveValidationPoint(-1);
         setValidationPointsFilter("any");
-        setValidationPointsPage(0);
+        if (!excludePage && type === "VP") setValidationPointsPage(0);
         break;
 
       default:

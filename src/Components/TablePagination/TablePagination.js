@@ -9,11 +9,13 @@ function TablePagination({
   rowsPerPage,
   onRowsPerPageChange,
   onPageChange,
+  freeMode,
 }) {
   rowsPerPage = rowsPerPage || 10;
   page = page || 0;
   count = count || 0;
-  const pos = `${count===0?0:page * rowsPerPage + 1}-${Math.min(
+  if (freeMode) count = 100000000;
+  const pos = `${count === 0 ? 0 : page * rowsPerPage + 1}-${Math.min(
     page * rowsPerPage + rowsPerPage,
     count
   )} of ${count}`;
@@ -40,7 +42,7 @@ function TablePagination({
           </Select>
         </div>
       </div>
-      <div>{pos}</div>
+      {!freeMode && <div>{pos}</div>}
       <div>
         <IconButton
           sx={{ color: "#000" }}
@@ -51,7 +53,10 @@ function TablePagination({
         </IconButton>
         <IconButton
           sx={{ color: "#000" }}
-          disabled={page === Math.ceil(count / rowsPerPage) - 1 || count === 0}
+          disabled={
+            !freeMode &&
+            (page === Math.ceil(count / rowsPerPage) - 1 || count === 0)
+          }
           onClick={() =>
             onPageChange(Math.min(page + 1, Math.ceil(count / rowsPerPage) - 1))
           }

@@ -57,6 +57,7 @@ function SearchResultsAccordion(props) {
         s.handleValidationPointsRowsPerPageChange
       }
       nostats
+      paginationFreeMode
     />
   );
 }

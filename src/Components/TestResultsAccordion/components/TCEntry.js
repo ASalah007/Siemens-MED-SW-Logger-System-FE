@@ -54,7 +54,6 @@ function TCEntry({ data, num, onClick, active }) {
   }
 
   const macsInfo = data?.metaData?.macs_info;
-  console.log(macsInfo);
   let macsInfoData = [];
   if (macsInfo) {
     const mi = Array.isArray(macsInfo) ? macsInfo : Object.values(macsInfo);
@@ -194,7 +193,6 @@ function TCEntry({ data, num, onClick, active }) {
             }
           ></Folder>
         )}
-
       </Folder>
     </div>
   );
