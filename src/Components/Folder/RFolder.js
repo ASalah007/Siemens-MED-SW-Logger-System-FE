@@ -2,6 +2,7 @@ import React from "react";
 import MiniTable from "../MiniTable/MiniTable";
 import Folder from "./Folder";
 import MiniArray from "../MiniArray/MiniArray";
+import { object } from "prop-types";
 
 export default function RFolder(props) {
   let { data } = props;
@@ -17,13 +18,16 @@ export default function RFolder(props) {
       {valuesObject && <MiniTable data={valuesObject} />}
 
       {objects &&
-        Object.keys(objects).map((k) => <RFolder title={(data[k]?.id) || k} data={data[k]} />)}
+        Object.keys(objects)
+          .filter((k) => objects[k])
+          .map((k) => <RFolder title={data[k]?.id || k} data={data[k]} />)}
     </Folder>
   );
 }
 
 function getValuesObject(data) {
-  if (Array.isArray(data)) return null;
+  if (!data || Array.isArray(data)) return null;
+
   const o = Object.fromEntries(
     Object.entries(data).filter(([k, v]) => typeof v !== "object")
   );
@@ -32,6 +36,8 @@ function getValuesObject(data) {
 }
 
 function getObjects(data) {
+  if (!data) return null;
+
   if (Array.isArray(data)) {
     const d = data.filter((e) => typeof e === "object");
     if (d.length) return d;

@@ -101,16 +101,16 @@ function TCEntry({ data, num, onClick, active }) {
           <RFolder
             title="Macs Info"
             // onClick={() => setMacsInfoTableView(true)}
-            actionElements={
-              <ShowInTable
-                onClick={() => setMacsInfoTableView(true)}
-                open={macsInfoTableView}
-                onClose={() => setMacsInfoTableView(false)}
-                title="Macs Informations"
-                columns={macsInfoColumns}
-                data={macsInfoData}
-              />
-            }
+            // actionElements={
+            //   <ShowInTable
+            //     onClick={() => setMacsInfoTableView(true)}
+            //     open={macsInfoTableView}
+            //     onClose={() => setMacsInfoTableView(false)}
+            //     title="Macs Informations"
+            //     columns={macsInfoColumns}
+            //     data={macsInfoData}
+            //   />
+            // }
             data={macsInfo}
           />
         )}
@@ -118,16 +118,16 @@ function TCEntry({ data, num, onClick, active }) {
         {macsConfig && (
           <RFolder
             title="Macs Config"
-            actionElements={
-              <ShowInTable
-                onClick={() => setMacsConfigTableView(true)}
-                open={macsConfigTableView}
-                onClose={() => setMacsConfigTableView(false)}
-                title="Macs Configuration"
-                columns={macsColumns}
-                data={macsData}
-              />
-            }
+            // actionElements={
+            //   <ShowInTable
+            //     onClick={() => setMacsConfigTableView(true)}
+            //     open={macsConfigTableView}
+            //     onClose={() => setMacsConfigTableView(false)}
+            //     title="Macs Configuration"
+            //     columns={macsColumns}
+            //     data={macsData}
+            //   />
+            // }
             data={macsConfig}
           />
         )}
