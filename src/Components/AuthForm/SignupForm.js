@@ -51,7 +51,7 @@ function SignupForm() {
   }
 
   return (
-    <div className="m-auto w-1/2 flex flex-col gap-10" onClick={() => setOpenModal(false)}>
+    <div className="m-auto w-1/2 flex flex-col gap-9" onClick={() => setOpenModal(false)}>
       {openModal && <GenericModal />}
       <div className=" mt-10">
         <h1 className="font-poppins font-bold text-black text-5xl  uppercase">
@@ -62,7 +62,7 @@ function SignupForm() {
         </h3>
       </div>
 
-      {/* {<GenericErrorMessage message="incorrect email or password"/>} */}
+      {/* {<div className="-mb-4"><GenericErrorMessage message="incorrect email or password"/></div>} */}
 
       <Formik
         initialValues={initialValues}
@@ -73,7 +73,7 @@ function SignupForm() {
       >
         {({ values }) => (
           <Form>
-            <div className="sm:col-span-3  ">
+            <div className="sm:col-span-3  mt-4 ">
               <label
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-black"
@@ -170,7 +170,7 @@ function SignupForm() {
             <button
               type="submit"
               data-testid="LoginFormSubmitButton"
-              className= {`${!(validPass && validationSchema.isValidSync(values)) ? "bg-blue-300 ": "hover:bg-opacity-90"} mx-auto w-full font-poppins uppercase flex justify-center items-center mt-16 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
+              className= {`${!(validPass && validationSchema.isValidSync(values)) ? "bg-blue-300 ": "hover:bg-opacity-90"} mx-auto w-full font-poppins uppercase flex justify-center items-center mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
               disabled={!(validPass && validationSchema.isValidSync(values))}
             >
               Sign up
