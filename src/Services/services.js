@@ -1,9 +1,9 @@
-import { RepeatOneSharp } from "@material-ui/icons";
 import axios from "axios";
 import Cookies from "universal-cookie";
-const BASEURL = "http://egc-med-tesla:8080/";
 
-const urls = {
+export const APIURL = "http://localhost:8080/";
+
+export const urls = {
   listDatabases: "database/urls",
   listTestSuites: "TestSuites",
   getTestCases: "testCases/testSuite/{testSuitId}",
@@ -17,7 +17,7 @@ const urls = {
   login: "login/",
 };
 
-Object.entries(urls).map(([k, v]) => (urls[k] = BASEURL + v));
+Object.entries(urls).map(([k, v]) => (urls[k] = APIURL + v));
 
 export async function fetchDatabases() {
   const response = await fetch(urls.listDatabases);
