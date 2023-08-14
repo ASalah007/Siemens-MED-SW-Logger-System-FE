@@ -1,17 +1,20 @@
-import Testsuit from "./Pages/Testsuit/Testsuit";
-import Testcase from "./Pages/Testcase/Testcase";
-
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ValidationTag from "./Pages/ValidationTag/ValidationTag";
 import { DataBaseContextProvider } from "./Contexts/DatabaseContext.js";
 import TreePage from "./Pages/TreePage/TreePage.js";
 import HomePage from "./Pages/Welcome/HomePage.js";
-import BasePage from "./Pages/Base";
 import SearchPage from "./Pages/SearchPage/SearchPage";
 import ConnectedPage from "./Pages/ConnectedPage/ConnectedPage";
-import LoginPage from "./Pages/LoginPage/LoginPage";
-import SignupPage from "./Pages/SignupPage/SignupPage";
-import FOFPage from "./Pages/404Page/FOFPage";
+
+const BasePage = React.lazy(() => import("./Pages/Base"));
+const LoginPage = React.lazy(() => import("./Pages/LoginPage/LoginPage"));
+const SignupPage = React.lazy(() => import("./Pages/SignupPage/SignupPage"));
+const FOFPage = React.lazy(() => import("./Pages/404Page/FOFPage"));
+const Testsuit = React.lazy(() => import("./Pages/Testsuit/Testsuit"));
+const Testcase = React.lazy(() => import("./Pages/Testcase/Testcase"));
+const ValidationTag = React.lazy(() =>
+  import("./Pages/ValidationTag/ValidationTag")
+);
 
 function App() {
   return (
