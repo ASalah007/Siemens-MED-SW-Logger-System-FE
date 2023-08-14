@@ -82,8 +82,8 @@ function TSEntry({ data, num, onClick, active }) {
             ]}
             data={{
               ...data.metaData,
-              "Failed TCs": data.TestCasesCount,
-              "Total TCs": data.failedTestCasesCount,
+              "Total TCs": data.TestCasesCount,
+              "Failed TCs": data.failedTestCasesCount,
               Duration: duration,
             }}
           />
