@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Folder from "../../Folder/Folder.js";
-import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
 import RFolder from "../../Folder/RFolder.js";
 
@@ -64,7 +63,10 @@ function VPEntry({ data, num, onClick, active }) {
           />
         }
       >
-        <RFolder title="Meta Data" data={{ ...data.metaData }} />
+        {data.metaData && (
+          <RFolder title="Meta Data" data={{ ...data.metaData }} />
+        )}
+
         {data.levels && <RFolder title="Levels" data={data.levels} />}
       </Folder>
     </div>
