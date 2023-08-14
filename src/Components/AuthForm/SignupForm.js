@@ -24,7 +24,7 @@ function SignupForm() {
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .matches(
-        "^[0-9A-Za-z.]+@siemens\\.com\\s*$",
+        "^[0-9A-Za-z.-]+@siemens\\.com\\s*$",
         "Please enter a valid Siemens email address"
       )
       .required("email is required"),
