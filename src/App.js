@@ -6,12 +6,12 @@ import HomePage from "./Pages/Welcome/HomePage.js";
 import SearchPage from "./Pages/SearchPage/SearchPage";
 import ConnectedPage from "./Pages/ConnectedPage/ConnectedPage";
 import AdminPage from "./Pages/AdminPage/AdminPage";
+import Testsuit from "./Pages/Testsuit/Testsuit";
 
 const BasePage = React.lazy(() => import("./Pages/Base"));
 const LoginPage = React.lazy(() => import("./Pages/LoginPage/LoginPage"));
 const SignupPage = React.lazy(() => import("./Pages/SignupPage/SignupPage"));
 const FOFPage = React.lazy(() => import("./Pages/404Page/FOFPage"));
-const Testsuit = React.lazy(() => import("./Pages/Testsuit/Testsuit"));
 const Testcase = React.lazy(() => import("./Pages/Testcase/Testcase"));
 const ValidationTag = React.lazy(() =>
   import("./Pages/ValidationTag/ValidationTag")

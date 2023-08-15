@@ -14,7 +14,7 @@ function VPEntry({ data, num, onClick, active }) {
       if (e.status.toLowerCase() === "pass") e.status = "🟢";
       if (e.status.toLowerCase() === "fail") e.status = "🔴";
 
-      return Object.values(e).sort();
+      return Object.keys(e).map((k) => e[k]);
     });
   }
 
