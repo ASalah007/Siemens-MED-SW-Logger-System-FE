@@ -8,14 +8,12 @@ import ConnectedPage from "./Pages/ConnectedPage/ConnectedPage";
 import AdminPage from "./Pages/AdminPage/AdminPage";
 import Testsuit from "./Pages/Testsuit/Testsuit";
 
-const BasePage = React.lazy(() => import("./Pages/Base"));
-const LoginPage = React.lazy(() => import("./Pages/LoginPage/LoginPage"));
-const SignupPage = React.lazy(() => import("./Pages/SignupPage/SignupPage"));
-const FOFPage = React.lazy(() => import("./Pages/404Page/FOFPage"));
-const Testcase = React.lazy(() => import("./Pages/Testcase/Testcase"));
-const ValidationTag = React.lazy(() =>
-  import("./Pages/ValidationTag/ValidationTag")
-);
+import BasePage from "./Pages/Base";
+import LoginPage from "./Pages/LoginPage/LoginPage.js";
+import SignupPage from "./Pages/SignupPage/SignupPage.js";
+import FOFPage from "./Pages/404Page/FOFPage.js";
+import Testcase from "./Pages/Testcase/Testcase.js";
+import ValidationTag from "./Pages/ValidationTag/ValidationTag.js";
 
 function App() {
   return (
