@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { signup } from "../../Services/services";
@@ -36,8 +37,9 @@ function SignupForm() {
 
 
   function handleSubmit(values) {
-    setLoading(true);
-    setError(false);
+    setLoading(true)
+    setError(false)
+    setErrorMsg("")
     signup(values)
       .then((data) => {
         // console.log(data);
@@ -62,7 +64,7 @@ function SignupForm() {
         </h3>
       </div>
 
-      {/* {<div className="-mb-4"><GenericErrorMessage message="incorrect email or password"/></div>} */}
+      {errorMsg!== "" &&<div className="-mb-4"><GenericErrorMessage message="incorrect email or password"/></div>}
 
       <Formik
         initialValues={initialValues}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { login } from "../../Services/services";
@@ -7,6 +8,7 @@ import LinearLoader from "../LinearLoader/LinearLoader.js";
 
 
 function LoginForm() {
+  const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,19 +32,22 @@ function LoginForm() {
   });
 
   function handleSubmit(values) {
+    setErrorMsg("")
     setLoading(true);
     login(values)
       .then((data) => {
         console.log(data);
         setLoading(false);
+        navigate("/")
       })
       .catch((err) => {
         setErrorMsg(err.message);
+        setLoading(false);
       });
   }
 
   return (
-    <div className="m-auto w-fit">
+    <div className="m-auto w-1/2 flex flex-col gap-9">
       <div className=" mt-10">
         <h1 className="font-poppins font-bold text-black text-5xl  uppercase">
           welcome back,
@@ -52,6 +57,8 @@ function LoginForm() {
         </h3>
       </div>
 
+      {errorMsg!== "" &&<div className="-mb-4"><GenericErrorMessage message="incorrect email or password"/></div>}
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -60,7 +67,7 @@ function LoginForm() {
         {({ values }) => (
           <Form>
             <div>
-              <div className="sm:col-span-3 mt-16">
+              <div className="sm:col-span-3 ">
                 <label
                   htmlFor="first-name"
                   className="block text-sm font-medium leading-6 text-black"
@@ -108,7 +115,7 @@ function LoginForm() {
             <button
               type="submit"
               data-testid="LoginFormSubmitButton"
-              className= {`${!(validationSchema.isValidSync(values)) ? "bg-blue-300 ": "hover:bg-opacity-90"} mx-auto w-full font-poppins uppercase flex justify-center items-center mt-16 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
+              className= {`${!(validationSchema.isValidSync(values)) ? "bg-blue-300 ": "hover:bg-opacity-90"} mx-auto w-full font-poppins uppercase flex justify-center items-center mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
 
               disabled={!(validationSchema.isValidSync(values))}
 
