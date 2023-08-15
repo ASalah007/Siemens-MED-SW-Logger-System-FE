@@ -44,7 +44,7 @@
   color: #fff;
 }
 
-.MuiTableCell-head {
+.custom-tables .MuiTableCell-head {
   margin: auto;
   background-color: var(--table_color) !important;
 }

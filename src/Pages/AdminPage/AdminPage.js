@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SideBar from "../../Components/AdminSideBar/SideBar";
 import SearchIcon from "@mui/icons-material/Search";
 import NonActivatedTable from "../../Components/AdminTables/NonActivatedTable";
+import ActiveUsersTable from "../../Components/AdminTables/ActiveUsersTable";
 
 function AdminPage() {
   const [activated, setActivated] = useState(false);
@@ -31,8 +32,8 @@ function AdminPage() {
           </div>
         </div>
 
-        <div className="w-[95%] mt-[5rem] shadow-lg ml-auto ">
-          {!activated ? <NonActivatedTable /> : null}
+        <div className="p-10">
+          {!activated ? <NonActivatedTable /> : <ActiveUsersTable />}
         </div>
       </div>
     </div>
