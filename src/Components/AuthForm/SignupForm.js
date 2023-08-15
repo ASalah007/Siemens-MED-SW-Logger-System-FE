@@ -48,7 +48,7 @@ function SignupForm() {
       })
       .catch((err) => {
         setError(true);
-        setErrorMsg(err.message);
+        setErrorMsg(err.response.data.error.message);
       });
   }
 
@@ -64,7 +64,7 @@ function SignupForm() {
         </h3>
       </div>
 
-      {errorMsg!== "" &&<div className="-mb-4"><GenericErrorMessage message="incorrect email or password"/></div>}
+      {errorMsg!== "" &&<div className="-mb-4"><GenericErrorMessage message={errorMsg}/></div>}
 
       <Formik
         initialValues={initialValues}

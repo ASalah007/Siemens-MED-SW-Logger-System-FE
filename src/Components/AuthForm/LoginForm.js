@@ -36,12 +36,12 @@ function LoginForm() {
     setLoading(true);
     login(values)
       .then((data) => {
-        console.log(data);
         setLoading(false);
         navigate("/")
       })
       .catch((err) => {
-        setErrorMsg(err.message);
+        console.log(err)
+        setErrorMsg(err.response.data.error.message);
         setLoading(false);
       });
   }
@@ -57,7 +57,7 @@ function LoginForm() {
         </h3>
       </div>
 
-      {errorMsg!== "" &&<div className="-mb-4"><GenericErrorMessage message="incorrect email or password"/></div>}
+      {errorMsg!== "" &&<div className="-mb-4"><GenericErrorMessage message={errorMsg}/></div>}
 
       <Formik
         initialValues={initialValues}
