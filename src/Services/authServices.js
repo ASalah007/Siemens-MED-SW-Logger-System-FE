@@ -44,3 +44,8 @@ export async function fetchUserData() {
   const response = await authAxios.get("/user");
   return response.data.data.user;
 }
+
+export async function fetchAllSolutions() {
+  const response = await authAxios.get("/admin/solutions");
+  return response.data.data;
+}

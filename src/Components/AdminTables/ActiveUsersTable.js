@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminTable from "./AdminTable";
 import { Autocomplete, Button, Checkbox, TextField } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { fetchAllSolutions } from "../../Services/authServices";
 
 export default function ActiveUsersTable() {
   const [users, setUsers] = useState([
@@ -20,6 +21,11 @@ export default function ActiveUsersTable() {
     { name: "User8", email: "test8@gmail.com", solutions: [] },
   ]);
 
+  const [options, setOptions] = useState(["Ethernet", "5G", "OTN"]);
+  useEffect(() => {
+    fetchAllSolutions().then((data) => setOptions(data));
+  }, []);
+
   return (
     <AdminTable
       columns={["Name", "Email", "Solution", "Actions"]}
@@ -35,6 +41,7 @@ export default function ActiveUsersTable() {
               return nw;
             })
           }
+          options={options}
         />,
         <div className="flex gap-1 justify-center">
           <Button size="small">Apply</Button>
@@ -49,8 +56,7 @@ export default function ActiveUsersTable() {
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-function Solutions({ values, handleChange }) {
-  console.log(values);
+function Solutions({ values, handleChange, options }) {
   return (
     <Autocomplete
       size="small"
@@ -59,7 +65,7 @@ function Solutions({ values, handleChange }) {
       disableCloseOnSelect
       value={values}
       onChange={handleChange}
-      options={["Ethernet", "5G", "OTN"]}
+      options={options}
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
