@@ -39,3 +39,8 @@ export async function fetchAllUnactiveUsers() {
   const response = await authAxios.get("/admin/unactiveusers");
   return response.data;
 }
+
+export async function fetchUserData() {
+  const response = await authAxios.get("/user");
+  return response.data.data.user;
+}
