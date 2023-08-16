@@ -49,3 +49,12 @@ export async function fetchAllSolutions() {
   const response = await authAxios.get("/admin/solutions");
   return response.data.data;
 }
+
+export async function deleteUser(userId) {
+  try {
+    const response = await authAxios.delete(`/admin/user/${userId}`);
+    return response.data;
+  } catch (err) {
+    return err;
+  }
+}
