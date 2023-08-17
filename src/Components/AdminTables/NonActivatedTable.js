@@ -1,7 +1,7 @@
 import React from "react";
 import AdminTable from "./AdminTable";
 
-function NonActivatedTable() {
+function NonActivatedTable(props) {
   const users = [
     { name: "User1", email: "test1@gmail.com" },
     { name: "User2", email: "test2@gmail.com" },

@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideBar from "../../Components/AdminSideBar/SideBar";
 import SearchIcon from "@mui/icons-material/Search";
 import NonActivatedTable from "../../Components/AdminTables/NonActivatedTable";
 import ActiveUsersTable from "../../Components/AdminTables/ActiveUsersTable";
+import { fetchUsers } from "../../Services/authServices";
 
 function AdminPage() {
   const [activated, setActivated] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const resp = fetchUsers(activated);
+    setUsers(resp);
+    console.log(users);
+   }, [activated]);
 
   return (
     <div className="w-full h-full min-h-screen bg-white flex">
@@ -33,7 +41,7 @@ function AdminPage() {
         </div>
 
         <div className="p-10">
-          {!activated ? <NonActivatedTable /> : <ActiveUsersTable />}
+          {!activated ? <NonActivatedTable users= {users}/> : <ActiveUsersTable />}
         </div>
       </div>
     </div>

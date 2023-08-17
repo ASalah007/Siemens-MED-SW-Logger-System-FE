@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-export const APIURL = `http://${window.location.hostname}:8080/`;
+export const APIURL = `http://egc-med-tesla:8080/`;
 
 export const urls = {
   listDatabases: "database/urls",
@@ -15,6 +15,7 @@ export const urls = {
   deleteDatabase: "database/urls",
   signup: "signup/",
   login: "login/",
+  users: "admin/users/",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = APIURL + v));
@@ -221,3 +222,4 @@ export async function login(credentials) {
     throw err;
   }
 }
+

@@ -39,3 +39,12 @@ export async function fetchAllUnactiveUsers() {
   const response = await authAxios.get("/admin/unactiveusers");
   return response.data;
 }
+
+export async function fetchUsers(activated) {
+  try {
+    const response = await authAxios.get(urls.users+'?activated='+activated);
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+}
