@@ -13,7 +13,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import {
   deleteUser,
   fetchAllSolutions,
-  fetchAllUsers,
+  fetchAllActiveUsers,
   updateUserSolution,
 } from "../../Services/authServices";
 import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
@@ -27,7 +27,7 @@ export default function ActiveUsersTable() {
 
   useEffect(() => {
     fetchAllSolutions().then((data) => setOptions(data));
-    fetchAllUsers().then((data) => {
+    fetchAllActiveUsers().then((data) => {
       setUsers(data);
       setLoading(false);
     });

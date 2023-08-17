@@ -69,7 +69,7 @@ export async function deleteUser(userId) {
   }
 }
 
-export async function fetchAllUsers() {
+export async function fetchAllActiveUsers() {
   const response = await authAxios.get("/admin/users", {
     params: { activated: true },
   });
