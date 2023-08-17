@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { DataBaseContextProvider } from "./Contexts/DatabaseContext.js";
 import TreePage from "./Pages/TreePage/TreePage.js";
@@ -14,27 +14,36 @@ import SignupPage from "./Pages/SignupPage/SignupPage.js";
 import FOFPage from "./Pages/404Page/FOFPage.js";
 import Testcase from "./Pages/Testcase/Testcase.js";
 import ValidationTag from "./Pages/ValidationTag/ValidationTag.js";
+import UserContext from "./Contexts/UserContext.js";
+import { fetchUserData } from "./Services/authServices.js";
 
 function App() {
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    fetchUserData().then((data) => setUser(data));
+  }, []);
+  console.log(user);
   return (
     <DataBaseContextProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/old/" element={<BasePage />}>
-            <Route path="testsuits" element={<Testsuit />} />
-            <Route path="testcases" element={<Testcase />} />
-            <Route path="validtags" element={<ValidationTag />} />
-          </Route>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/tree" element={<TreePage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/connected" element={<ConnectedPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="*" element={<FOFPage />} />
-        </Routes>
-      </BrowserRouter>
+      <UserContext.Provider value={user}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/old/" element={<BasePage />}>
+              <Route path="testsuits" element={<Testsuit />} />
+              <Route path="testcases" element={<Testcase />} />
+              <Route path="validtags" element={<ValidationTag />} />
+            </Route>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/tree" element={<TreePage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/connected" element={<ConnectedPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="*" element={<FOFPage />} />
+          </Routes>
+        </BrowserRouter>
+      </UserContext.Provider>
     </DataBaseContextProvider>
   );
 }

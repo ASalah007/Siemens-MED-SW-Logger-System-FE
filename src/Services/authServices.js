@@ -48,3 +48,22 @@ export async function fetchUsers(activated) {
     throw err;
   }
 }
+
+export async function fetchUserData() {
+  const response = await authAxios.get("/user");
+  return response.data.data.user;
+}
+
+export async function fetchAllSolutions() {
+  const response = await authAxios.get("/admin/solutions");
+  return response.data.data;
+}
+
+export async function deleteUser(userId) {
+  try {
+    const response = await authAxios.delete(`/admin/user/${userId}`);
+    return response.data;
+  } catch (err) {
+    return err;
+  }
+}
