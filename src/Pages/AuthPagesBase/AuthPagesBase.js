@@ -6,7 +6,7 @@ import UserContext from "../../Contexts/UserContext";
 export default function AuthPageBase() {
   const [user, setUser] = useState({});
   useEffect(() => {
-    fetchUserData().then((data) => setUser(data));
+    // fetchUserData().then((data) => setUser(data));
   }, []);
 
   return (
