@@ -1,8 +1,7 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 import jwtDecode from "jwt-decode";
-import { APIURL, login } from "./services";
-import { urls } from "./services";
+import { APIURL, urls } from "./services";
 
 const authAxios = axios.create();
 authAxios.defaults.baseURL = APIURL;
@@ -42,7 +41,9 @@ export async function fetchAllUnactiveUsers() {
 
 export async function fetchUsers(activated) {
   try {
-    const response = await authAxios.get(urls.users+'?activated='+activated);
+    const response = await authAxios.get(
+      urls.users + "?activated=" + activated
+    );
     return response.data;
   } catch (err) {
     throw err;
