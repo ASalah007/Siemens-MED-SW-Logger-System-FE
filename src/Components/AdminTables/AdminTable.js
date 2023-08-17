@@ -6,14 +6,16 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { LinearProgress } from "@mui/material";
 
-export default function AdminTable({ columns, rows }) {
+export default function AdminTable({ columns, rows, loading }) {
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }} elevation={5}>
+      {loading && <LinearProgress />}
       <TableContainer>
         <Table>
           <TableHead>
-            <TableRow style={{ backgroundColor: "white", color: "green" }}>
+            <TableRow>
               {columns.map((column) => (
                 <TableCell key={column} align="center">
                   <div className="text-3xl font-semibold">{column}</div>

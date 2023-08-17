@@ -6,23 +6,21 @@ import { login } from "../../Services/services";
 import GenericErrorMessage from "../ErrorMessage/ErrorMessage.js";
 import LinearLoader from "../LinearLoader/LinearLoader.js";
 
-
 function LoginForm() {
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   const initialValues = {
     email: "",
     password: "",
   };
 
-
   const validationSchema = Yup.object().shape({
     email: Yup.string()
+      .email("Invalid email")
       .matches(
-        "^[0-9A-Za-z.]+@siemens\\.com\\s*$",
+        ".*@siemens\\.com\\s*$",
         "Please enter a valid Siemens email address"
       )
       .required("email is required"),
@@ -32,15 +30,15 @@ function LoginForm() {
   });
 
   function handleSubmit(values) {
-    setErrorMsg("")
+    setErrorMsg("");
     setLoading(true);
     login(values)
       .then((data) => {
         setLoading(false);
-        navigate("/")
+        navigate("/");
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         setErrorMsg(err.response.data.error.message);
         setLoading(false);
       });
@@ -57,12 +55,16 @@ function LoginForm() {
         </h3>
       </div>
 
-      {errorMsg!== "" &&<div className="-mb-4"><GenericErrorMessage message={errorMsg}/></div>}
+      {errorMsg !== "" && (
+        <div className="-mb-4">
+          <GenericErrorMessage message={errorMsg} />
+        </div>
+      )}
 
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(v) => handleSubmit(v) }
+        onSubmit={(v) => handleSubmit(v)}
       >
         {({ values }) => (
           <Form>
@@ -115,10 +117,12 @@ function LoginForm() {
             <button
               type="submit"
               data-testid="LoginFormSubmitButton"
-              className= {`${!(validationSchema.isValidSync(values)) ? "bg-blue-300 ": "hover:bg-opacity-90"} mx-auto w-full font-poppins uppercase flex justify-center items-center mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
-
-              disabled={!(validationSchema.isValidSync(values))}
-
+              className={`${
+                !validationSchema.isValidSync(values)
+                  ? "bg-blue-300 "
+                  : "hover:bg-opacity-90"
+              } mx-auto w-full font-poppins uppercase flex justify-center items-center mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
+              disabled={!validationSchema.isValidSync(values)}
             >
               Login
             </button>
@@ -131,7 +135,7 @@ function LoginForm() {
                 sign up
               </a>
             </p>
-            {loading && <LinearLoader color={"#1976D2"}/>}
+            {loading && <LinearLoader color={"#1976D2"} />}
           </Form>
         )}
       </Formik>

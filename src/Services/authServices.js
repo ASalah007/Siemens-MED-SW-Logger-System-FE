@@ -8,7 +8,7 @@ const authAxios = axios.create();
 authAxios.defaults.baseURL = APIURL;
 
 const loginURL =
-  window.location.protocol + "//" + window.location.host + urls.login;
+  window.location.protocol + "//" + window.location.host + "/login";
 
 authAxios.interceptors.request.use(
   function (config) {
@@ -61,7 +61,25 @@ export async function fetchAllSolutions() {
 
 export async function deleteUser(userId) {
   try {
-    const response = await authAxios.delete(`/admin/user/${userId}`);
+    const response = await authAxios.delete(`/admin/users/${userId}`);
+    return response.data;
+  } catch (err) {
+    return err;
+  }
+}
+
+export async function fetchAllUsers() {
+  const response = await authAxios.get("/admin/users", {
+    params: { activated: true },
+  });
+  return response.data;
+}
+
+export async function updateUserSolution(userId, solutions) {
+  try {
+    const response = await authAxios.patch(`/admin/users/${userId}`, {
+      solutions,
+    });
     return response.data;
   } catch (err) {
     return err;

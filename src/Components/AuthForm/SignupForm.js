@@ -24,8 +24,9 @@ function SignupForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
+      .email("Invalid email")
       .matches(
-        "^[0-9A-Za-z.-]+@siemens\\.com\\s*$",
+        ".*@siemens\\.com\\s*$",
         "Please enter a valid Siemens email address"
       )
       .required("email is required"),
@@ -35,11 +36,10 @@ function SignupForm() {
       .required("Full name is required"),
   });
 
-
   function handleSubmit(values) {
-    setLoading(true)
-    setError(false)
-    setErrorMsg("")
+    setLoading(true);
+    setError(false);
+    setErrorMsg("");
     signup(values)
       .then((data) => {
         // console.log(data);
@@ -53,7 +53,10 @@ function SignupForm() {
   }
 
   return (
-    <div className="m-auto w-1/2 flex flex-col gap-9" onClick={() => setOpenModal(false)}>
+    <div
+      className="m-auto w-1/2 flex flex-col gap-9"
+      onClick={() => setOpenModal(false)}
+    >
       {openModal && <GenericModal />}
       <div className=" mt-10">
         <h1 className="font-poppins font-bold text-black text-5xl  uppercase">
@@ -64,7 +67,11 @@ function SignupForm() {
         </h3>
       </div>
 
-      {errorMsg!== "" &&<div className="-mb-4"><GenericErrorMessage message={errorMsg}/></div>}
+      {errorMsg !== "" && (
+        <div className="-mb-4">
+          <GenericErrorMessage message={errorMsg} />
+        </div>
+      )}
 
       <Formik
         initialValues={initialValues}
@@ -160,19 +167,26 @@ function SignupForm() {
               </div>
             </div>
 
-            {values.password.length>0 &&
-                <div className="absolute">
-                  <PasswordChecklist
-                    rules={["minLength", "specialChar", "number", "capital"]}
-                    minLength={8}
-                    value={values.password}
-                    onChange={(isValid) => {setValidPass(isValid)}}
-                  />
-            </div>}
+            {values.password.length > 0 && (
+              <div className="absolute">
+                <PasswordChecklist
+                  rules={["minLength", "specialChar", "number", "capital"]}
+                  minLength={8}
+                  value={values.password}
+                  onChange={(isValid) => {
+                    setValidPass(isValid);
+                  }}
+                />
+              </div>
+            )}
             <button
               type="submit"
               data-testid="LoginFormSubmitButton"
-              className= {`${!(validPass && validationSchema.isValidSync(values)) ? "bg-blue-300 ": "hover:bg-opacity-90"} mx-auto w-full font-poppins uppercase flex justify-center items-center mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
+              className={`${
+                !(validPass && validationSchema.isValidSync(values))
+                  ? "bg-blue-300 "
+                  : "hover:bg-opacity-90"
+              } mx-auto w-full font-poppins uppercase flex justify-center items-center mt-32 rounded-md bg-Blue px-3 py-2 text-md font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black`}
               disabled={!(validPass && validationSchema.isValidSync(values))}
             >
               Sign up

@@ -10,34 +10,36 @@ import {
 } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { fetchAllSolutions } from "../../Services/authServices";
+import {
+  deleteUser,
+  fetchAllSolutions,
+  fetchAllUsers,
+  updateUserSolution,
+} from "../../Services/authServices";
+import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
 
 export default function ActiveUsersTable() {
-  const [users, setUsers] = useState([
-    {
-      name: "User1",
-      email: "test1@gmail.com",
-      solutions: ["Ethernet", "5G", "OTN"],
-    },
-    { name: "User2", email: "test2@gmail.com", solutions: ["Ethernet"] },
-    { name: "User3", email: "test3@gmail.com", solutions: [] },
-    { name: "User4", email: "test4@gmail.com", solutions: [] },
-    { name: "User5", email: "test5@gmail.com", solutions: [] },
-    { name: "User6", email: "test6@gmail.com", solutions: [] },
-    { name: "User7", email: "test7@gmail.com", solutions: [] },
-    { name: "User8", email: "test8@gmail.com", solutions: [] },
-  ]);
+  const [users, setUsers] = useState([]);
 
   const [options, setOptions] = useState(["Ethernet", "5G", "OTN"]);
+  const [loading, setLoading] = useState(true);
+  const [deleteConfirmation, setdeleteConfirmation] = useState(false);
+
   useEffect(() => {
     fetchAllSolutions().then((data) => setOptions(data));
+    fetchAllUsers().then((data) => {
+      setUsers(data);
+      setLoading(false);
+    });
   }, []);
 
-  const [deleteSnackbar, setDeleteSnackbar] = useState(false);
-  const [deleteResult, setDeleteResult] = useState({ status: "", message: "" });
+  const [deleteSnackbar, setDeleteSnackbar] = useState(null);
+  const [updateSnackbar, setUpdateSnackbar] = useState(null);
+
   return (
     <>
       <AdminTable
+        loading={loading}
         columns={["Name", "Email", "Solution", "Actions"]}
         rows={users.map((user, i) => [
           user.name,
@@ -54,17 +56,24 @@ export default function ActiveUsersTable() {
             options={options}
           />,
           <div className="flex gap-1 justify-center">
-            <Button size="small">Apply</Button>
+            <Button
+              size="small"
+              onClick={() => {
+                updateUserSolution(user._id, user.solutions).then((data) => {
+                  setUpdateSnackbar({
+                    status: data.status,
+                    message: data.message,
+                  });
+                });
+              }}
+            >
+              Apply
+            </Button>
             <Button
               size="small"
               color="error"
               onClick={() => {
-                // TODO: call api
-                setDeleteSnackbar(true);
-                setDeleteResult({
-                  status: "success",
-                  message: "User deleted successfully",
-                });
+                setdeleteConfirmation(user);
               }}
             >
               delete
@@ -73,19 +82,56 @@ export default function ActiveUsersTable() {
         ])}
       />
 
-      <Snackbar
-        open={deleteSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setDeleteSnackbar(false)}
-      >
-        <Alert
-          severity={deleteResult.status === "fail" ? "warning" : "success"}
-          sx={{ width: "100%" }}
-          onClose={() => setDeleteSnackbar(false)}
+      <ConfirmationDialog
+        open={deleteConfirmation}
+        content="Please note that the user will be deleted and it can't be undone!"
+        onClose={() => setdeleteConfirmation(null)}
+        onConfirm={() => {
+          deleteUser(deleteConfirmation._id).then((data) => {
+            setDeleteSnackbar({
+              status: data.status,
+              message: data.message,
+            });
+            if (data.status === "success") {
+              setUsers((o) =>
+                o.filter((u) => u._id !== deleteConfirmation._id)
+              );
+            }
+          });
+        }}
+      />
+
+      {updateSnackbar && (
+        <Snackbar
+          open={!!updateSnackbar}
+          autoHideDuration={6000}
+          onClose={() => setUpdateSnackbar(null)}
         >
-          {deleteResult.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            severity={updateSnackbar.status === "fail" ? "warning" : "success"}
+            sx={{ width: "100%" }}
+            onClose={() => setUpdateSnackbar(null)}
+          >
+            {updateSnackbar.message}
+          </Alert>
+        </Snackbar>
+      )}
+
+      {deleteSnackbar && (
+        <Snackbar
+          open={!!deleteSnackbar}
+          autoHideDuration={6000}
+          onClose={() => setDeleteSnackbar(null)}
+        >
+          <Alert
+            severity={deleteSnackbar.status === "fail" ? "warning" : "success"}
+            sx={{ width: "100%" }}
+            onClose={() => setDeleteSnackbar(null)}
+          >
+            {deleteSnackbar.message}
+          </Alert>
+        </Snackbar>
+      )}
     </>
   );
 }
