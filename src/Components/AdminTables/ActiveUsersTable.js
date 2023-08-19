@@ -40,10 +40,9 @@ export default function ActiveUsersTable() {
     <>
       <AdminTable
         loading={loading}
-        columns={["Name", "Email", "Solution", "Actions"]}
+        columns={["Name", "Solution", "Actions"]}
         rows={users.map((user, i) => [
           user.name,
-          user.email,
           <Solutions
             values={user.solutions}
             handleChange={(e, v) =>

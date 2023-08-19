@@ -10,7 +10,7 @@ import { LinearProgress } from "@mui/material";
 
 export default function AdminTable({ columns, rows, loading }) {
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }} elevation={5}>
+    <Paper sx={{ width: "100%", overflow: "hidden" }} elevation={2}>
       {loading && <LinearProgress />}
       <TableContainer>
         <Table>
