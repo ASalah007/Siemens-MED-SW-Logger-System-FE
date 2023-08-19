@@ -1,29 +1,29 @@
 import React from "react";
 import AdminTable from "./AdminTable";
+import {activateUser} from "./../../Services/authServices"
 
 function NonActivatedTable(props) {
-  const users = [
-    { name: "User1", email: "test1@gmail.com" },
-    { name: "User2", email: "test2@gmail.com" },
-    { name: "User3", email: "test3@gmail.com" },
-    { name: "User4", email: "test4@gmail.com" },
-    { name: "User5", email: "test5@gmail.com" },
-    { name: "User6", email: "test6@gmail.com" },
-    { name: "User7", email: "test7@gmail.com" },
-    { name: "User8", email: "test8@gmail.com" },
-  ];
+
+  function handleUser(id, approve) {
+    activateUser(id, approve)
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+
+    window.reload()
+  }
 
   return (
     <AdminTable
-      columns={["Name", "Email", "Actions"]}
-      rows={users.map((u) => [
+      columns={["Name", "Actions"]}
+      rows={props.users?.map((u) => [
         u.name,
-        u.email,
         <div>
-          <button className="border-2 border-red-500 text-red-500 hover:bg-red-50 hover:shadow-inner font-bold py-2 px-4 rounded-lg uppercase">
+          <button className="border-2 border-red-500 text-red-500 hover:bg-red-50 hover:shadow-inner font-bold py-2 px-4 rounded-lg uppercase"
+          onClick={() => handleUser(u._id, false)}>
             Decline
           </button>
-          <button className="bg-success hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded-lg uppercase ml-6">
+          <button className="bg-success hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded-lg uppercase ml-6"
+          onClick={() => handleUser(u._id, true)}>
             Approve
           </button>
         </div>,

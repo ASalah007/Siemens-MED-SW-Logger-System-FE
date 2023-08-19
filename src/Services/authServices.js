@@ -50,6 +50,17 @@ export async function fetchUsers(activated) {
   }
 }
 
+export async function activateUser(id, approve) {
+  try {
+    const response = await authAxios.get(
+      urls.users + id + "/?approve=" + approve
+    );
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+}
+
 export async function fetchUserData() {
   const response = await authAxios.get("/user");
   return response.data.data.user;
