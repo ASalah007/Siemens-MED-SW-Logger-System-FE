@@ -20,7 +20,8 @@ function TSEntry({ data, num, onClick, active }) {
   let MPGColumns = [];
   let MPGData = [];
 
-  if (SAConfig) {
+  console.log("here:", data);
+  if (SAConfig && SAConfig.length > 0) {
     SAColumns = Object.keys(SAConfig[0]);
     SAData = SAConfig.map((e) => Object.values(e));
   }
@@ -91,26 +92,27 @@ function TSEntry({ data, num, onClick, active }) {
 
         {design_info && (
           <Folder title="DUT Info">
-            <Folder
-              title="SA Config"
-              actionElements={
-                <ShowInTable
-                  onClick={() => setSATableView(true)}
-                  open={SATableView}
-                  onClose={() => setSATableView(false)}
-                  title="SA Configs"
-                  columns={SAColumns}
-                  data={SAData}
-                />
-              }
-            >
-              {SAConfig &&
-                SAConfig.map((e, i) => (
+            {SAConfig && SAConfig.length > 0 && (
+              <Folder
+                title="SA Config"
+                actionElements={
+                  <ShowInTable
+                    onClick={() => setSATableView(true)}
+                    open={SATableView}
+                    onClose={() => setSATableView(false)}
+                    title="SA Configs"
+                    columns={SAColumns}
+                    data={SAData}
+                  />
+                }
+              >
+                {SAConfig.map((e, i) => (
                   <Folder title={`${e.id}`} key={e.id}>
                     <MiniTable keys={Object.keys(e)} data={e} />
                   </Folder>
                 ))}
-            </Folder>
+              </Folder>
+            )}
 
             {MPGConfig && MPGConfig.length > 0 && (
               <Folder

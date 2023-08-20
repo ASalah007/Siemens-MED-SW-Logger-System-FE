@@ -6,11 +6,11 @@ import UserContext from "../../Contexts/UserContext";
 export default function AuthPageBase() {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
-  useEffect(() => {
-    fetchUserData()
-      .then((data) => setUser(data))
-      .catch((err) => navigate("/login"));
-  }, []);
+  // useEffect(() => {
+  //   fetchUserData()
+  //     .then((data) => setUser(data))
+  //     .catch((err) => navigate("/login"));
+  // }, []);
   console.log(user);
 
   return (
