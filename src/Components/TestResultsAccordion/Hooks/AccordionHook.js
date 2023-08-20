@@ -491,5 +491,6 @@ export default function useAccordionStates({
     setValidationPointsCount,
 
     testSuitesStatistics,
+    setActiveTestSuite,
   };
 }

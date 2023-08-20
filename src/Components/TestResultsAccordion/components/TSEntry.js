@@ -45,7 +45,7 @@ function TSEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  let title = `Test Suite(${num})`;
+  let title = `Test Suite(${data.incrementalId})`;
   // if (data.TestCasesCount) title += `-- ${failedCount} `;
   // if (duration) title += `-- ${duration}`;
 

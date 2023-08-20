@@ -145,7 +145,8 @@ export async function fetchSearch({
     testSuites: {
       ...testSuitesValues["Meta Data"],
       status: testSuitesValues["Meta Data"].status.map((s) => s === "true"),
-      _id: testSuiteId ? [testSuiteId] : testSuitesValues["Meta Data"].id,
+      _id: testSuiteId ? [testSuiteId] : [],
+      incrementalId: testSuitesValues["Meta Data"].id.map((i) => parseInt(i)),
       design_info: {
         dut_instance_info: {
           sa_configuration: testSuitesValues["SA Configuration"],
@@ -153,11 +154,16 @@ export async function fetchSearch({
         },
       },
     },
-    testCases: { _id: testCaseId ? [testCaseId] : [], status: [] }, // TODO change this
+    testCases: {
+      _id: testCaseId ? [testCaseId] : [],
+      status: [],
+      incrementalId: [],
+    }, // TODO change this
     validationTags: {
       ...validationTagsValues["Meta Data"],
       status: validationTagsValues["Meta Data"].status.map((s) => s === "true"),
       _id: validationTagId ? [validationTagId] : [],
+      incrementalId: [],
     },
     validationPoints: {
       ...validationPointsValues.Levels,
@@ -166,6 +172,9 @@ export async function fetchSearch({
         .filter((i) => !isNaN(i)),
       status: validationPointsValues.Levels.status.map((s) => s === "true"),
       _id: validationPointId ? [validationPointId] : [],
+      incrementalId: validationPointsValues["Meta Data"].id.map((i) =>
+        parseInt(i)
+      ),
     },
   };
 

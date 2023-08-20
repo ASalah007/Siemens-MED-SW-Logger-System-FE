@@ -36,7 +36,7 @@ function VPEntry({ data, num, onClick, active }) {
       ")";
   }
 
-  const title = `Validation Point(${num})`;
+  const title = `Validation Point(${data.incrementalId})`;
 
   return (
     <div>
