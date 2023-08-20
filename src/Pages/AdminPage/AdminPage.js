@@ -8,15 +8,7 @@ import LinearLoader from "../../Components/LinearLoader/LinearLoader.js";
 
 function AdminPage() {
   const [activated, setActivated] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchUsers(activated).then((res) => {
-      setUsers(res);
-      setLoading(false);
-    });
-  }, [activated]);
 
   return (
     <div className="w-full h-full min-h-screen bg-white flex">
@@ -42,19 +34,13 @@ function AdminPage() {
             />
           </div>
         </div>
-        {loading ? (
-          <div className="mt-10">
-            <LinearLoader color = "#1976D2"/>
-          </div>
-        ) : 
-          <div className="w-[95%] ml-auto mt-10 ">
-            {!activated ? (
-              <NonActivatedTable users={users} />
-            ) : (
-              <ActiveUsersTable />
-            )}
-          </div>
-        }
+        <div className="w-[95%] ml-auto mt-10 ">
+          {!activated ? (
+            <NonActivatedTable />
+          ) : (
+            <ActiveUsersTable />
+          )}
+        </div>
       </div>
     </div>
   );

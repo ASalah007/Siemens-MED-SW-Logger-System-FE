@@ -14,14 +14,16 @@ import {
   deleteUser,
   fetchAllSolutions,
   fetchAllActiveUsers,
-  updateUserSolution,
+  updateUser,
 } from "../../Services/authServices";
 import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
+import { fetchDatabases } from "../../Services/services";
 
 export default function ActiveUsersTable() {
   const [users, setUsers] = useState([]);
 
   const [options, setOptions] = useState(["Ethernet", "5G", "OTN"]);
+  const [deleteOptions, setDeleteOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteConfirmation, setdeleteConfirmation] = useState(false);
 
@@ -31,19 +33,21 @@ export default function ActiveUsersTable() {
       setUsers(data);
       setLoading(false);
     });
+    fetchDatabases().then((data) => setDeleteOptions(data));
   }, []);
+  console.log(users);
 
   const [deleteSnackbar, setDeleteSnackbar] = useState(null);
   const [updateSnackbar, setUpdateSnackbar] = useState(null);
 
   return (
-    <>
+    <div className="p-12">
       <AdminTable
         loading={loading}
-        columns={["Name", "Solution", "Actions"]}
+        columns={["Name", "Solution", "Delete Permissions", "Actions"]}
         rows={users.map((user, i) => [
           user.name,
-          <Solutions
+          <AdminSelect
             values={user.solutions}
             handleChange={(e, v) =>
               setUsers((o) => {
@@ -54,11 +58,27 @@ export default function ActiveUsersTable() {
             }
             options={options}
           />,
+
+          <AdminSelect
+            values={user.deletableDatabases}
+            handleChange={(e, v) =>
+              setUsers((o) => {
+                const nw = [...o];
+                nw[i].deletableDatabases = v;
+                return nw;
+              })
+            }
+            options={deleteOptions}
+          />,
           <div className="flex gap-1 justify-center">
             <Button
               size="small"
               onClick={() => {
-                updateUserSolution(user._id, user.solutions).then((data) => {
+                updateUser(
+                  user._id,
+                  user.solutions,
+                  user.deletableDatabases
+                ).then((data) => {
                   setUpdateSnackbar({
                     status: data.status,
                     message: data.message,
@@ -107,7 +127,9 @@ export default function ActiveUsersTable() {
           onClose={() => setUpdateSnackbar(null)}
         >
           <Alert
-            severity={updateSnackbar.status === "fail" ? "warning" : "success"}
+            severity={
+              updateSnackbar.status === "success" ? "success" : "warning"
+            }
             sx={{ width: "100%" }}
             onClose={() => setUpdateSnackbar(null)}
           >
@@ -131,13 +153,13 @@ export default function ActiveUsersTable() {
           </Alert>
         </Snackbar>
       )}
-    </>
+    </div>
   );
 }
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-function Solutions({ values, handleChange, options }) {
+function AdminSelect({ values, handleChange, options }) {
   return (
     <Autocomplete
       size="small"
