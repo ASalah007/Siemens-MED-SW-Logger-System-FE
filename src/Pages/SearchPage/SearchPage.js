@@ -134,6 +134,7 @@ export default function SearchPage() {
               returnResult={returnResult}
               filterValues={{
                 testSuitesValues,
+                testCasesValues,
                 validationTagsValues,
                 validationPointsValues,
               }}

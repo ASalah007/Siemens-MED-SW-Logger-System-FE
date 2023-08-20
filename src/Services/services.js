@@ -94,15 +94,20 @@ export async function fetchSearchPageOptions() {
     params: { databaseName: connectedDatabase },
   });
   const obj = response.data.data;
+  console.log(obj);
   const newObj = {
     testSuites: {
-      "Meta Data": obj.test_suites,
+      "Meta Data": { ...obj.test_suites, id: obj.test_suites.incrementalId },
     },
     validationPoints: {
-      Levels: obj.validation_point,
+      Levels: obj.validation_points,
+      "Meta Data": { id: obj.validation_point.incrementalId },
     },
     validationTags: {
       "Meta Data": obj.validation_tag,
+    },
+    testCases: {
+      "Meta Data": { ...obj.test_cases, id: obj.test_cases.incrementalId },
     },
   };
   return newObj;
@@ -122,6 +127,7 @@ export async function fetchStatistics() {
 export async function fetchSearch({
   returnResult,
   testSuitesValues,
+  testCasesValues,
   validationTagsValues,
   validationPointsValues,
   testSuiteId = "",
@@ -154,17 +160,20 @@ export async function fetchSearch({
         },
       },
     },
+
     testCases: {
       _id: testCaseId ? [testCaseId] : [],
-      status: [],
-      incrementalId: [],
-    }, // TODO change this
+      status: testCasesValues["Meta Data"].status.map((s) => s === "true"),
+      incrementalId: testCasesValues["Meta Data"].id.map((i) => parseInt(i)),
+    },
+
     validationTags: {
       ...validationTagsValues["Meta Data"],
       status: validationTagsValues["Meta Data"].status.map((s) => s === "true"),
       _id: validationTagId ? [validationTagId] : [],
       incrementalId: [],
     },
+
     validationPoints: {
       ...validationPointsValues.Levels,
       mac: validationPointsValues.Levels.mac
