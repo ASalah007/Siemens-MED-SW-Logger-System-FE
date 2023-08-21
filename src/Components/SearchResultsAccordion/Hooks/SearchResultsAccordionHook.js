@@ -18,6 +18,7 @@ export default function useSearchResultsAccordionStates({
     s.setTestSuiteLoading(true);
 
     s.setActiveTestCase(-1);
+    s.setActiveTestSuite(-1);
     fetchSearch({
       returnResult,
       ...filterValues,

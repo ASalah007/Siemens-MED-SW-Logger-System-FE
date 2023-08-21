@@ -16,6 +16,7 @@ export const urls = {
   signup: "signup/",
   login: "login/",
   users: "admin/users/",
+  deleteTestSuite: "TestSuites/{testSuiteId}",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = APIURL + v));
@@ -94,15 +95,20 @@ export async function fetchSearchPageOptions() {
     params: { databaseName: connectedDatabase },
   });
   const obj = response.data.data;
+  console.log(obj);
   const newObj = {
     testSuites: {
-      "Meta Data": obj.test_suites,
+      "Meta Data": { ...obj.test_suites, id: obj.test_suites.incrementalId },
     },
     validationPoints: {
-      Levels: obj.validation_point,
+      Levels: obj.validation_points,
+      "Meta Data": { id: obj.validation_point.incrementalId },
     },
     validationTags: {
       "Meta Data": obj.validation_tag,
+    },
+    testCases: {
+      "Meta Data": { ...obj.test_cases, id: obj.test_cases.incrementalId },
     },
   };
   return newObj;
@@ -122,6 +128,7 @@ export async function fetchStatistics() {
 export async function fetchSearch({
   returnResult,
   testSuitesValues,
+  testCasesValues,
   validationTagsValues,
   validationPointsValues,
   testSuiteId = "",
@@ -145,7 +152,8 @@ export async function fetchSearch({
     testSuites: {
       ...testSuitesValues["Meta Data"],
       status: testSuitesValues["Meta Data"].status.map((s) => s === "true"),
-      _id: testSuiteId ? [testSuiteId] : testSuitesValues["Meta Data"].id,
+      _id: testSuiteId ? [testSuiteId] : [],
+      incrementalId: testSuitesValues["Meta Data"].id.map((i) => parseInt(i)),
       design_info: {
         dut_instance_info: {
           sa_configuration: testSuitesValues["SA Configuration"],
@@ -153,12 +161,20 @@ export async function fetchSearch({
         },
       },
     },
-    testCases: { _id: testCaseId ? [testCaseId] : [], status: [] }, // TODO change this
+
+    testCases: {
+      _id: testCaseId ? [testCaseId] : [],
+      status: testCasesValues["Meta Data"].status.map((s) => s === "true"),
+      incrementalId: testCasesValues["Meta Data"].id.map((i) => parseInt(i)),
+    },
+
     validationTags: {
       ...validationTagsValues["Meta Data"],
       status: validationTagsValues["Meta Data"].status.map((s) => s === "true"),
       _id: validationTagId ? [validationTagId] : [],
+      incrementalId: [],
     },
+
     validationPoints: {
       ...validationPointsValues.Levels,
       mac: validationPointsValues.Levels.mac
@@ -166,6 +182,9 @@ export async function fetchSearch({
         .filter((i) => !isNaN(i)),
       status: validationPointsValues.Levels.status.map((s) => s === "true"),
       _id: validationPointId ? [validationPointId] : [],
+      incrementalId: validationPointsValues["Meta Data"].id.map((i) =>
+        parseInt(i)
+      ),
     },
   };
 
@@ -220,5 +239,15 @@ export async function login(credentials) {
   } catch (err) {
     console.log(err);
     throw err;
+  }
+}
+
+export async function deleteTestSuite(testSuiteId) {
+  try {
+    const url = urls.deleteTestSuite.replace("{testSuiteId}", testSuiteId);
+    const response = await axios.delete(url);
+    return response.data;
+  } catch (err) {
+    return { status: "fail", message: err.message };
   }
 }

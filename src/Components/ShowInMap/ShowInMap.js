@@ -13,7 +13,7 @@ function ShowInMap({ onClick, onClose, open, maps }) {
         disableInteractive
       >
         <IconButton onClick={() => onClick()}>
-          <HubOutlinedIcon />
+          <HubOutlinedIcon fontSize="small" />
         </IconButton>
       </Tooltip>
 

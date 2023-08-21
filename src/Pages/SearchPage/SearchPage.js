@@ -60,12 +60,13 @@ const testSuitesFilters = {
   // ],
 };
 const testCasesFilters = {
-  "Meta Data": ["status"],
+  "Meta Data": ["id", "status"],
 };
 const validationTagsFilters = {
-  "Meta Data": ["name", "status"],
+  "Meta Data": ["id", "name", "status"],
 };
 const validationPointsFilters = {
+  "Meta Data": ["id"],
   Levels: ["mac", "direction", "packet_identifier", "status"],
 };
 
@@ -133,6 +134,7 @@ export default function SearchPage() {
               returnResult={returnResult}
               filterValues={{
                 testSuitesValues,
+                testCasesValues,
                 validationTagsValues,
                 validationPointsValues,
               }}

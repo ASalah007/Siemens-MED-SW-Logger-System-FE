@@ -68,7 +68,7 @@ function TCEntry({ data, num, onClick, active }) {
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
-  let title = `Test Case(${num})`;
+  let title = `Test Case(${data.incrementalId})`;
   // if (data.ValidationTagsCount) title += `-- ${failedCount} `;
   // if (duration) title += `-- ${duration}`;
 
