@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SideBar from "../../Components/AdminSideBar/SideBar";
 import SearchIcon from "@mui/icons-material/Search";
 import NonActivatedTable from "../../Components/AdminTables/NonActivatedTable";
 import ActiveUsersTable from "../../Components/AdminTables/ActiveUsersTable";
-import { fetchUsers } from "../../Services/authServices";
-import LinearLoader from "../../Components/LinearLoader/LinearLoader.js";
+import UserContext from "../../Contexts/UserContext";
+
 
 function AdminPage() {
   const [activated, setActivated] = useState(false);
+  const navigate = useNavigate();
+  const user = React.useContext(UserContext)
 
+  useEffect(() => {
+    if(!user){
+      navigate("/login");
+    }else if(!user.isAdmin){
+      navigate("/");
+    }
+   }, []);
 
   return (
     <div className="w-full h-full min-h-screen bg-white flex">
