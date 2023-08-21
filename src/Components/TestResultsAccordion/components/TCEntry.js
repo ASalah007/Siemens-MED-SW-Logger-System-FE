@@ -111,6 +111,7 @@ function TCEntry({ data, num, onClick, active }) {
             //     data={macsInfoData}
             //   />
             // }
+            tablesEntries={["Macs Info"]}
             data={macsInfo}
           />
         )}
