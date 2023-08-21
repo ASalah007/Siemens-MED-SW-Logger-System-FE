@@ -7,6 +7,8 @@ import ShowInTable from "../../ShowInTable/ShowInTable.js";
 import { formatDuration } from "../../../Utils/utilities.js";
 import ShowFilter from "../../ShowFilter/ShowFilter.js";
 import { useTestResultsEntryState } from "./TestResultsEntryHook.js";
+import { Alert, Snackbar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function useAccordionStates({
   nofilter = false,
@@ -101,6 +103,9 @@ export default function useAccordionStates({
   const [testSuitesSelectedFilters, setTestSuitesSelectedFilters] = useState(
     []
   );
+
+  const [testSuiteDeleteResult, setTestSuiteDeleteResult] = useState(null);
+  const navigate = useNavigate();
 
   function reset(type, excludePage = false) {
     switch (type) {
@@ -255,10 +260,35 @@ export default function useAccordionStates({
         setActiveTestSuite(i);
       }}
       active={activeTestSuite === i}
+      onDelete={({ id, res }) => {
+        setTestSuiteDeleteResult(res);
+        if (res.status === "fail") return;
+        navigate(0);
+      }}
     />
   ));
 
   firstColumnElements = filterTestSuites(firstColumnElements);
+
+  if (testSuiteDeleteResult) {
+    firstColumnElements.push(
+      <Snackbar
+        open={!!testSuiteDeleteResult}
+        autoHideDuration={6000}
+        onClose={() => setTestSuiteDeleteResult(null)}
+      >
+        <Alert
+          severity={
+            testSuiteDeleteResult.status === "success" ? "success" : "warning"
+          }
+          sx={{ width: "100%" }}
+          onClose={() => setTestSuiteDeleteResult(null)}
+        >
+          {testSuiteDeleteResult.message}
+        </Alert>
+      </Snackbar>
+    );
+  }
 
   const secondHeaderOptions = {
     total:

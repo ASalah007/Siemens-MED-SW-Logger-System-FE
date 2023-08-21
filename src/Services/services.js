@@ -16,6 +16,7 @@ export const urls = {
   signup: "signup/",
   login: "login/",
   users: "admin/users/",
+  deleteTestSuite: "TestSuites/{testSuiteId}",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = APIURL + v));
@@ -238,5 +239,15 @@ export async function login(credentials) {
   } catch (err) {
     console.log(err);
     throw err;
+  }
+}
+
+export async function deleteTestSuite(testSuiteId) {
+  try {
+    const url = urls.deleteTestSuite.replace("{testSuiteId}", testSuiteId);
+    const response = await axios.delete(url);
+    return response.data;
+  } catch (err) {
+    return { status: "fail", message: err.message };
   }
 }

@@ -19,7 +19,7 @@ export default function MiniTable({ keys, data }) {
         </thead>
         <tbody>
           {keys
-            .filter((k) => data[k] === null || data[k] === undefined)
+            .filter((k) => data[k] !== null || data[k] !== undefined)
             .map((k, i) => (
               <tr className={"" + (i % 2 === 1 && "bg-gray-200")}>
                 <td className="p-1 pl-2">{titlize(k)}</td>

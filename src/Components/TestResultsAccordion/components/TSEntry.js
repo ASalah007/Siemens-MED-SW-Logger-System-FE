@@ -4,11 +4,16 @@ import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
 import { formatDuration } from "../../../Utils/utilities.js";
 import ShowInMap from "../../ShowInMap/ShowInMap.js";
+import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog.js";
+import { IconButton, Tooltip } from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { deleteTestSuite } from "../../../Services/services.js";
 
-function TSEntry({ data, num, onClick, active }) {
+function TSEntry({ data, num, onClick, active, onDelete }) {
   const [SATableView, setSATableView] = useState(false);
   const [MPGTableView, setMPGTableView] = useState(false);
   const [mapView, setMapView] = useState(false);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const design_info = data?.metaData?.design_info;
   const SAConfig = design_info?.dut_instance_info?.sa_configuration;
@@ -20,7 +25,6 @@ function TSEntry({ data, num, onClick, active }) {
   let MPGColumns = [];
   let MPGData = [];
 
-  console.log("here:", data);
   if (SAConfig && SAConfig.length > 0) {
     SAColumns = Object.keys(SAConfig[0]);
     SAData = SAConfig.map((e) => Object.values(e));
@@ -65,12 +69,40 @@ function TSEntry({ data, num, onClick, active }) {
         onClick={onClick}
         active={active}
         actionElements={
-          <ShowInMap
-            open={mapView}
-            onClose={() => setMapView(false)}
-            onClick={() => setMapView(true)}
-            maps={dutMap}
-          />
+          <div className="flex items-center justify-end">
+            <ShowInMap
+              open={mapView}
+              onClose={() => setMapView(false)}
+              onClick={() => setMapView(true)}
+              maps={dutMap}
+            />
+            <div className="flex items-center justify-end">
+              <Tooltip
+                title="Delete this TestSuite"
+                placement="bottom"
+                disableInteractive
+              >
+                <IconButton
+                  onClick={() => {
+                    setOpenConfirmation(true);
+                  }}
+                >
+                  <DeleteOutlineIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+
+              <ConfirmationDialog
+                open={openConfirmation}
+                onClose={() => setOpenConfirmation(false)}
+                content="Please note that data can NOT be retreived after deletion !!"
+                onConfirm={() => {
+                  deleteTestSuite(data._id).then((res) => {
+                    onDelete({ id: data._id, res });
+                  });
+                }}
+              />
+            </div>
+          </div>
         }
       >
         <Folder title="Meta Data" open>
