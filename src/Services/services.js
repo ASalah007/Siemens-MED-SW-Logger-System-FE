@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-export const APIURL = `http://${window.location.hostname}:8080/`;
+export const APIURL = `http://egc-med-tesla:8080/`;
 
 export const urls = {
   listDatabases: "database/urls",

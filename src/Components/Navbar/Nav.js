@@ -2,10 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import LogoutIcon from '@mui/icons-material/Logout';
+import UserContext from "../../Contexts/UserContext";
 import { IconButton, Tooltip } from "@mui/material";
+import Cookies from "universal-cookie";
 
 function Nav() {
+  const cookies = new Cookies();
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
+  const user = React.useContext(UserContext);
+
+  function handleLogout(){
+    cookies.remove("token");
+  }
   return (
     <div className="flex justify-between h-16 items-center px-5 shrink-0 bg-[#08607b] text-white z-10 ">
       <div>
@@ -20,6 +29,7 @@ function Nav() {
             <SearchRoundedIcon className="text-white" />
           </IconButton>
         </Link>
+        {user.isAdmin && <Link to="/admin" className="font-semibold">Admin Center</Link>}
 
         <Link to="/connected" className="flex gap-2 items-baseline font-bold">
           {connectedDatabase}
@@ -35,6 +45,10 @@ function Nav() {
               }
             ></div>
           </Tooltip>
+        </Link>
+        <Link to="/login" onClick={() => handleLogout()} >
+          <LogoutIcon className="text-white" /> 
+          <span className="font-semibold ml-1">Logout</span> 
         </Link>
       </div>
     </div>

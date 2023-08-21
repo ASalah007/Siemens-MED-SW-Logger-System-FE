@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
+import { Link } from "react-router-dom";
 import Users from "../../Resources/users.svg";
 import "animate.css";
 
@@ -8,9 +9,11 @@ function SideBar(props) {
   return (
     <div className="w-full min-h-screen shadow-lg flex flex-col py-12">
       <div className="w-[50%] flex items-center gap-4 ml-[3rem]">
+      <Link to="/">
         <BarChartRoundedIcon
           style={{ fill: "#1976D2", width: "4rem", height: "4rem" }}
         />
+      </Link>
         <h2 className="font-poppins font-bold text-[2rem] leading-8">
           Admin Center
         </h2>
