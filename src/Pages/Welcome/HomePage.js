@@ -37,8 +37,6 @@ function HomePage() {
   const [databaseToDelete, setDatabaseToDelete] = useState(false);
   const [deleteResult, setDeleteResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
-
-  const dbs = ["Elawam"]
   
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);

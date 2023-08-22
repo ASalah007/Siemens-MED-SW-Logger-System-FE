@@ -8,12 +8,20 @@ import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog.js";
 import { IconButton, Tooltip } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { deleteTestSuite } from "../../../Services/services.js";
+import UserContext from "../../../Contexts/UserContext.js";
+
 
 function TSEntry({ data, num, onClick, active, onDelete }) {
   const [SATableView, setSATableView] = useState(false);
   const [MPGTableView, setMPGTableView] = useState(false);
   const [mapView, setMapView] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const connectedDatabase = sessionStorage.getItem("connectedDatabase");
+  const user = React.useContext(UserContext);
+  
+
+  const deleteAllowed = user.deletableDatabases.includes(connectedDatabase);
+
 
   const design_info = data?.metaData?.design_info;
   const SAConfig = design_info?.dut_instance_info?.sa_configuration;
@@ -87,7 +95,7 @@ function TSEntry({ data, num, onClick, active, onDelete }) {
                     setOpenConfirmation(true);
                   }}
                 >
-                  <DeleteOutlineIcon fontSize="small" />
+                  {deleteAllowed && <DeleteOutlineIcon fontSize="small" />}
                 </IconButton>
               </Tooltip>
 
