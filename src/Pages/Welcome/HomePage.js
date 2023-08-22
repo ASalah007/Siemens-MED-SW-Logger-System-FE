@@ -19,8 +19,11 @@ import { deleteDatabase, fetchDatabases } from "../../Services/services";
 import Nav from "../../Components/Navbar/Nav";
 import { useNavigate } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import UserContext from "../../Contexts/UserContext";
+
 
 function HomePage() {
+  const user = React.useContext(UserContext)
   const [open, setOpen] = useState(false);
   const [databases, setDatabases] = useState([]);
   const [database, setDatabase] = useState("");
@@ -35,11 +38,13 @@ function HomePage() {
   const [deleteResult, setDeleteResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
 
+  const dbs = ["Elawam"]
+  
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);
     setConnectedDatabase(database);
   }
-
+  
   useEffect(() => {
     if (connectedDatabase) navigate("/connected");
     fetchDatabases().then((databases) => {
@@ -49,6 +54,8 @@ function HomePage() {
     });
   }, [connectedDatabase, navigate]);
 
+  const mappedDatabases = databases.map((dbName) => { return { name: dbName, allowed: user.deletableDatabases.includes(dbName) } });
+  
   return loading ? (
     <div className="grow bg-white flex justify-center items-center h-screen">
       <CircularProgress thickness={3} />
@@ -77,17 +84,17 @@ function HomePage() {
                 sx={{ width: "250px" }}
                 renderValue={(v) => v}
               >
-                {databases.map((d) => (
-                  <MenuItem value={d} key={d}>
+                {mappedDatabases.map((d) => (
+                  <MenuItem value={d.name} key={d.name}>
                     <div className="flex justify-between items-center w-full">
-                      <div>{d}</div>
+                      <div>{d.name}</div>
                       <IconButton
                         onClick={() => {
                           setOpenConfirmation(true);
-                          setDatabaseToDelete(d);
+                          setDatabaseToDelete(d.name);
                         }}
                       >
-                        <DeleteOutlineIcon className="text-fail" />
+                        {d.allowed && <DeleteOutlineIcon className="text-fail" />}
                       </IconButton>
                     </div>
                   </MenuItem>

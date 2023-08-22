@@ -14,7 +14,7 @@ export default function AuthPageBase() {
   console.log(user);
 
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={user} userSetter={setUser}>
       <Outlet />
     </UserContext.Provider>
   );
