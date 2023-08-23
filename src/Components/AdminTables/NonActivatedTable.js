@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import AdminTable from "./AdminTable";
 import { activateUser, fetchUsers } from "./../../Services/authServices";
+import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
+import { Alert, Snackbar } from "@mui/material";
 
 function NonActivatedTable(props) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [deleteConfirmation, setdeleteConfirmation] = useState(null);
+  const [userApproved, setUserApproved] = useState(false);
+  const [userDeleted, setUserDeleted] = useState(false);
+
   function handleUser(id, approve) {
     activateUser(id, approve)
-      .then(
-        (res) =>
-          res.status === "success" &&
-          setUsers((o) => o.filter((u) => u._id !== id))
-      )
+      .then((res) => {
+        res.status === "success" &&
+          setUsers((o) => o.filter((u) => u._id !== id));
+        if (approve) setUserApproved(true);
+        else setUserDeleted(true);
+      })
       .catch((err) => console.log(err));
   }
 
@@ -33,7 +40,7 @@ function NonActivatedTable(props) {
           <div key={u._id}>
             <button
               className="border-2 border-red-500 text-red-500 hover:bg-red-50 hover:shadow-inner font-bold py-2 px-4 rounded-lg uppercase"
-              onClick={() => handleUser(u._id, false)}
+              onClick={() => setdeleteConfirmation(u) }
             >
               Decline
             </button>
@@ -46,6 +53,29 @@ function NonActivatedTable(props) {
           </div>,
         ])}
       />
+      <ConfirmationDialog
+        open={deleteConfirmation}
+        content="Please note that the user will be deleted and it can't be undone!"
+        onClose={() => setdeleteConfirmation(null)}
+        onConfirm={() => handleUser(deleteConfirmation._id, true)}
+      />
+      {(userApproved || userDeleted) && (
+        <Snackbar
+          open={!!(userApproved || userDeleted)}
+          autoHideDuration={6000}
+          onClose={() => setUserApproved(false)}
+        >
+          <Alert
+            severity={userApproved.status === "fail" ? "warning" : "success"}
+            sx={{ width: "100%" }}
+            onClose={() => setUserDeleted(false)}
+          >
+            {userApproved
+              ? "user successfully approved"
+              : "user successfully deleted"}
+          </Alert>
+        </Snackbar>
+      )}
     </div>
   );
 }

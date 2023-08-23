@@ -5,6 +5,7 @@ export const APIURL = `http://egc-med-tesla:8080/`;
 
 export const urls = {
   listDatabases: "database/urls",
+  listDatabasesNew: "database/dummy_route",
   listTestSuites: "TestSuites",
   getTestCases: "testCases/testSuite/{testSuitId}",
   getValidationTags: "validationTags/testCases/{testCaseId}",
@@ -25,6 +26,12 @@ export async function fetchDatabases() {
   const response = await fetch(urls.listDatabases);
   const data = await response.json();
   return data["databasesNames"];
+}
+
+export async function fetchDatabasesNew() {
+  const response = await fetch(urls.listDatabasesNew);
+  const data = await response.json();
+  return data;
 }
 
 export async function fetchTestSuites(limit, page, filter) {

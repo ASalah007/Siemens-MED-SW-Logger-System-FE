@@ -44,7 +44,7 @@ function AdminPage() {
             />
           </div>
         </div>
-        <div className="w-[95%] ml-auto mt-10 ">
+        <div className="w-[95%]  mt-10 ">
           {!activated ? (
             <NonActivatedTable />
           ) : (

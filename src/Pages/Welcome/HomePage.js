@@ -15,17 +15,21 @@ import {
 import React, { useEffect, useState } from "react";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import ParticlesBackground from "./ParticlesBackground";
-import { deleteDatabase, fetchDatabases } from "../../Services/services";
+import {
+  deleteDatabase,
+  fetchDatabases,
+  fetchDatabasesNew,
+} from "../../Services/services";
 import Nav from "../../Components/Navbar/Nav";
 import { useNavigate } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import UserContext from "../../Contexts/UserContext";
-
+import { DataBaseContextProvider } from "../../Contexts/DatabaseContext";
 
 function HomePage() {
-  const user = React.useContext(UserContext)
+  const user = React.useContext(UserContext);
   const [open, setOpen] = useState(false);
-  const [databases, setDatabases] = useState([]);
+  const [databases, setDatabases] = useState({});
   const [database, setDatabase] = useState("");
   const [connectedDatabase, setConnectedDatabase] = useState(
     sessionStorage.getItem("connectedDatabase")
@@ -37,23 +41,42 @@ function HomePage() {
   const [databaseToDelete, setDatabaseToDelete] = useState(false);
   const [deleteResult, setDeleteResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
-  
+
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);
     setConnectedDatabase(database);
   }
-  
+
+  // useEffect(() => {
+  //   if (connectedDatabase) navigate("/connected");
+  //   fetchDatabases().then((databases) => {
+  //     setDatabases(databases);
+  //     setDatabase(databases[0]);
+  //     setLoading(false);
+  //   });
+  // }, [connectedDatabase, navigate]);
+
   useEffect(() => {
     if (connectedDatabase) navigate("/connected");
-    fetchDatabases().then((databases) => {
-      setDatabases(databases);
-      setDatabase(databases[0]);
+    fetchDatabasesNew().then((dbs) => {
+      setDatabases(dbs.result);
+      // setDatabase(databases[0]);
       setLoading(false);
     });
   }, [connectedDatabase, navigate]);
 
-  const mappedDatabases = databases.map((dbName) => { return { name: dbName, allowed: user.deletableDatabases.includes(dbName) } });
-  
+  Object.entries(databases).map(([solution, solutionDatabases]) => {
+    console.log(solution);
+    console.log(solutionDatabases);
+  });
+  // const mappedDatabases = databases.map((dbName) => { return { name: dbName, allowed: user.deletableDatabases?.includes(dbName) } });
+
+  const mappedDatabases = [];
+
+  for (var key in databases) {
+    mappedDatabases.push(...databases[key]);
+  }
+
   return loading ? (
     <div className="grow bg-white flex justify-center items-center h-screen">
       <CircularProgress thickness={3} />
@@ -82,18 +105,43 @@ function HomePage() {
                 sx={{ width: "250px" }}
                 renderValue={(v) => v}
               >
+
+
+                {/* {Object.entries(databases).map(
+                  ([solution, solutionDatabases]) =>
+                    solutionDatabases.map((db) => (
+                      <MenuItem value={db} key={db}>
+                        <div className="flex justify-between items-center w-full">
+                          <div>{db}</div>
+                          {user.deletableDatabases?.includes(db) && (
+                            <IconButton
+                              onClick={() => {
+                                setOpenConfirmation(true);
+                                setDatabaseToDelete(db);
+                              }}
+                            >
+                              <DeleteOutlineIcon className="text-fail" />
+                            </IconButton>
+                          )}
+                        </div>
+                      </MenuItem>
+                    ))
+                )} */}
+
                 {mappedDatabases.map((d) => (
-                  <MenuItem value={d.name} key={d.name}>
+                  <MenuItem value={d} key={d}>
                     <div className="flex justify-between items-center w-full">
-                      <div>{d.name}</div>
-                      <IconButton
-                        onClick={() => {
-                          setOpenConfirmation(true);
-                          setDatabaseToDelete(d.name);
-                        }}
-                      >
-                        {d.allowed && <DeleteOutlineIcon className="text-fail" />}
-                      </IconButton>
+                      <div>{d}</div>
+                      {user.deletableDatabases?.includes(d) && (
+                        <IconButton
+                          onClick={() => {
+                            setOpenConfirmation(true);
+                            setDatabaseToDelete(d);
+                          }}
+                        >
+                          <DeleteOutlineIcon className="text-fail" />
+                        </IconButton>
+                      )}
                     </div>
                   </MenuItem>
                 ))}
@@ -120,10 +168,12 @@ function HomePage() {
                         setResultMessage(res.message);
                         setOpenSnackbar(true);
                         setDatabases(
-                          databases.filter((e) => e !== databaseToDelete)
+                          mappedDatabases.filter((e) => e !== databaseToDelete)
                         );
                         setDatabase(
-                          databases.filter((e) => e !== databaseToDelete)[0]
+                          mappedDatabases.filter(
+                            (e) => e !== databaseToDelete
+                          )[0]
                         );
                       });
                     }}
@@ -147,7 +197,7 @@ function HomePage() {
             </Button>
           </div>
           <div className="flex gap-10">
-            {databases
+            {mappedDatabases
               .filter((d, i) => i < 3)
               .map((d) => (
                 <Button
