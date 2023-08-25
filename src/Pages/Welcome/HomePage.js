@@ -9,8 +9,10 @@ import {
   FormControl,
   IconButton,
   MenuItem,
+  ListSubheader,
   Select,
   Snackbar,
+  List,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
@@ -77,6 +79,29 @@ function HomePage() {
     mappedDatabases.push(...databases[key]);
   }
 
+  function renderSelectGroup(solution, solutionDatabases) {
+    const items = solutionDatabases.map((db) => {
+      return (
+        <MenuItem value={db} key={db}>
+          <div className="flex justify-between items-center w-full">
+            <div>{db}</div>
+            {user.deletableDatabases?.includes(db) && (
+              <IconButton
+                onClick={() => {
+                  setOpenConfirmation(true);
+                  setDatabaseToDelete(db);
+                }}
+              >
+                <DeleteOutlineIcon className="text-fail" />
+              </IconButton>
+            )}
+          </div>
+        </MenuItem>
+      );
+    });
+    return [<p className=" font-semibold font-poppins text-lg text-Blue ml-2 my-2">{solution}</p>, items];
+  }
+
   return loading ? (
     <div className="grow bg-white flex justify-center items-center h-screen">
       <CircularProgress thickness={3} />
@@ -105,30 +130,12 @@ function HomePage() {
                 sx={{ width: "250px" }}
                 renderValue={(v) => v}
               >
-
-
-                {/* {Object.entries(databases).map(
+                {Object.entries(databases).map(
                   ([solution, solutionDatabases]) =>
-                    solutionDatabases.map((db) => (
-                      <MenuItem value={db} key={db}>
-                        <div className="flex justify-between items-center w-full">
-                          <div>{db}</div>
-                          {user.deletableDatabases?.includes(db) && (
-                            <IconButton
-                              onClick={() => {
-                                setOpenConfirmation(true);
-                                setDatabaseToDelete(db);
-                              }}
-                            >
-                              <DeleteOutlineIcon className="text-fail" />
-                            </IconButton>
-                          )}
-                        </div>
-                      </MenuItem>
-                    ))
-                )} */}
+                    renderSelectGroup(solution, solutionDatabases)
+                )}
 
-                {mappedDatabases.map((d) => (
+                {/* {mappedDatabases.map((d) => (
                   <MenuItem value={d} key={d}>
                     <div className="flex justify-between items-center w-full">
                       <div>{d}</div>
@@ -144,7 +151,7 @@ function HomePage() {
                       )}
                     </div>
                   </MenuItem>
-                ))}
+                ))} */}
               </Select>
               <Dialog
                 open={openConfirmation}
