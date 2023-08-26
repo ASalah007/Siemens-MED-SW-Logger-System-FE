@@ -26,7 +26,6 @@ import Nav from "../../Components/Navbar/Nav";
 import { useNavigate } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import UserContext from "../../Contexts/UserContext";
-import { DataBaseContextProvider } from "../../Contexts/DatabaseContext";
 
 function HomePage() {
   const user = React.useContext(UserContext);
@@ -84,7 +83,7 @@ function HomePage() {
         <MenuItem value={db} key={db}>
           <div className="flex justify-between items-center w-full">
             <div>{db}</div>
-            {user.deletableDatabases?.includes(db) && (
+            {(user.deletableDatabases?.includes(db) || user.isAdmin) && (
               <IconButton
                 onClick={() => {
                   setOpenConfirmation(true);
@@ -139,7 +138,7 @@ function HomePage() {
                     renderSelectGroup(solution, solutionDatabases)
                 )}
 
-                {mappedDatabases.map((d) => (
+                {/* {mappedDatabases.map((d) => (
                   <MenuItem value={d} key={d}>
                     <div className="flex justify-between items-center w-full">
                       <div>{d}</div>
@@ -155,7 +154,7 @@ function HomePage() {
                       )}
                     </div>
                   </MenuItem>
-                ))}
+                ))} */}
               </Select>
               <Dialog
                 open={openConfirmation}
@@ -178,14 +177,7 @@ function HomePage() {
                         setDeleteResult(res.status);
                         setResultMessage(res.message);
                         setOpenSnackbar(true);
-                        setDatabases(
-                          mappedDatabases.filter((e) => e !== databaseToDelete)
-                        );
-                        setDatabase(
-                          mappedDatabases.filter(
-                            (e) => e !== databaseToDelete
-                          )[0]
-                        );
+                        navigate(0);
                       });
                     }}
                   >
