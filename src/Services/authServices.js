@@ -98,3 +98,9 @@ export async function updateUser(userId, solutions, deletableDatabases) {
     return err;
   }
 }
+
+export async function fetchDatabasesNew() {
+  const response = await authAxios.get(urls.listDatabasesNew);
+  console.log(response);
+  return response.data;
+}

@@ -17,15 +17,12 @@ import {
 import React, { useEffect, useState } from "react";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import ParticlesBackground from "./ParticlesBackground";
-import {
-  deleteDatabase,
-  fetchDatabases,
-  fetchDatabasesNew,
-} from "../../Services/services";
+import { deleteDatabase, fetchDatabases } from "../../Services/services";
 import Nav from "../../Components/Navbar/Nav";
 import { useNavigate } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import UserContext from "../../Contexts/UserContext";
+import { fetchDatabasesNew } from "../../Services/authServices";
 
 function HomePage() {
   const user = React.useContext(UserContext);
@@ -70,6 +67,7 @@ function HomePage() {
   //   console.log(solutionDatabases);
   // });
   // const mappedDatabases = databases.map((dbName) => { return { name: dbName, allowed: user.deletableDatabases?.includes(dbName) } });
+  console.log(databases);
 
   const mappedDatabases = [];
 

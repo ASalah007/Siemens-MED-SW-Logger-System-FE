@@ -28,12 +28,6 @@ export async function fetchDatabases() {
   return data["databasesNames"];
 }
 
-export async function fetchDatabasesNew() {
-  const response = await fetch(urls.listDatabasesNew);
-  const data = await response.json();
-  return data;
-}
-
 export async function fetchTestSuites(limit, page, filter) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
