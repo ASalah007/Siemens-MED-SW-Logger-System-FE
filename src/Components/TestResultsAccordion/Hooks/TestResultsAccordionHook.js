@@ -77,7 +77,6 @@ export function useTestResultsAccordionStates() {
       s.testCasesFilter,
       "failedTestCasesCount",
       "passedTestCasesCount",
-      "TestCasesCount"
     );
     s.setTestCasesCount(TCCount);
   }, [s.activeTestSuite, s.setTestCasesCount, s.testCasesFilter, s.testSuites]);
@@ -114,7 +113,6 @@ export function useTestResultsAccordionStates() {
       s.validationTagsFilter,
       "failedValidationTagsCount",
       "passedValidationTagsCount",
-      "ValidationTagsCount"
     );
     s.setValidationTagsCount(VTCount);
   }, [
@@ -155,7 +153,6 @@ export function useTestResultsAccordionStates() {
       s.validationPointsFilter,
       "failedValidationPointsCount",
       "passedValidationPointsCount",
-      "ValidationPointsCount"
     );
     s.setValidationPointsCount(VPCount);
   }, [
@@ -168,7 +165,7 @@ export function useTestResultsAccordionStates() {
   return s;
 }
 
-export function getCount(data, active, filter, failed, passed, total) {
+export function getCount(data, active, filter, failed, passed) {
   let count = 0;
   if (active > -1) {
     switch (filter) {
@@ -181,7 +178,7 @@ export function getCount(data, active, filter, failed, passed, total) {
         break;
 
       default:
-        count = data[active][total];
+        count = data[active][failed] + data[active][passed];
     }
   }
   return count;

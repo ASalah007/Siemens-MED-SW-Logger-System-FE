@@ -9,7 +9,10 @@ export default function AuthPageBase() {
   useEffect(() => {
     fetchUserData()
       .then((data) => setUser(data))
-      .catch((err) => navigate("/login"));
+      .catch((err) => {
+        console.log(err);
+        navigate("/login");
+      });
   }, []);
   console.log(user);
 

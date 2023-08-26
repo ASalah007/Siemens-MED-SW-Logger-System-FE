@@ -44,33 +44,31 @@ function HomePage() {
   const [deleteResult, setDeleteResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
 
+  const dbs = ["Elawam"];
+
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);
     setConnectedDatabase(database);
   }
 
-  // useEffect(() => {
-  //   if (connectedDatabase) navigate("/connected");
-  //   fetchDatabases().then((databases) => {
-  //     setDatabases(databases);
-  //     setDatabase(databases[0]);
-  //     setLoading(false);
-  //   });
-  // }, [connectedDatabase, navigate]);
-
   useEffect(() => {
     if (connectedDatabase) navigate("/connected");
     fetchDatabasesNew().then((dbs) => {
       setDatabases(dbs.result);
-      // setDatabase(databases[0]);
+      Object.values(databases).some((e) =>
+        e.some((d) => {
+          setDatabase(d);
+          return true;
+        })
+      );
       setLoading(false);
     });
   }, [connectedDatabase, navigate]);
 
-  Object.entries(databases).map(([solution, solutionDatabases]) => {
-    console.log(solution);
-    console.log(solutionDatabases);
-  });
+  // Object.entries(databases).map(([solution, solutionDatabases]) => {
+  //   console.log(solution);
+  //   console.log(solutionDatabases);
+  // });
   // const mappedDatabases = databases.map((dbName) => { return { name: dbName, allowed: user.deletableDatabases?.includes(dbName) } });
 
   const mappedDatabases = [];
@@ -99,7 +97,12 @@ function HomePage() {
         </MenuItem>
       );
     });
-    return [<p className=" font-semibold font-poppins text-lg text-Blue ml-2 my-2">{solution}</p>, items];
+    return [
+      <p className=" font-semibold font-poppins text-lg text-Blue ml-2 my-2">
+        {solution}
+      </p>,
+      items,
+    ];
   }
 
   return loading ? (
@@ -135,7 +138,7 @@ function HomePage() {
                     renderSelectGroup(solution, solutionDatabases)
                 )}
 
-                {/* {mappedDatabases.map((d) => (
+                {mappedDatabases.map((d) => (
                   <MenuItem value={d} key={d}>
                     <div className="flex justify-between items-center w-full">
                       <div>{d}</div>
@@ -151,7 +154,7 @@ function HomePage() {
                       )}
                     </div>
                   </MenuItem>
-                ))} */}
+                ))}
               </Select>
               <Dialog
                 open={openConfirmation}

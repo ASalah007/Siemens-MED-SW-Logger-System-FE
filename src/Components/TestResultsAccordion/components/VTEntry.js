@@ -1,21 +1,14 @@
 import React from "react";
 import Folder from "../../Folder/Folder.js";
-import MiniTable from "../../MiniTable/MiniTable.js";
 import { formatDuration, titlize } from "../../../Utils/utilities.js";
 import RFolder from "../../Folder/RFolder.js";
 
 function VTEntry({ data, num, onClick, active }) {
-  const failedCount =
-    (!data.status ? data.failedValidationPointsCount + "/" : "") +
-    data.ValidationPointsCount;
-
   const duration = formatDuration(
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
   let title = titlize(data.metaData.name);
-  // if (data.ValidationPointsCount) title += `-- ${failedCount}`;
-  // if (duration) title += `-- ${duration} `;
 
   return (
     <div>
@@ -39,7 +32,9 @@ function VTEntry({ data, num, onClick, active }) {
             data={{
               Duration: duration,
               "Failed VPs": data.failedValidationPointsCount,
-              "Total VPs": data.ValidationPointsCount,
+              "Total VPs":
+                data.failedValidationPointsCount +
+                data.passedValidationPointsCount,
               ...data.metaData.metaData,
             }}
           />

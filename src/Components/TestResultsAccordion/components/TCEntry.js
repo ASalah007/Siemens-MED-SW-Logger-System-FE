@@ -61,16 +61,11 @@ function TCEntry({ data, num, onClick, active }) {
   }
   const macsInfoColumns = ["id", "mii_type"];
 
-  const failedCount =
-    (!data.status ? `${data.failedValidationTagsCount}/` : "") +
-    data.ValidationTagsCount;
   const duration = formatDuration(
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
   let title = `Test Case(${data.incrementalId})`;
-  // if (data.ValidationTagsCount) title += `-- ${failedCount} `;
-  // if (duration) title += `-- ${duration}`;
 
   return (
     <div>
@@ -92,7 +87,8 @@ function TCEntry({ data, num, onClick, active }) {
           title="Meta Data"
           data={{
             "Failed VTs": data.failedValidationTagsCount,
-            "Total VTs": data.ValidationTagsCount,
+            "Total VTs":
+              data.failedValidationTagsCount + data.passedValidationTagsCount,
             Duration: duration,
           }}
         />

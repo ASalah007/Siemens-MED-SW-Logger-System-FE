@@ -51,15 +51,13 @@ function TSEntry({ data, num, onClick, active, onDelete }) {
   if (connMap?.sa_connectivity_map)
     dutMap["SA Connectivity Map"] = connMap.sa_connectivity_map;
 
-  const failedCount =
-    (!data.status ? data.failedTestCasesCount + "/" : "") + data.TestCasesCount;
+  const testCasesCount = data.failedTestCasesCount + data.passedTestCasesCount;
+
   const duration = formatDuration(
     new Date(data.end_date) - new Date(data.creation_date)
   );
 
   let title = `Test Suite(${data.incrementalId})`;
-  // if (data.TestCasesCount) title += `-- ${failedCount} `;
-  // if (duration) title += `-- ${duration}`;
 
   return (
     <div className="">
@@ -123,7 +121,7 @@ function TSEntry({ data, num, onClick, active, onDelete }) {
             ]}
             data={{
               ...data.metaData,
-              "Total TCs": data.TestCasesCount,
+              "Total TCs": testCasesCount,
               "Failed TCs": data.failedTestCasesCount,
               Duration: duration,
             }}
