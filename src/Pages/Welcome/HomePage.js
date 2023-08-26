@@ -44,8 +44,6 @@ function HomePage() {
   const [deleteResult, setDeleteResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
 
-  const dbs = ["Elawam"];
-
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);
     setConnectedDatabase(database);
@@ -55,15 +53,18 @@ function HomePage() {
     if (connectedDatabase) navigate("/connected");
     fetchDatabasesNew().then((dbs) => {
       setDatabases(dbs.result);
-      Object.values(databases).some((e) =>
-        e.some((d) => {
-          setDatabase(d);
-          return true;
-        })
-      );
       setLoading(false);
     });
   }, [connectedDatabase, navigate]);
+
+  useEffect(() => {
+    Object.values(databases).some((e) =>
+      e.some((d) => {
+        setDatabase(d);
+        return true;
+      })
+    );
+  }, [databases]);
 
   // Object.entries(databases).map(([solution, solutionDatabases]) => {
   //   console.log(solution);
