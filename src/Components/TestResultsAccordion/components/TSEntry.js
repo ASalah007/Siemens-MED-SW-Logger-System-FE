@@ -19,7 +19,7 @@ function TSEntry({ data, num, onClick, active, onDelete }) {
   const user = React.useContext(UserContext);
 
   const deleteAllowed =
-    user.deletableDatabases.includes(connectedDatabase) || user.isAdmin;
+    user?.deletableDatabases?.includes(connectedDatabase) || user.isAdmin;
 
   const design_info = data?.metaData?.design_info;
   const SAConfig = design_info?.dut_instance_info?.sa_configuration;
