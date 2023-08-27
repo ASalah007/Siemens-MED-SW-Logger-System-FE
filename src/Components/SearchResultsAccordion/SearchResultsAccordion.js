@@ -10,7 +10,10 @@ function SearchResultsAccordion(props) {
       firstColumnElements={s.firstColumnElements}
       firstHeaderOptions={s.firstHeaderOptions}
       firstColumnPlaceHolder={
-        "Test Suit " + (s.activeTestSuite >= 0 ? s.activeTestSuite : "")
+        "Test Suit " +
+        (s.activeTestSuite >= 0
+          ? s.testSuites[s.activeTestSuite].incrementalId
+          : "")
       }
       firstColumnCount={s.testSuitesCount}
       firstColumnPage={s.testSuitesPage}
@@ -21,7 +24,10 @@ function SearchResultsAccordion(props) {
       secondColumnElements={s.secondColumnElements}
       secondHeaderOptions={s.secondHeaderOptions}
       secondColumnPlaceHolder={
-        "Test Case " + (s.activeTestCase >= 0 ? s.activeTestCase : "")
+        "Test Case " +
+        (s.activeTestCase >= 0
+          ? s.testCases[s.activeTestCase].incrementalId
+          : "")
       }
       secondColumnCount={s.testCasesCount}
       secondColumnPage={s.testCasesPage}
@@ -46,7 +52,9 @@ function SearchResultsAccordion(props) {
       fourthHeaderOptions={s.fourthHeaderOptions}
       fourthColumnPlaceHolder={
         "Validation Point " +
-        (s.activeValidationPoint >= 0 ? s.activeValidationPoint : "")
+        (s.activeValidationPoint >= 0
+          ? s.validationPoints[s.activeValidationPoint].incrementalId
+          : "")
       }
       fourthColumnCount={s.validationPointsCount}
       fourthColumnPage={s.validationPointsPage}
