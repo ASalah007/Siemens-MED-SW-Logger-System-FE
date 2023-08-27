@@ -5,7 +5,7 @@ import {
   fetchTestSuites,
   fetchValidationPoints,
   fetchValidationTags,
-} from "../../../Services/services.js";
+} from "../../../Services/authServices";
 import useAccordionStates from "./AccordionHook.js";
 
 export function useTestResultsAccordionStates() {

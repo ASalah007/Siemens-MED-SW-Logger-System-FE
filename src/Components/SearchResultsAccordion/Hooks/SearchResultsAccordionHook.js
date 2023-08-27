@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useAccordionStates from "../../TestResultsAccordion/Hooks/AccordionHook";
-import { fetchSearch, fetchStatistics } from "../../../Services/services";
+import { fetchSearch, fetchStatistics } from "../../../Services/authServices";
 
 export default function useSearchResultsAccordionStates({
   returnResult,

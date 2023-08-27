@@ -4,7 +4,7 @@ import ParticlesBackground from "../Welcome/ParticlesBackground";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
-import { fetchStatistics } from "../../Services/services";
+import { fetchStatistics } from "../../Services/authServices";
 
 export default function ConnectedPage() {
   const [connectedDatabase, setConnectedDatabase] = useState(

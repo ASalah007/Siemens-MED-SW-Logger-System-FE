@@ -9,15 +9,13 @@ import {
   FormControl,
   IconButton,
   MenuItem,
-  ListSubheader,
   Select,
   Snackbar,
-  List,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import ParticlesBackground from "./ParticlesBackground";
-import { deleteDatabase, fetchDatabases } from "../../Services/services";
+import { deleteDatabase } from "../../Services/authServices";
 import Nav from "../../Components/Navbar/Nav";
 import { useNavigate } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -62,11 +60,6 @@ function HomePage() {
     );
   }, [databases]);
 
-  // Object.entries(databases).map(([solution, solutionDatabases]) => {
-  //   console.log(solution);
-  //   console.log(solutionDatabases);
-  // });
-  // const mappedDatabases = databases.map((dbName) => { return { name: dbName, allowed: user.deletableDatabases?.includes(dbName) } });
   console.log(databases);
 
   const mappedDatabases = [];
@@ -135,24 +128,6 @@ function HomePage() {
                   ([solution, solutionDatabases]) =>
                     renderSelectGroup(solution, solutionDatabases)
                 )}
-
-                {/* {mappedDatabases.map((d) => (
-                  <MenuItem value={d} key={d}>
-                    <div className="flex justify-between items-center w-full">
-                      <div>{d}</div>
-                      {user.deletableDatabases?.includes(d) && (
-                        <IconButton
-                          onClick={() => {
-                            setOpenConfirmation(true);
-                            setDatabaseToDelete(d);
-                          }}
-                        >
-                          <DeleteOutlineIcon className="text-fail" />
-                        </IconButton>
-                      )}
-                    </div>
-                  </MenuItem>
-                ))} */}
               </Select>
               <Dialog
                 open={openConfirmation}

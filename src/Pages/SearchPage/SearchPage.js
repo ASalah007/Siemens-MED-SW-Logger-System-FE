@@ -19,7 +19,7 @@ import {
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import searchImage from "../../Resources/search.svg";
-import { fetchSearchPageOptions } from "../../Services/services";
+import { fetchSearchPageOptions } from "../../Services/authServices";
 import { titlize } from "../../Utils/utilities";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;

@@ -15,9 +15,9 @@ import {
   fetchAllSolutions,
   fetchAllActiveUsers,
   updateUser,
+  fetchDatabases,
 } from "../../Services/authServices";
 import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
-import { fetchDatabases } from "../../Services/authServices";
 
 export default function ActiveUsersTable() {
   const [users, setUsers] = useState([]);

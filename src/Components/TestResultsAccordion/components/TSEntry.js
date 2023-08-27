@@ -7,7 +7,7 @@ import ShowInMap from "../../ShowInMap/ShowInMap.js";
 import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog.js";
 import { IconButton, Tooltip } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { deleteTestSuite } from "../../../Services/services.js";
+import { deleteTestSuite } from "../../../Services/authServices.js";
 import UserContext from "../../../Contexts/UserContext.js";
 
 function TSEntry({ data, num, onClick, active, onDelete }) {
