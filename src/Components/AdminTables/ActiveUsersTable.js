@@ -17,7 +17,7 @@ import {
   updateUser,
 } from "../../Services/authServices";
 import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
-import { fetchDatabases } from "../../Services/services";
+import { fetchDatabases } from "../../Services/authServices";
 
 export default function ActiveUsersTable() {
   const [users, setUsers] = useState([]);
@@ -159,7 +159,7 @@ export default function ActiveUsersTable() {
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-function AdminSelect({ values, handleChange, options }) {
+function AdminSelect({ values, handleChange, options = [] }) {
   return (
     <Autocomplete
       size="small"

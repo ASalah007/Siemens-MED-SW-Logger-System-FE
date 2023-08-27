@@ -104,3 +104,8 @@ export async function fetchDatabasesNew() {
   console.log(response);
   return response.data;
 }
+
+export async function fetchDatabases() {
+  const response = await authAxios.get(urls.listDatabases);
+  return response.data["databasesNames"];
+}

@@ -22,12 +22,6 @@ export const urls = {
 
 Object.entries(urls).map(([k, v]) => (urls[k] = APIURL + v));
 
-export async function fetchDatabases() {
-  const response = await fetch(urls.listDatabases);
-  const data = await response.json();
-  return data["databasesNames"];
-}
-
 export async function fetchTestSuites(limit, page, filter) {
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");
   if (!connectedDatabase) return [];
