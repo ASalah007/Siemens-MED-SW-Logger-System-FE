@@ -45,7 +45,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="m-auto w-1/2 flex flex-col gap-9">
+    <div className="m-auto w-[55%] flex flex-col gap-9">
       <div className=" mt-10">
         <h1 className="font-poppins font-bold text-black text-5xl  uppercase">
           welcome back,

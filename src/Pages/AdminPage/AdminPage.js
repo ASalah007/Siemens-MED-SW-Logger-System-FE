@@ -26,8 +26,8 @@ function AdminPage() {
         <SideBar setActivated={setActivated} activated={activated} />
       </div>
 
-      <div className="w-full mt-12 ml-[22rem]">
-        <div className="flex  justify-around">
+      <div className="w-full mt-12 ml-[24rem] mr-[2rem]">
+        <div className="flex md:flex-row flex-col justify-around ">
           <h1 className="font-poppins font-semibold text-[2.5rem]">
             {activated ? "Activated Users" : "Non Activated Users"}
           </h1>

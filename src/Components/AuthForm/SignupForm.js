@@ -54,7 +54,7 @@ function SignupForm() {
 
   return (
     <div
-      className="m-auto w-1/2 flex flex-col gap-9"
+      className="m-auto w-[55%] flex flex-col gap-9"
       onClick={() => setOpenModal(false)}
     >
       {openModal && <GenericModal />}
