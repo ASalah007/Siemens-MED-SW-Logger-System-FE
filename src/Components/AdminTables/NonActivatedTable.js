@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AdminTable from "./AdminTable";
-import { activateUser, fetchUsers } from "./../../Services/authServices";
+import {
+  activateUser,
+  fetchAllActiveUsers,
+  fetchUsers,
+} from "./../../Services/authServices";
 import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
 import { Alert, Snackbar } from "@mui/material";
 
-function NonActivatedTable(props) {
+function NonActivatedTable({ filterValue = "" }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,6 +34,16 @@ function NonActivatedTable(props) {
     });
   }, []);
 
+  useEffect(() => {
+    fetchUsers(false).then((data) =>
+      setUsers(
+        data.filter((u) =>
+          JSON.stringify(u).toLowerCase().includes(filterValue.toLowerCase())
+        )
+      )
+    );
+  }, [filterValue, users]);
+
   return (
     <div className="p-10">
       <AdminTable
@@ -40,7 +54,7 @@ function NonActivatedTable(props) {
           <div key={u._id}>
             <button
               className="border-2 border-red-500 text-red-500 hover:bg-red-50 hover:shadow-inner font-bold py-2 px-4 rounded-lg uppercase"
-              onClick={() => setdeleteConfirmation(u) }
+              onClick={() => setdeleteConfirmation(u)}
             >
               Decline
             </button>

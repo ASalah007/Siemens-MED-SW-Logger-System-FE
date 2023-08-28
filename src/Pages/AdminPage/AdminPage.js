@@ -5,20 +5,23 @@ import SearchIcon from "@mui/icons-material/Search";
 import NonActivatedTable from "../../Components/AdminTables/NonActivatedTable";
 import ActiveUsersTable from "../../Components/AdminTables/ActiveUsersTable";
 import UserContext from "../../Contexts/UserContext";
-
+import { IconButton } from "@mui/material";
 
 function AdminPage() {
   const [activated, setActivated] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [filterValue, setFilterValue] = useState("");
+
   const navigate = useNavigate();
-  const user = React.useContext(UserContext)
+  const user = React.useContext(UserContext);
 
   useEffect(() => {
-    if(!user){
+    if (!user) {
       navigate("/login");
-    }else if(!user.isAdmin){
+    } else if (!user.isAdmin) {
       navigate("/");
     }
-   }, []);
+  }, []);
 
   return (
     <div className="w-full h-full min-h-screen bg-white flex">
@@ -32,23 +35,25 @@ function AdminPage() {
             {activated ? "Activated Users" : "Non Activated Users"}
           </h1>
 
-          <div className=" w-1/3 px-2 py-1  rounded-md flex  bg-black bg-opacity-5 ">
-            <button className=" text-black mx-[2rem]">
+          <div className="w-1/3 rounded-md flex items-center gap-1 px-3 bg-gray-200">
+            <IconButton onClick={() => setFilterValue(searchValue)}>
               <SearchIcon />
-            </button>
+            </IconButton>
             <input
               className="w-full focus:outline-none "
               type="search"
               name="HeaderSearch"
               placeholder="Search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
         </div>
         <div className="w-[95%]  mt-10 ">
           {!activated ? (
-            <NonActivatedTable />
+            <NonActivatedTable filterValue={filterValue} />
           ) : (
-            <ActiveUsersTable />
+            <ActiveUsersTable filterValue={filterValue} />
           )}
         </div>
       </div>

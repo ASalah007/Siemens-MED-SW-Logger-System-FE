@@ -19,7 +19,7 @@ import {
 } from "../../Services/authServices";
 import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
 
-export default function ActiveUsersTable() {
+export default function ActiveUsersTable({ filterValue = "" }) {
   const [users, setUsers] = useState([]);
 
   const [options, setOptions] = useState(["Ethernet", "5G", "OTN"]);
@@ -35,7 +35,16 @@ export default function ActiveUsersTable() {
     });
     fetchDatabases().then((data) => setDeleteOptions(data));
   }, []);
-  console.log(users);
+
+  useEffect(() => {
+    fetchAllActiveUsers().then((data) =>
+      setUsers(
+        data.filter((u) =>
+          JSON.stringify(u).toLowerCase().includes(filterValue.toLowerCase())
+        )
+      )
+    );
+  }, [filterValue, users]);
 
   const [deleteSnackbar, setDeleteSnackbar] = useState(null);
   const [updateSnackbar, setUpdateSnackbar] = useState(null);
