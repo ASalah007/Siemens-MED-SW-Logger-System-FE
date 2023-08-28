@@ -184,7 +184,7 @@ export async function fetchSearchPageOptions() {
       "Meta Data": { ...obj.test_suites, id: obj.test_suites.incrementalId },
     },
     validationPoints: {
-      Levels: obj.validation_points,
+      Levels: obj.validation_point,
       "Meta Data": { id: obj.validation_point.incrementalId },
     },
     validationTags: {
@@ -194,6 +194,7 @@ export async function fetchSearchPageOptions() {
       "Meta Data": { ...obj.test_cases, id: obj.test_cases.incrementalId },
     },
   };
+  console.log("here:", newObj);
   return newObj;
 }
 
@@ -260,9 +261,7 @@ export async function fetchSearch({
 
     validationPoints: {
       ...validationPointsValues.Levels,
-      mac: validationPointsValues.Levels.mac
-        .map((i) => parseInt(i))
-        .filter((i) => !isNaN(i)),
+      mac: validationPointsValues.Levels.mac,
       status: validationPointsValues.Levels.status.map((s) => s === "true"),
       _id: validationPointId ? [validationPointId] : [],
       incrementalId: validationPointsValues["Meta Data"].id.map((i) =>
@@ -271,7 +270,7 @@ export async function fetchSearch({
     },
   };
 
-  console.log(body);
+  console.log("body", body);
   const response = await authAxios.post(url, body);
   return response.data;
 }

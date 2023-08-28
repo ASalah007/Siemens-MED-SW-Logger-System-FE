@@ -58,6 +58,19 @@ function HAccordion({
   const [expanding, setExpanding] = useState(false);
 
   const [minimized, setMinimized] = useState([false, false, false, false]);
+  const headerOptions = [
+    firstHeaderOptions,
+    secondHeaderOptions,
+    thirdHeaderOptions,
+    fourthHeaderOptions,
+  ];
+  const columnPlaceHolders = [
+    firstColumnPlaceHolder,
+    secondColumnPlaceHolder,
+    thirdColumnPlaceHolder,
+    fourthColumnPlaceHolder,
+  ];
+
   function minimize(column, value) {
     setMinimized((o) => {
       const nw = [...o];
@@ -118,41 +131,20 @@ function HAccordion({
 
   return (
     <div className="flex grow max-h-full bg-gray-50">
-      {minimized[0] && (
-        <MinimizedColumn
-          onMaximize={() => minimize(0, false)}
-          total={firstHeaderOptions.total}
-          failed={firstHeaderOptions.failed}
-          title={firstColumnPlaceHolder}
-          nostats={nostats}
-        />
-      )}
-      {minimized[1] && (
-        <MinimizedColumn
-          onMaximize={() => minimize(1, false)}
-          total={secondHeaderOptions.total}
-          failed={secondHeaderOptions.failed}
-          title={secondColumnPlaceHolder}
-          nostats={nostats}
-        />
-      )}
-      {minimized[2] && (
-        <MinimizedColumn
-          onMaximize={() => minimize(2, false)}
-          total={thirdHeaderOptions.total}
-          failed={thirdHeaderOptions.failed}
-          title={thirdColumnPlaceHolder}
-          nostats={nostats}
-        />
-      )}
-      {minimized[3] && (
-        <MinimizedColumn
-          onMaximize={() => minimize(3, false)}
-          total={fourthHeaderOptions.total}
-          failed={fourthHeaderOptions.failed}
-          title={fourthColumnPlaceHolder}
-          nostats={nostats}
-        />
+      {minimized.map((e, i) =>
+        !e ? (
+          <></>
+        ) : (
+          minimized[i] && (
+            <MinimizedColumn
+              onMaximize={() => minimize(0, false)}
+              total={headerOptions[i].total}
+              failed={headerOptions[i].failed}
+              title={columnPlaceHolders[i]}
+              nostats={nostats}
+            />
+          )
+        )
       )}
 
       {/* first column */}

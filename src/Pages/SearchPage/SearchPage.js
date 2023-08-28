@@ -9,7 +9,6 @@ import {
   Autocomplete,
   Button,
   Checkbox,
-  CircularProgress,
   Divider,
   MenuItem,
   Select,
@@ -37,27 +36,6 @@ const testSuitesFilters = {
     "tool_name",
     "status",
   ],
-
-  // "SA Configuration": [
-  //   "mii_enum",
-  //   "miiLaneNumber",
-  //   "miiLaneWidth",
-  //   "miiSpeed",
-  //   "compiledFEC",
-  //   "miiWireDelay",
-  // ],
-
-  // "MPG Configuration": [
-  //   "compiledFEC",
-  //   "mpgPortIdOffset",
-  //   "mpgPortsNumber",
-  //   "mpgLanesNumber",
-  //   "mpgMaxLanesNumberList",
-  //   "mpgLaneWidth",
-  //   "mpgMaxLaneWidthList",
-  //   "mpgOneG_ENABLED",
-  //   "mpgWireDelay",
-  // ],
 };
 const testCasesFilters = {
   "Meta Data": ["id", "status"],
@@ -113,7 +91,6 @@ export default function SearchPage() {
     setSearched(0);
   }
   const [searched, setSearched] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   function search() {
     const errs = document.getElementsByClassName("err");
@@ -140,10 +117,6 @@ export default function SearchPage() {
               }}
               searched={searched}
             />
-          ) : loading ? (
-            <div className="grow flex items-center justify-center">
-              <CircularProgress thickness={5} />
-            </div>
           ) : (
             <img src={searchImage} alt="img" />
           )}
