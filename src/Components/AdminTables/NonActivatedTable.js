@@ -42,7 +42,7 @@ function NonActivatedTable({ filterValue = "" }) {
         )
       )
     );
-  }, [filterValue, users]);
+  }, [filterValue]);
 
   return (
     <div className="p-10">

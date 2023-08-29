@@ -44,7 +44,7 @@ export default function ActiveUsersTable({ filterValue = "" }) {
         )
       )
     );
-  }, [filterValue, users]);
+  }, [filterValue]);
 
   const [deleteSnackbar, setDeleteSnackbar] = useState(null);
   const [updateSnackbar, setUpdateSnackbar] = useState(null);
