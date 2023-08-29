@@ -41,7 +41,7 @@ const testCasesFilters = {
   "Meta Data": ["id", "status"],
 };
 const validationTagsFilters = {
-  "Meta Data": ["id", "name", "status"],
+  "Meta Data": ["name", "status"],
 };
 const validationPointsFilters = {
   "Meta Data": ["id"],
