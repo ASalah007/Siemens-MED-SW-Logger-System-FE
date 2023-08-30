@@ -292,7 +292,10 @@ export default function useAccordionStates({
 
   const secondHeaderOptions = {
     total:
-      activeTestSuite > -1 ? testSuites[activeTestSuite].TestCasesCount : 0,
+      activeTestSuite > -1
+        ? testSuites[activeTestSuite].failedTestCasesCount +
+          testSuites[activeTestSuite].passedTestCasesCount
+        : 0,
     failed:
       activeTestSuite > -1
         ? testSuites[activeTestSuite].failedTestCasesCount
@@ -342,7 +345,10 @@ export default function useAccordionStates({
 
   const thirdHeaderOptions = {
     total:
-      activeTestCase > -1 ? testCases[activeTestCase].ValidationTagsCount : 0,
+      activeTestCase > -1
+        ? testCases[activeTestCase].failedValidationTagsCount +
+          testCases[activeTestCase].passedValidationTagsCount
+        : 0,
     failed:
       activeTestCase > -1
         ? testCases[activeTestCase].failedValidationTagsCount
@@ -396,7 +402,8 @@ export default function useAccordionStates({
   const fourthHeaderOptions = {
     total:
       activeValidationTag > -1
-        ? validationTags[activeValidationTag].ValidationPointsCount
+        ? validationTags[activeValidationTag].failedValidationPointsCount +
+          validationTags[activeValidationTag].passedValidationPointsCount
         : 0,
     failed:
       activeValidationTag > -1
