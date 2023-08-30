@@ -22,8 +22,8 @@ export default function MiniTable({ keys, data }) {
             .filter((k) => data[k] !== null && data[k] !== undefined)
             .map((k, i) => (
               <tr className={"" + (i % 2 === 1 && "bg-gray-200")}>
-                <td className="p-1 pl-2">{titlize(k)}</td>
-                <td className="p-1 pl-2">{data[k]}</td>
+                <td className="p-1 pl-2 max">{titlize(k)}</td>
+                <td className="p-1 pl-2 max-w-sm break-words">{data[k]}</td>
               </tr>
             ))}
         </tbody>
