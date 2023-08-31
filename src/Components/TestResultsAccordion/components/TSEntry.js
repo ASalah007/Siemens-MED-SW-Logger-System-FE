@@ -8,7 +8,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { deleteTestSuite } from "../../../Services/authServices.js";
 import UserContext from "../../../Contexts/UserContext.js";
 
-function TSEntry({ data, num, onClick, active, onDelete }) {
+function TSEntry({ data, onClick, active, onDelete }) {
   const [mapView, setMapView] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const connectedDatabase = sessionStorage.getItem("connectedDatabase");

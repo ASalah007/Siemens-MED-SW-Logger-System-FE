@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Folder from "../../Folder/Folder.js";
 import ShowInTable from "../../ShowInTable/ShowInTable.js";
 import RFolder from "../../Folder/RFolder.js";
 
-function VPEntry({ data, num, onClick, active }) {
+function VPEntry({ data, onClick, active }) {
   const [resultsTableView, setResultsTableView] = useState(false);
   let resultsColumns = [];
   let resultsData = [];
@@ -18,29 +17,22 @@ function VPEntry({ data, num, onClick, active }) {
     });
   }
 
-  let failedCount = "-- 0";
+  let failedCount = 0;
+  let totalCount = 0;
   if (data.results) {
-    failedCount =
-      (!data.status
-        ? data.results.reduce((acc, ele) => (acc += ele.status === "fail"), 0) +
-          "/"
-        : "") + data.results.length;
-    failedCount = "-- " + failedCount;
-  }
-  if (data.levels) {
-    var levels =
-      "-- (" +
-      Object.values(data.levels)
-        .map((e, i) => (i > 0 ? "/" + e : e))
-        .join("") +
-      ")";
+    failedCount = data.results.reduce(
+      (acc, ele) => (acc += ele.status === "fail"),
+      0
+    );
+    totalCount = data.results.length;
   }
 
   const title = `Validation Point(${data.incrementalId})`;
+  console.log("data", data);
 
   return (
     <div>
-      <Folder
+      <RFolder
         title={
           <span
             className={
@@ -62,13 +54,16 @@ function VPEntry({ data, num, onClick, active }) {
             data={resultsData}
           />
         }
-      >
-        {data.metaData && (
-          <RFolder title="Meta Data" data={{ ...data.metaData }} />
-        )}
-
-        {data.levels && <RFolder title="Levels" data={data.levels} />}
-      </Folder>
+        data={{
+          "Meta Data": {
+            ...data.metaData,
+            creation_date: data.creation_date,
+            failed_results: failedCount,
+            total_results: totalCount,
+          },
+          levels: data.levels,
+        }}
+      />
     </div>
   );
 }

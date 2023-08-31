@@ -236,8 +236,10 @@ export function getEdges(graph) {
 }
 
 export function titlize(title) {
+  console.log(title.split("_"));
   title = title
     .split("_")
+    .filter((s) => s !== "")
     .map((s) => s[0].toUpperCase() + s.slice(1))
     .join(" ");
 
