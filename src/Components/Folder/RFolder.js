@@ -3,6 +3,7 @@ import MiniTable from "../MiniTable/MiniTable";
 import Folder from "./Folder";
 import MiniArray from "../MiniArray/MiniArray";
 import ShowInTable from "../ShowInTable/ShowInTable";
+import { titlize } from "../../Utils/utilities";
 
 export default function RFolder(props) {
   let { data, tablesEntries = [] } = props;
@@ -14,7 +15,7 @@ export default function RFolder(props) {
   const [tableView, setTableView] = useState(false);
   let tableColumns = [];
   let tableData = [[]];
-  let actionElements = <></>;
+  let actionElements = props.actionElements;
 
   try {
     if (tablesEntries.includes(props.title)) {
@@ -28,7 +29,7 @@ export default function RFolder(props) {
           onClick={() => setTableView(true)}
           open={tableView}
           onClose={() => setTableView(false)}
-          title="Macs Informations"
+          title={titlize(props.title)}
           columns={tableColumns}
           data={tableData}
         />
