@@ -236,7 +236,6 @@ export function getEdges(graph) {
 }
 
 export function titlize(title) {
-  console.log(title.split("_"));
   title = title
     .split("_")
     .filter((s) => s !== "")

@@ -7,8 +7,6 @@ import RFolder from "../../Folder/RFolder.js";
 
 function TCEntry({ data, num, onClick, active }) {
   const [dutTableView, setDutTableView] = useState(false);
-  const [macsConfigTableView, setMacsConfigTableView] = useState(false);
-  const [macsInfoTableView, setMacsInfoTableView] = useState(false);
   const [mpgConfigTableView, setMpgConfigTableView] = useState(false);
   const [portConfigTableView, setPortConfigTableView] = useState(false);
 
@@ -27,22 +25,6 @@ function TCEntry({ data, num, onClick, active }) {
   const macsConfig = data?.metaData?.macs_configuration;
   const mpgConfig = data?.metaData?.mpg_configuration;
 
-  let macsColumns = [];
-  let macsData = [];
-
-  if (macsConfig) {
-    macsColumns = [
-      "id",
-      ...Object.values(Object.values(Object.values(macsConfig))[0]).flatMap(
-        (o) => Object.keys(o)
-      ),
-    ];
-
-    macsData = Object.entries(macsConfig).map(([key, value]) => [
-      key,
-      ...Object.values(value).flatMap((e) => Object.values(e)),
-    ]);
-  }
   let mpgColumns = ["Id", "FEC Enable"];
   let mpgData = [];
 
@@ -54,12 +36,6 @@ function TCEntry({ data, num, onClick, active }) {
   }
 
   const macsInfo = data?.metaData?.macs_info;
-  let macsInfoData = [];
-  if (macsInfo) {
-    const mi = Array.isArray(macsInfo) ? macsInfo : Object.values(macsInfo);
-    macsInfoData = mi.map((e) => Object.values(e));
-  }
-  const macsInfoColumns = ["id", "mii_type"];
 
   const duration = formatDuration(
     new Date(data.end_date) - new Date(data.creation_date)
@@ -96,38 +72,12 @@ function TCEntry({ data, num, onClick, active }) {
         {macsInfo && (
           <RFolder
             title="Macs Info"
-            // onClick={() => setMacsInfoTableView(true)}
-            // actionElements={
-            //   <ShowInTable
-            //     onClick={() => setMacsInfoTableView(true)}
-            //     open={macsInfoTableView}
-            //     onClose={() => setMacsInfoTableView(false)}
-            //     title="Macs Informations"
-            //     columns={macsInfoColumns}
-            //     data={macsInfoData}
-            //   />
-            // }
             tablesEntries={["Macs Info"]}
             data={macsInfo}
           />
         )}
 
-        {macsConfig && (
-          <RFolder
-            title="Macs Config"
-            // actionElements={
-            //   <ShowInTable
-            //     onClick={() => setMacsConfigTableView(true)}
-            //     open={macsConfigTableView}
-            //     onClose={() => setMacsConfigTableView(false)}
-            //     title="Macs Configuration"
-            //     columns={macsColumns}
-            //     data={macsData}
-            //   />
-            // }
-            data={macsConfig}
-          />
-        )}
+        {macsConfig && <RFolder title="Macs Config" data={macsConfig} />}
 
         {mpgConfig && (
           <Folder
