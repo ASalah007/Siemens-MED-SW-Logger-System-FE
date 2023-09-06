@@ -40,6 +40,12 @@ function HomePage() {
 
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);
+    sessionStorage.setItem(
+      "connectedSolution",
+      Object.entries(databases).find(([solution, solutionDatabases]) =>
+        solutionDatabases.includes(database)
+      )[0]
+    );
     setConnectedDatabase(database);
   }
 

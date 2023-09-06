@@ -117,6 +117,7 @@ function HAccordion({
     };
   }, [expanding, currentDiv, minimized]);
 
+  const currentSolution = sessionStorage.getItem("connectedSolution");
   return (
     <div className="flex grow max-h-full bg-gray-50">
       {minimized[0] && (
@@ -146,7 +147,7 @@ function HAccordion({
           nostats={nostats}
         />
       )}
-      {minimized[3] && (
+      {minimized[3] && currentSolution !== "VirtualOTN" && (
         <MinimizedColumn
           onMaximize={() => minimize(3, false)}
           total={fourthHeaderOptions.total}
@@ -242,18 +243,20 @@ function HAccordion({
       )}
 
       {/* second divider */}
-      {(!minimized[0] || !minimized[1]) && !minimized[2] && (
-        <div
-          className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
-          onMouseDown={(e) => {
-            setCurrentDiv(1);
-            setExpanding(true);
-          }}
-        ></div>
-      )}
+      {(!minimized[0] || !minimized[1]) &&
+        !minimized[2] &&
+        currentSolution !== "VirtualOTN" && (
+          <div
+            className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
+            onMouseDown={(e) => {
+              setCurrentDiv(1);
+              setExpanding(true);
+            }}
+          ></div>
+        )}
 
       {/* third column */}
-      {!minimized[2] && (
+      {!minimized[2] && currentSolution !== "VirtualOTN" && (
         <div
           className="w-1/4 flex flex-col pb-10 grow"
           style={{
@@ -290,18 +293,20 @@ function HAccordion({
       )}
 
       {/* third divider */}
-      {(!minimized[0] || !minimized[1] || !minimized[2]) && !minimized[3] && (
-        <div
-          className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
-          onMouseDown={(e) => {
-            setCurrentDiv(2);
-            setExpanding(true);
-          }}
-        ></div>
-      )}
+      {(!minimized[0] || !minimized[1] || !minimized[2]) &&
+        !minimized[3] &&
+        currentSolution !== "VirtualOTN" && (
+          <div
+            className="border-gray-400 w-[5px] border-x hover:bg-gray-400 active:bg-blue-500 active:border-blue-500 hover:cursor-col-resize shrink-0"
+            onMouseDown={(e) => {
+              setCurrentDiv(2);
+              setExpanding(true);
+            }}
+          ></div>
+        )}
 
       {/* fourth column */}
-      {!minimized[3] && (
+      {!minimized[3] && currentSolution !== "VirtualOTN" && (
         <div
           className="w-1/4 flex flex-col pb-10 grow"
           style={{
