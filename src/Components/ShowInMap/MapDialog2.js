@@ -42,6 +42,8 @@ export default function MapDialog2(props) {
     activeGroups,
     nodeClickHandler,
     nodeDoubleClickHandler,
+    nodeMouseEnterHandler,
+    nodeMouseLeaveHandler,
   } = useMapDialogStates(props);
 
   return (
@@ -105,6 +107,8 @@ export default function MapDialog2(props) {
               onNodeClick={nodeClickHandler}
               onNodeDoubleClick={nodeDoubleClickHandler}
               zoomOnDoubleClick={false}
+              onNodeMouseEnter={nodeMouseEnterHandler}
+              onNodeMouseLeave={nodeMouseLeaveHandler}
             >
               <Controls />
               <MiniMap nodeColor="#6ede87" zoomable pannable />
@@ -123,6 +127,8 @@ function useMapDialogStates({
   nodesType,
   onNodeClick,
   onNodeDoubleClick,
+  onNodeMouseEnter,
+  onNodeMouseLeave,
 }) {
   const [activeMap, setActiveMap] = useState(Object.keys(maps)[0]);
 
@@ -198,6 +204,29 @@ function useMapDialogStates({
     onNodeDoubleClick(n);
   };
 
+  const nodeMouseEnterHandler = (e, node) => {
+    onNodeMouseEnter({
+      node,
+      filteredGroups: filteredGroups(),
+      nodes,
+      setNodes,
+      edges,
+      setEdges,
+      defaultNodeType: nodesType,
+    });
+  };
+  const nodeMouseLeaveHandler = (e, node) => {
+    onNodeMouseLeave({
+      node,
+      filteredGroups: filteredGroups(),
+      nodes,
+      setNodes,
+      edges,
+      setEdges,
+      defaultNodeType: nodesType,
+    });
+  };
+
   return {
     nodes,
     edges,
@@ -209,6 +238,8 @@ function useMapDialogStates({
     activeGroups,
     nodeClickHandler,
     nodeDoubleClickHandler,
+    nodeMouseEnterHandler,
+    nodeMouseLeaveHandler,
   };
 }
 

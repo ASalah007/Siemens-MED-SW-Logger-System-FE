@@ -14,6 +14,8 @@ export default function ShowInMap2({
   title = "Connectivity Map",
   onNodeClick = () => {},
   onNodeDoubleClick = () => {},
+  onNodeMouseEnter = () => {},
+  onNodeMouseLeave = () => {},
 }) {
   return (
     <div>
@@ -33,6 +35,8 @@ export default function ShowInMap2({
           grounded={grounded}
           onNodeClick={onNodeClick}
           onNodeDoubleClick={onNodeDoubleClick}
+          onNodeMouseEnter={onNodeMouseEnter}
+          onNodeMouseLeave={onNodeMouseLeave}
         />
       </ReactFlowProvider>
     </div>

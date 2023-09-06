@@ -47,6 +47,7 @@ function TCEntry({ data, onClick, active }) {
   );
 
   let title = `Test Case(${data.incrementalId})`;
+  console.log(data);
 
   return (
     <div>
@@ -71,21 +72,21 @@ function TCEntry({ data, onClick, active }) {
         active={active}
         onClick={onClick}
         actionElements={
-          data?.connection && (
-            <ShowInMap2
-              maps={maps}
-              onClick={() => setMapView(true)}
-              open={mapView}
-              onClose={() => setMapView(false)}
-              nodesType="h-node"
-              grounded
-              onNodeClick={nodeClickHandler}
-              onNodeDoubleClick={(node) => {
-                setTreeView(true);
-                setNodeData(node);
-              }}
-            />
-          )
+          <ShowInMap2
+            maps={maps}
+            onClick={() => setMapView(true)}
+            open={mapView}
+            onClose={() => setMapView(false)}
+            nodesType="h-node"
+            grounded
+            onNodeClick={nodeClickHandler}
+            onNodeDoubleClick={(node) => {
+              setTreeView(true);
+              setNodeData(node);
+            }}
+            onNodeMouseEnter={nodeMouseEnterHandler}
+            onNodeMouseLeave={nodeMouseLeaveHandler}
+          />
         }
       >
         <RFolder
@@ -215,6 +216,42 @@ function nodeClickHandler({
   const newNodes = nodes.map((n) => {
     if (!childsIds.includes(n.id)) return n;
     n.type = "child";
+    return n;
+  });
+
+  setNodes(newNodes);
+}
+
+function nodeMouseEnterHandler(args) {
+  nodeMouseLeaveHandler({
+    ...args,
+    defaultNodeType: "child",
+  });
+}
+
+function nodeMouseLeaveHandler({
+  node,
+  filteredGroups,
+  nodes,
+  setNodes,
+  edges,
+  setEdges,
+  defaultNodeType,
+}) {
+  const testEdges = edges.filter((e) => !e.id.includes(`extra-${node.id}-`));
+  if (testEdges.length !== edges.length) return;
+
+  const allNodes = Object.values(filteredGroups).flat();
+  if (allNodes.find((n) => n.state_id === node.id)?.nodeType !== "parent")
+    return;
+
+  const childsIds = allNodes
+    .filter((n) => n.parent_id === node.id)
+    .map((n) => n.state_id);
+
+  const newNodes = nodes.map((n) => {
+    if (!childsIds.includes(n.id)) return n;
+    n.type = defaultNodeType;
     return n;
   });
 
@@ -1114,64 +1151,5 @@ const maps = {
         },
       },
     ],
-  },
-
-  BluePrint: {
-    initial: {
-      next_states: { clear_vars: 0.5, reset: 0.5 },
-      side_effects: {},
-    },
-    clear_vars: {
-      next_states: { reset: 1.0, generator: 0.0, direct_generator: 0.0 },
-      side_effects: { mandatory: 1.0 },
-    },
-    reset: {
-      next_states: {
-        validate_reset: 0.0,
-        generator: 0.5,
-        direct_generator: 0.5,
-      },
-      side_effects: { mandatory: 0.8, local: 0.2 },
-    },
-    validate_reset: {
-      next_states: { generator: 1.0 },
-      side_effects: { local: 1.0 },
-    },
-    generator: {
-      next_states: { configure_port: 1.0 },
-      side_effects: {},
-    },
-    direct_generator: {
-      next_states: { mux: 1.0 },
-      side_effects: {},
-    },
-    mux: {
-      next_states: { configure_port: 0.9, clear_mux: 0.1 },
-      side_effects: {},
-    },
-    clear_mux: {
-      next_states: { direct_generator: 0.5, clear_mux: 0.5 },
-      side_effects: {},
-    },
-    configure_port: {
-      next_states: { start: 1.0 },
-      side_effects: { local: 1.0 },
-    },
-    start: {
-      next_states: { stop: 0.7, reset: 0.3 },
-      side_effects: { global: 0.2, forced_global: 0.3, local: 0.5 },
-    },
-    stop: {
-      next_states: { validate_statistics: 0.0, start: 0.1, end: 0.9 },
-      side_effects: { global: 0.2, forced_global: 0.3, local: 0.5 },
-    },
-    validate_statistics: {
-      next_states: {},
-      side_effects: { local: 1.0 },
-    },
-    end: {
-      next_states: {},
-      side_effects: {},
-    },
   },
 };
