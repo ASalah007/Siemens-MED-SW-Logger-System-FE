@@ -71,19 +71,21 @@ function TCEntry({ data, onClick, active }) {
         active={active}
         onClick={onClick}
         actionElements={
-          <ShowInMap2
-            maps={maps} //change later
-            onClick={() => setMapView(true)}
-            open={mapView}
-            onClose={() => setMapView(false)}
-            nodesType="h-node"
-            grounded
-            onNodeClick={nodeClickHandler}
-            onNodeDoubleClick={(node) => {
-              setTreeView(true);
-              setNodeData(node);
-            }}
-          />
+          data?.connection && (
+            <ShowInMap2
+              maps={maps}
+              onClick={() => setMapView(true)}
+              open={mapView}
+              onClose={() => setMapView(false)}
+              nodesType="h-node"
+              grounded
+              onNodeClick={nodeClickHandler}
+              onNodeDoubleClick={(node) => {
+                setTreeView(true);
+                setNodeData(node);
+              }}
+            />
+          )
         }
       >
         <RFolder
@@ -224,6 +226,11 @@ export default TCEntry;
 const maps = {
   "State Machines": {
     "State Machine 1": [
+      // {
+      //   state_id: "test",
+      //   name: "State Machine 1 :",
+      //   nodeType: "label",
+      // },
       {
         state_id: "1.1",
         connectedTo: "1.2",
@@ -255,10 +262,11 @@ const maps = {
       {
         state_id: "1.3",
         connectedTo: "1.4",
-        name: "generator",
+        name: "validate",
         port_id: 1,
         parent_id: "2.2",
         is_parent: false,
+        nodeType: "passedValidation",
         side_effect: "none",
         command: {
           command_handle_name: "None",
@@ -290,11 +298,26 @@ const maps = {
       },
       {
         state_id: "1.5",
-        connectedTo: "1.6",
+        connectedTo: "1.5.1",
         name: "reset",
         port_id: 1,
         parent_id: "None",
         nodeType: "parent",
+        side_effect: "mandatory",
+        command: {
+          command_handle_name: "",
+          command_arguments: {
+            portId: "*",
+          },
+        },
+      },
+      {
+        state_id: "1.5.1",
+        connectedTo: "1.6",
+        name: "validate",
+        port_id: 1,
+        parent_id: "None",
+        nodeType: "failedValidation",
         side_effect: "mandatory",
         command: {
           command_handle_name: "",
@@ -479,6 +502,11 @@ const maps = {
       },
     ],
     "State Machine 2": [
+      // {
+      //   state_id: "test2",
+      //   name: "State Machine 2 :",
+      //   nodeType: "label",
+      // },
       {
         state_id: "2.1",
         connectedTo: "2.2",
@@ -1086,5 +1114,64 @@ const maps = {
         },
       },
     ],
+  },
+
+  BluePrint: {
+    initial: {
+      next_states: { clear_vars: 0.5, reset: 0.5 },
+      side_effects: {},
+    },
+    clear_vars: {
+      next_states: { reset: 1.0, generator: 0.0, direct_generator: 0.0 },
+      side_effects: { mandatory: 1.0 },
+    },
+    reset: {
+      next_states: {
+        validate_reset: 0.0,
+        generator: 0.5,
+        direct_generator: 0.5,
+      },
+      side_effects: { mandatory: 0.8, local: 0.2 },
+    },
+    validate_reset: {
+      next_states: { generator: 1.0 },
+      side_effects: { local: 1.0 },
+    },
+    generator: {
+      next_states: { configure_port: 1.0 },
+      side_effects: {},
+    },
+    direct_generator: {
+      next_states: { mux: 1.0 },
+      side_effects: {},
+    },
+    mux: {
+      next_states: { configure_port: 0.9, clear_mux: 0.1 },
+      side_effects: {},
+    },
+    clear_mux: {
+      next_states: { direct_generator: 0.5, clear_mux: 0.5 },
+      side_effects: {},
+    },
+    configure_port: {
+      next_states: { start: 1.0 },
+      side_effects: { local: 1.0 },
+    },
+    start: {
+      next_states: { stop: 0.7, reset: 0.3 },
+      side_effects: { global: 0.2, forced_global: 0.3, local: 0.5 },
+    },
+    stop: {
+      next_states: { validate_statistics: 0.0, start: 0.1, end: 0.9 },
+      side_effects: { global: 0.2, forced_global: 0.3, local: 0.5 },
+    },
+    validate_statistics: {
+      next_states: {},
+      side_effects: { local: 1.0 },
+    },
+    end: {
+      next_states: {},
+      side_effects: {},
+    },
   },
 };

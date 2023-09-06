@@ -65,7 +65,6 @@ export default function useSearchResultsAccordionStates({
       s.setTestCases(data.results);
       s.setTestCasesCount(data.resultsLength); // TODO this should be the total count not pagged check with awam
       s.setTestCaseLoading(false);
-      console.log(data);
     });
   }, [
     returnResult,

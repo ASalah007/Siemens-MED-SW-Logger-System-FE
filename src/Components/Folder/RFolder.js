@@ -50,6 +50,7 @@ export default function RFolder(props) {
           .filter((k) => objects[k] !== null && objects[k] !== undefined)
           .map((k) => (
             <RFolder
+              key={data[k]?.id || k}
               title={data[k]?.id || k}
               data={data[k]}
               tablesEntries={tablesEntries}

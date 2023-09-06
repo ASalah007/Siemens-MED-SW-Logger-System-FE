@@ -30,7 +30,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function MapDialog2(props) {
-  const { open, onClose, maps, onNodeDoubleClick } = props;
+  const { open, onClose, maps } = props;
   const {
     nodes,
     edges,
@@ -71,6 +71,7 @@ export default function MapDialog2(props) {
           <div className="w-60 border-r shadow">
             {Object.entries(maps).map(([map, groups], i) => (
               <Folder
+                key={map}
                 title={map}
                 active={activeMap === map}
                 onClick={() => folderHandler(map)}
@@ -78,6 +79,7 @@ export default function MapDialog2(props) {
                 <FormGroup>
                   {Object.keys(groups).map((group) => (
                     <FormControlLabel
+                      key={map + "" + group}
                       control={
                         <Checkbox
                           checked={activeGroups[map][group]}
@@ -155,6 +157,22 @@ function useMapDialogStates({
     setEdges,
     setNodes,
   ]);
+
+  useEffect(() => {
+    Object.entries(maps).forEach(([map, groups]) => {
+      Object.keys(groups).forEach((group) => {
+        if (
+          maps[map][group].length === 0 ||
+          maps[map][group][0].nodeType !== "label"
+        )
+          maps[map][group].unshift({
+            state_id: group,
+            name: group + " : ",
+            nodeType: "label",
+          });
+      });
+    });
+  }, [maps]);
 
   const checkBoxHandler = (map, group) => {
     const newGroups = structuredClone(activeGroups);

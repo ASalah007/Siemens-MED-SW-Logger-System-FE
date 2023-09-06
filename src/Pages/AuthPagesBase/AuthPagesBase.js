@@ -10,15 +10,13 @@ export default function AuthPageBase() {
     fetchUserData()
       .then((data) => setUser(data))
       .catch((err) => {
-        console.log(err);
         navigate("/login");
       });
   }, []);
-  console.log(user);
 
   return (
     <UserContext.Provider value={user}>
-      <Outlet setUser={setUser}/>
+      <Outlet setUser={setUser} />
     </UserContext.Provider>
   );
 }

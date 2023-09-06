@@ -38,7 +38,6 @@ function LoginForm() {
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
         setErrorMsg(err.response.data.error.message);
         setLoading(false);
       });

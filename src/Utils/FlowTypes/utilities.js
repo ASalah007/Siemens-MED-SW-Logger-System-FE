@@ -25,7 +25,7 @@ export function getNodesFromMap(map, nodesType, grounded) {
     alignItems: "center",
   };
 
-  const initialX = 30;
+  const initialX = 60;
   const initialY = 30;
   const groupSpacing = 110;
   const nodeSpacing = 110;

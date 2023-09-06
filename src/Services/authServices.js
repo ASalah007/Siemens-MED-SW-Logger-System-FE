@@ -101,7 +101,6 @@ export async function updateUser(userId, solutions, deletableDatabases) {
 
 export async function fetchDatabasesNew() {
   const response = await authAxios.get(urls.listDatabasesNew);
-  console.log(response);
   return response.data;
 }
 
@@ -178,7 +177,6 @@ export async function fetchSearchPageOptions() {
     params: { databaseName: connectedDatabase },
   });
   const obj = response.data.data;
-  console.log(obj);
   const newObj = {
     testSuites: {
       "Meta Data": { ...obj.test_suites, id: obj.test_suites.incrementalId },
@@ -194,7 +192,6 @@ export async function fetchSearchPageOptions() {
       "Meta Data": { ...obj.test_cases, id: obj.test_cases.incrementalId },
     },
   };
-  console.log("here:", newObj);
   return newObj;
 }
 
@@ -270,7 +267,6 @@ export async function fetchSearch({
     },
   };
 
-  console.log("body", body);
   const response = await authAxios.post(url, body);
   return response.data;
 }
