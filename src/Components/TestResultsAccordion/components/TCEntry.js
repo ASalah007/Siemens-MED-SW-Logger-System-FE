@@ -93,7 +93,7 @@ function TCEntry({ data, onClick, active }) {
             "Total VTs":
               data.failedValidationTagsCount + data.passedValidationTagsCount,
             Duration: duration,
-            States: data.metaData.states,
+            States: data?.metaData?.states,
           }}
         />
 
