@@ -72,21 +72,23 @@ function TCEntry({ data, onClick, active }) {
         active={active}
         onClick={onClick}
         actionElements={
-          <ShowInMap2
-            maps={maps}
-            onClick={() => setMapView(true)}
-            open={mapView}
-            onClose={() => setMapView(false)}
-            nodesType="h-node"
-            grounded
-            onNodeClick={nodeClickHandler}
-            onNodeDoubleClick={(node) => {
-              setTreeView(true);
-              setNodeData(node);
-            }}
-            onNodeMouseEnter={nodeMouseEnterHandler}
-            onNodeMouseLeave={nodeMouseLeaveHandler}
-          />
+          data?.metaData?.connection && (
+            <ShowInMap2
+              maps={data?.metaData?.connection}
+              onClick={() => setMapView(true)}
+              open={mapView}
+              onClose={() => setMapView(false)}
+              nodesType="h-node"
+              grounded
+              onNodeClick={nodeClickHandler}
+              onNodeDoubleClick={(node) => {
+                setTreeView(true);
+                setNodeData(node);
+              }}
+              onNodeMouseEnter={nodeMouseEnterHandler}
+              onNodeMouseLeave={nodeMouseLeaveHandler}
+            />
+          )
         }
       >
         <RFolder
