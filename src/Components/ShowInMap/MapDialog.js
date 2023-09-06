@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
+import edgeTypes from "../../Utils/FlowTypes/EdgeTypes.js";
 
 import ReactFlow, {
   Background,
@@ -18,7 +19,6 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import Folder from "../Folder/Folder";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import CustomEdgeStartEnd from "../ConnectivityMap/CustomEdgeStartEnd";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -90,7 +90,7 @@ export default function MapDialog({ open, onClose, maps }) {
               edges={edges}
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
-              edgeTypes={{ "start-end": CustomEdgeStartEnd }}
+              edgeTypes={edgeTypes}
             >
               <Controls />
               <MiniMap nodeColor="#6ede87" zoomable pannable />

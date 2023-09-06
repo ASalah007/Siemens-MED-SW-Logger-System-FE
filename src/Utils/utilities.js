@@ -249,3 +249,20 @@ export function ensureArray(objectOrArray) {
   if (Array.isArray(objectOrArray)) return objectOrArray;
   return Object.values(objectOrArray);
 }
+
+export function prepareMapsFormat(dutMap) {
+  // {1: 2, 2: 3, 4: 5, 5: 6} => {group1: [{id: 1, connectedTo: 2, label: 1}, {}], group2: [{}, {}]}
+  const result = {};
+
+  Object.entries(dutMap).forEach(([map, graph]) => {
+    result[map] = {};
+    getConnectedComponents(graph).forEach((component, i) => {
+      result[map][`Group ${i}`] = component.map((node) => ({
+        id: "" + node,
+        connectedTo: "" + graph[node],
+        label: "" + node,
+      }));
+    });
+  });
+  return result;
+}
