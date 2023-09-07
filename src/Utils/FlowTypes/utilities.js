@@ -27,8 +27,8 @@ export function getNodesFromMap(map, nodesType, grounded) {
 
   const initialX = 60;
   const initialY = 30;
-  const groupSpacing = 110;
-  const nodeSpacing = 110;
+  const groupSpacing = 170;
+  const nodeSpacing = 75;
 
   return Object.entries(map).flatMap(([key, group], i) =>
     group.map((node, j) => ({
@@ -40,8 +40,8 @@ export function getNodesFromMap(map, nodesType, grounded) {
           : node.nodeType || nodesType,
       connectable: false,
       position: {
-        x: initialX + j * nodeSpacing,
-        y: initialY + i * groupSpacing,
+        x: initialX + i * groupSpacing,
+        y: initialY + j * nodeSpacing,
       },
       style,
       draggable: false,

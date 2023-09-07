@@ -107,8 +107,10 @@ export default function MapDialog2(props) {
               onNodeClick={nodeClickHandler}
               onNodeDoubleClick={nodeDoubleClickHandler}
               zoomOnDoubleClick={false}
+              zoomOnScroll={false}
               onNodeMouseEnter={nodeMouseEnterHandler}
               onNodeMouseLeave={nodeMouseLeaveHandler}
+              panOnScroll={true}
             >
               <Controls />
               <MiniMap nodeColor="#6ede87" zoomable pannable />
