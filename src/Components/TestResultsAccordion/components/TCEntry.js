@@ -212,6 +212,10 @@ function nodeClickHandler({
     target: "" + id,
     targetHandle: "secondary",
     animated: true,
+    style: {
+      stroke: "black",
+      strokeWidth: 2,
+    },
   }));
   setEdges([...edges, ...newEdges]);
 
