@@ -50,6 +50,7 @@ function FilterDialog({ open, onClose, labels, filteringOptions, onApply }) {
                 options={filteringOptions[i]}
                 getOptionLabel={(option) => String(option)}
                 disableCloseOnSelect
+                key={i}
                 renderOption={(props, option, { selected }) => (
                   <li {...props}>
                     <Checkbox

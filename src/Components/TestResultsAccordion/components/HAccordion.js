@@ -127,18 +127,18 @@ function HAccordion({
       fourthColumnElements,
     ];
 
-    const newDisplayed = [...displayed];
-    elements.forEach((e, i) => {
-      if (e.length && !displayed[i]) newDisplayed[i] = true;
+    setDisplayed((o) => {
+      const newDisplayed = [...o];
+      elements.forEach((e, i) => {
+        if (e.length && !o[i]) newDisplayed[i] = true;
+      });
+      return newDisplayed;
     });
-
-    setDisplayed(newDisplayed);
   }, [
     firstColumnElements,
     secondColumnElements,
     thirdColumnElements,
     fourthColumnElements,
-    displayed,
   ]);
 
   const showFirstColumn = !minimized[0];

@@ -67,6 +67,7 @@ export default function MapDialog({ open, onClose, maps }) {
                 title={k}
                 active={activeMap === i}
                 onClick={() => folderHandler(i)}
+                key={k}
               >
                 <FormGroup>
                   {connectedComponents[i].map((c, j) => (
@@ -78,6 +79,7 @@ export default function MapDialog({ open, onClose, maps }) {
                         />
                       }
                       label={`Group ${j + 1}`}
+                      key={`Group ${j + 1}`}
                     />
                   ))}
                 </FormGroup>

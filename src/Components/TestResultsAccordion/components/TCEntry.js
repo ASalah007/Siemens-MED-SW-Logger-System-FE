@@ -47,7 +47,6 @@ function TCEntry({ data, onClick, active }) {
   );
 
   let title = `Test Case(${data.incrementalId})`;
-  console.log(data);
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import { Handle, Position } from "reactflow";
 import AlignHorizontalCenterIcon from "@mui/icons-material/AlignHorizontalCenter";
+import React, { memo } from "react";
 
 function HNode({ data, isConnectable }) {
   return (
@@ -23,7 +24,7 @@ function HNode({ data, isConnectable }) {
   );
 }
 
-function VNode({ data, isConnectable, borderColor, textColor }) {
+const VNode = memo(({ data, isConnectable, borderColor, textColor }) => {
   return (
     <div
       className={
@@ -50,9 +51,9 @@ function VNode({ data, isConnectable, borderColor, textColor }) {
       />
     </div>
   );
-}
+});
 
-function Ground({ data, isConnectable }) {
+const Ground = memo(({ data, isConnectable }) => {
   return (
     <>
       <Handle
@@ -74,9 +75,9 @@ function Ground({ data, isConnectable }) {
       />
     </>
   );
-}
+});
 
-function Parent({ data, isConnectable }) {
+const Parent = memo(({ data, isConnectable }) => {
   return (
     <div className="w-28 border border-black rounded flex items-center justify-center relative py-2 hover:cursor-pointer hover:border-blue-500 hover:border-2">
       <div className="absolute -top-1 right-0.5 text-xs text-blue-500 font-bold">
@@ -99,9 +100,9 @@ function Parent({ data, isConnectable }) {
       />
     </div>
   );
-}
+});
 
-function Child({ data, isConnectable }) {
+const Child = memo(({ data, isConnectable }) => {
   return (
     <div className="w-28 border-2 border-blue-500 rounded flex items-center justify-center relative">
       <Handle
@@ -130,16 +131,14 @@ function Child({ data, isConnectable }) {
       />
     </div>
   );
-}
+});
 
-function Validation({ data, isConnectable, passNode = true }) {
+const Validation = memo(({ data, isConnectable, borderStyle, textStyle }) => {
   return (
     <div
       className={
         "w-36 border-2 rounded-full flex items-center justify-center relative py-1 hover:cursor-pointer " +
-        (passNode
-          ? "border-success hover:border-green-300"
-          : "border-fail hover:border-red-300")
+        borderStyle
       }
     >
       <Handle
@@ -151,8 +150,7 @@ function Validation({ data, isConnectable, passNode = true }) {
       <div className="overflow-hidden grow px-1 flex items-center justify-center">
         <span
           className={
-            "font-semibold text-sm break-words max-w-full " +
-            (passNode ? "text-green-500" : "text-red-500")
+            "font-semibold text-sm break-words max-w-full " + textStyle
           }
         >
           {data.label}
@@ -166,9 +164,9 @@ function Validation({ data, isConnectable, passNode = true }) {
       />
     </div>
   );
-}
+});
 
-function Label({ data, isConnectable }) {
+const Label = memo(({ data, isConnectable }) => {
   return (
     <div className="w-36 whitespace-nowrap">
       <div className="overflow-hidden grow px-1">
@@ -176,16 +174,37 @@ function Label({ data, isConnectable }) {
       </div>
     </div>
   );
-}
+});
 
-function Dead({ data, isConnectable }) {
-  return VNode({
-    data,
-    isConnectable,
-    borderColor: "border-gray-300",
-    textColor: "text-gray-300",
-  });
-}
+const DeadValidation = memo((props) => {
+  return (
+    <Validation
+      {...props}
+      borderStyle="border-orange-300 hover:border-orange-500"
+      textStyle="text-orange-400"
+    />
+  );
+});
+
+const PassedValidation = memo((props) => {
+  return (
+    <Validation
+      {...props}
+      borderStyle="border-success hover:border-green-300"
+      textStyle="text-green-500"
+    />
+  );
+});
+
+const FailedValidation = memo((props) => {
+  return (
+    <Validation
+      {...props}
+      borderStyle="border-fail hover:border-red-300"
+      textStyle="text-red-500"
+    />
+  );
+});
 
 const nodeTypes = {
   "h-node": HNode,
@@ -193,9 +212,9 @@ const nodeTypes = {
   ground: Ground,
   parent: Parent,
   child: Child,
-  passedValidation: (data) => Validation({ ...data, passNode: true }),
-  failedValidation: (data) => Validation({ ...data, passNode: false }),
+  passedValidation: PassedValidation,
+  failedValidation: FailedValidation,
+  deadValidation: DeadValidation,
   label: Label,
-  dead: Dead,
 };
 export default nodeTypes;

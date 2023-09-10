@@ -110,10 +110,11 @@ export default function MapDialog2(props) {
               onNodeMouseEnter={nodeMouseEnterHandler}
               onNodeMouseLeave={nodeMouseLeaveHandler}
               panOnScroll={true}
+              onlyRenderVisibleElements
             >
               <Controls />
-              <MiniMap nodeColor="#6ede87" zoomable pannable />
-              <Background variant="dots" gap={12} size={1} />
+              {/* <MiniMap nodeColor="#6ede87" zoomable pannable /> */}
+              {/* <Background variant="dots" gap={12} size={1} /> */}
             </ReactFlow>
           </div>
         </div>
@@ -155,15 +156,7 @@ function useMapDialogStates({
   useEffect(() => {
     setNodes(getNodesFromMap(filteredGroups(), nodesType, grounded));
     setEdges(getEdgesFromMap(maps[activeMap]));
-  }, [
-    activeMap,
-    grounded,
-    maps,
-    nodesType,
-    filteredGroups,
-    setEdges,
-    setNodes,
-  ]);
+  }, [activeMap, grounded, maps, nodesType]);
 
   useEffect(() => {
     Object.entries(maps).forEach(([map, groups]) => {
@@ -188,24 +181,30 @@ function useMapDialogStates({
   };
 
   const folderHandler = (map) => setActiveMap(map);
-  const nodeClickHandler = (e, node) =>
-    onNodeClick({
-      node,
-      filteredGroups: filteredGroups(),
-      edges,
-      setEdges,
-      nodes,
-      setNodes,
-    });
+  const nodeClickHandler = useCallback(
+    (e, node) =>
+      onNodeClick({
+        node,
+        filteredGroups: filteredGroups(),
+        edges,
+        setEdges,
+        nodes,
+        setNodes,
+      }),
+    [edges, nodes, onNodeClick]
+  );
 
-  const nodeDoubleClickHandler = (e, node) => {
-    const n = Object.values(filteredGroups())
-      .flat()
-      .find((n) => n.state_id === node.id);
-    onNodeDoubleClick(n);
-  };
+  const nodeDoubleClickHandler = useCallback(
+    (e, node) => {
+      const n = Object.values(filteredGroups())
+        .flat()
+        .find((n) => n.state_id === node.id);
+      onNodeDoubleClick(n);
+    },
+    [onNodeDoubleClick]
+  );
 
-  const nodeMouseEnterHandler = (e, node) => {
+  const nodeMouseEnterHandler = useCallback((e, node) => {
     onNodeMouseEnter({
       node,
       filteredGroups: filteredGroups(),
@@ -215,18 +214,22 @@ function useMapDialogStates({
       setEdges,
       defaultNodeType: nodesType,
     });
-  };
-  const nodeMouseLeaveHandler = (e, node) => {
-    onNodeMouseLeave({
-      node,
-      filteredGroups: filteredGroups(),
-      nodes,
-      setNodes,
-      edges,
-      setEdges,
-      defaultNodeType: nodesType,
-    });
-  };
+  }, []);
+
+  const nodeMouseLeaveHandler = useCallback(
+    (e, node) => {
+      onNodeMouseLeave({
+        node,
+        filteredGroups: filteredGroups(),
+        nodes,
+        setNodes,
+        edges,
+        setEdges,
+        defaultNodeType: nodesType,
+      });
+    },
+    [edges, nodes, nodesType]
+  );
 
   return {
     nodes,
