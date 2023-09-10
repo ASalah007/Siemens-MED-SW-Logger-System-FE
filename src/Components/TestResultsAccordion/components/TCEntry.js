@@ -48,6 +48,23 @@ function TCEntry({ data, onClick, active }) {
 
   let title = `Test Case(${data.incrementalId})`;
 
+  const maps = data?.metaData?.connection;
+
+  // add label node to the start of each group
+  Object.entries(maps).forEach(([map, groups]) => {
+    Object.keys(groups).forEach((group) => {
+      if (
+        maps[map][group].length === 0 ||
+        maps[map][group][0].nodeType !== "label"
+      )
+        maps[map][group].unshift({
+          state_id: group,
+          name: group + " : ",
+          nodeType: "label",
+        });
+    });
+  });
+
   return (
     <div>
       <ShowInTree
@@ -73,7 +90,7 @@ function TCEntry({ data, onClick, active }) {
         actionElements={
           data?.metaData?.connection && (
             <ShowInMap2
-              maps={data?.metaData?.connection}
+              maps={maps}
               onClick={() => setMapView(true)}
               open={mapView}
               onClose={() => setMapView(false)}
@@ -84,8 +101,8 @@ function TCEntry({ data, onClick, active }) {
                 setTreeView(true);
                 setNodeData(node);
               }}
-              onNodeMouseEnter={nodeMouseEnterHandler}
-              onNodeMouseLeave={nodeMouseLeaveHandler}
+              // onNodeMouseEnter={nodeMouseEnterHandler}
+              // onNodeMouseLeave={nodeMouseLeaveHandler}
             />
           )
         }
@@ -243,12 +260,13 @@ function nodeMouseLeaveHandler({
   setEdges,
   defaultNodeType,
 }) {
+  if (node.type !== "parent") return;
+
+  // if the user clicked on the node ignore hovering
   const testEdges = edges.filter((e) => !e.id.includes(`extra-${node.id}-`));
   if (testEdges.length !== edges.length) return;
 
   const allNodes = Object.values(filteredGroups).flat();
-  if (allNodes.find((n) => n.state_id === node.id)?.nodeType !== "parent")
-    return;
 
   const childsIds = allNodes
     .filter((n) => n.parent_id === node.id)
@@ -256,8 +274,8 @@ function nodeMouseLeaveHandler({
 
   const newNodes = nodes.map((n) => {
     if (!childsIds.includes(n.id)) return n;
-    n.type = defaultNodeType;
-    return n;
+
+    return { ...n, type: defaultNodeType };
   });
 
   setNodes(newNodes);

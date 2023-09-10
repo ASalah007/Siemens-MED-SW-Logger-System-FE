@@ -158,22 +158,6 @@ function useMapDialogStates({
     setEdges(getEdgesFromMap(maps[activeMap]));
   }, [activeMap, grounded, maps, nodesType]);
 
-  useEffect(() => {
-    Object.entries(maps).forEach(([map, groups]) => {
-      Object.keys(groups).forEach((group) => {
-        if (
-          maps[map][group].length === 0 ||
-          maps[map][group][0].nodeType !== "label"
-        )
-          maps[map][group].unshift({
-            state_id: group,
-            name: group + " : ",
-            nodeType: "label",
-          });
-      });
-    });
-  }, [maps]);
-
   const checkBoxHandler = (map, group) => {
     const newGroups = structuredClone(activeGroups);
     newGroups[map][group] = !activeGroups[map][group];
