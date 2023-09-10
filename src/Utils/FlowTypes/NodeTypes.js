@@ -72,8 +72,8 @@ function Ground({ data, isConnectable }) {
 
 function Parent({ data, isConnectable }) {
   return (
-    <div className="w-24 border border-black rounded flex items-center justify-center relative py-2 hover:cursor-pointer hover:border-[#ff5050] hover:border-2">
-      <div className="absolute -top-1 right-0.5 text-xs text-[#ff5050] font-bold">
+    <div className="w-28 border border-black rounded flex items-center justify-center relative py-2 hover:cursor-pointer hover:border-blue-500 hover:border-2">
+      <div className="absolute -top-1 right-0.5 text-xs text-blue-500 font-bold">
         s
       </div>
       <Handle
@@ -97,7 +97,7 @@ function Parent({ data, isConnectable }) {
 
 function Child({ data, isConnectable }) {
   return (
-    <div className="w-24 border-2 border-[#ff5050] rounded flex items-center justify-center relative">
+    <div className="w-28 border-2 border-blue-500 rounded flex items-center justify-center relative">
       <Handle
         id="main"
         type="target"
@@ -130,7 +130,7 @@ function Validation({ data, isConnectable, passNode = true }) {
   return (
     <div
       className={
-        "w-20 border-2 rounded-full flex items-center justify-center relative py-1 hover:cursor-pointer " +
+        "w-36 border-2 rounded-full flex items-center justify-center relative py-1 hover:cursor-pointer " +
         (passNode
           ? "border-success hover:border-green-300"
           : "border-fail hover:border-red-300")
@@ -145,7 +145,7 @@ function Validation({ data, isConnectable, passNode = true }) {
       <div className="overflow-hidden grow px-1 flex items-center justify-center">
         <span
           className={
-            "font-semibold text-sm break-words " +
+            "font-semibold text-sm break-words max-w-full " +
             (passNode ? "text-green-500" : "text-red-500")
           }
         >
