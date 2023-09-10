@@ -156,7 +156,15 @@ function useMapDialogStates({
   useEffect(() => {
     setNodes(getNodesFromMap(filteredGroups(), nodesType, grounded));
     setEdges(getEdgesFromMap(maps[activeMap]));
-  }, [activeMap, grounded, maps, nodesType]);
+  }, [
+    activeMap,
+    filteredGroups,
+    grounded,
+    maps,
+    nodesType,
+    setEdges,
+    setNodes,
+  ]);
 
   const checkBoxHandler = (map, group) => {
     const newGroups = structuredClone(activeGroups);
