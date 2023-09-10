@@ -1,5 +1,4 @@
 import { Handle, Position } from "reactflow";
-import AlignVerticalCenterIcon from "@mui/icons-material/AlignVerticalCenter";
 import AlignHorizontalCenterIcon from "@mui/icons-material/AlignHorizontalCenter";
 
 function HNode({ data, isConnectable }) {
@@ -24,9 +23,14 @@ function HNode({ data, isConnectable }) {
   );
 }
 
-function VNode({ data, isConnectable }) {
+function VNode({ data, isConnectable, borderColor, textColor }) {
   return (
-    <div className="w-28 border border-black rounded flex items-center justify-center relative hover:cursor-pointer">
+    <div
+      className={
+        "w-28 border rounded flex items-center justify-center relative hover:cursor-pointer " +
+        (borderColor || "border-black")
+      }
+    >
       <Handle
         type="target"
         position={Position.Top}
@@ -34,7 +38,9 @@ function VNode({ data, isConnectable }) {
         style={{ opacity: 0 }}
       />
       <div className="overflow-hidden grow px-1">
-        <span className="font-semibold text-sm break-words">{data.label}</span>
+        <span className={"font-semibold text-sm break-words " + textColor}>
+          {data.label}
+        </span>
       </div>
       <Handle
         type="source"
@@ -171,6 +177,16 @@ function Label({ data, isConnectable }) {
     </div>
   );
 }
+
+function Dead({ data, isConnectable }) {
+  return VNode({
+    data,
+    isConnectable,
+    borderColor: "border-gray-300",
+    textColor: "text-gray-300",
+  });
+}
+
 const nodeTypes = {
   "h-node": HNode,
   "v-node": VNode,
@@ -180,5 +196,6 @@ const nodeTypes = {
   passedValidation: (data) => Validation({ ...data, passNode: true }),
   failedValidation: (data) => Validation({ ...data, passNode: false }),
   label: Label,
+  dead: Dead,
 };
 export default nodeTypes;
