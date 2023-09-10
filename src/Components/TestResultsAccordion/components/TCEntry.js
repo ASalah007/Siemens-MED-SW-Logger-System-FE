@@ -51,19 +51,21 @@ function TCEntry({ data, onClick, active }) {
   const maps = data?.metaData?.connection;
 
   // add label node to the start of each group
-  Object.entries(maps).forEach(([map, groups]) => {
-    Object.keys(groups).forEach((group) => {
-      if (
-        maps[map][group].length === 0 ||
-        maps[map][group][0].nodeType !== "label"
-      )
-        maps[map][group].unshift({
-          state_id: group,
-          name: group + " : ",
-          nodeType: "label",
-        });
+  if (maps) {
+    Object.entries(maps).forEach(([map, groups]) => {
+      Object.keys(groups).forEach((group) => {
+        if (
+          maps[map][group].length === 0 ||
+          maps[map][group][0].nodeType !== "label"
+        )
+          maps[map][group].unshift({
+            state_id: group,
+            name: group + " : ",
+            nodeType: "label",
+          });
+      });
     });
-  });
+  }
 
   return (
     <div>
