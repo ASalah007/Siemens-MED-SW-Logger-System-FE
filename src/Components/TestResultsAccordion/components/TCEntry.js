@@ -216,7 +216,7 @@ function nodeClickHandler({
   if (testEdges.length !== edges.length) {
     setNodes(
       nodes.map((n) => {
-        if (childsIds.includes(n.id) && n.type === "child") n.type = "v-node";
+        if (childsIds.includes(n.id) && n.type === "child") n.type = n.oldType;
         return n;
       })
     );
@@ -240,6 +240,7 @@ function nodeClickHandler({
 
   const newNodes = nodes.map((n) => {
     if (!childsIds.includes(n.id)) return n;
+    n.oldType = n.type;
     n.type = "child";
     return n;
   });
