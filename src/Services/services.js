@@ -58,3 +58,9 @@ export async function login(credentials) {
     throw err;
   }
 }
+
+export function logout() {
+  const cookies = new Cookies();
+  cookies.remove("token");
+  sessionStorage.removeItem("connectedDatabase");
+}
