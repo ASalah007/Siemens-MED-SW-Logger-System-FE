@@ -127,10 +127,17 @@ function HAccordion({
       fourthColumnElements,
     ];
 
+    const loadings = [
+      firstColumnLoading,
+      secondColumnLoading,
+      thirdColumnLoading,
+      fourthColumnLoading,
+    ];
+
     setDisplayed((o) => {
       const newDisplayed = [...o];
       elements.forEach((e, i) => {
-        if (e.length && !o[i]) newDisplayed[i] = true;
+        if ((e.length || loadings[i]) && !o[i]) newDisplayed[i] = true;
       });
       return newDisplayed;
     });
@@ -139,6 +146,10 @@ function HAccordion({
     secondColumnElements,
     thirdColumnElements,
     fourthColumnElements,
+    firstColumnLoading,
+    secondColumnLoading,
+    thirdColumnLoading,
+    fourthColumnLoading,
   ]);
 
   const showFirstColumn = !minimized[0];
