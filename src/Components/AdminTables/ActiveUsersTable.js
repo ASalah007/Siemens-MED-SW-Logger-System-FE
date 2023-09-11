@@ -16,6 +16,8 @@ import {
   fetchAllActiveUsers,
   updateUser,
   fetchDatabases,
+  fetchDatabasesBySolution,
+  fetchDatabasesWithSolutions,
 } from "../../Services/authServices";
 import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
 
@@ -28,12 +30,14 @@ export default function ActiveUsersTable({ filterValue = "" }) {
   const [deleteConfirmation, setdeleteConfirmation] = useState(false);
 
   useEffect(() => {
-    fetchAllSolutions().then((data) => setOptions(data));
+    fetchDatabasesWithSolutions().then((data) => {
+      setDeleteOptions(Object.values(data).flat());
+      setOptions(Object.keys(data));
+    });
     fetchAllActiveUsers().then((data) => {
       setUsers(data);
       setLoading(false);
     });
-    fetchDatabases().then((data) => setDeleteOptions(data));
   }, []);
 
   useEffect(() => {

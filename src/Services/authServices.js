@@ -66,11 +66,6 @@ export async function fetchUserData() {
   return response.data.data.user;
 }
 
-export async function fetchAllSolutions() {
-  const response = await authAxios.get("/admin/solutions");
-  return response.data.data;
-}
-
 export async function deleteUser(userId) {
   try {
     const response = await authAxios.delete(`/admin/users/${userId}`);
@@ -102,11 +97,6 @@ export async function updateUser(userId, solutions, deletableDatabases) {
 export async function fetchDatabasesNew() {
   const response = await authAxios.get(urls.listDatabasesNew);
   return response.data;
-}
-
-export async function fetchDatabases() {
-  const response = await authAxios.get(urls.listDatabases);
-  return response.data["databasesNames"];
 }
 
 export async function fetchTestSuites(limit, page, filter) {
@@ -290,4 +280,10 @@ export async function deleteTestSuite(testSuiteId) {
   } catch (err) {
     return { status: "fail", message: err.message };
   }
+}
+
+export async function fetchDatabasesWithSolutions() {
+  const url = urls.getDatabasesWithSolutions;
+  const response = await authAxios.get(url);
+  return response.data.result;
 }

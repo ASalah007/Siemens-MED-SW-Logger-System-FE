@@ -18,6 +18,7 @@ export const urls = {
   login: "login/",
   users: "admin/users/",
   deleteTestSuite: "TestSuites/{testSuiteId}",
+  getDatabasesWithSolutions: "database/solutions",
 };
 
 Object.entries(urls).map(([k, v]) => (urls[k] = APIURL + v));
