@@ -9,13 +9,7 @@ import Slide from "@mui/material/Slide";
 import edgeTypes from "../../Utils/FlowTypes/EdgeTypes.js";
 import nodeTypes from "../../Utils/FlowTypes/NodeTypes.js";
 
-import ReactFlow, {
-  Background,
-  Controls,
-  MiniMap,
-  useEdgesState,
-  useNodesState,
-} from "reactflow";
+import ReactFlow, { Controls, useEdgesState, useNodesState } from "reactflow";
 import "reactflow/dist/style.css";
 import Folder from "../Folder/Folder";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
@@ -29,7 +23,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function MapDialog2(props) {
-  const { open, onClose, maps } = props;
+  const { open, onClose, maps, title } = props;
   const {
     nodes,
     edges,
@@ -56,7 +50,7 @@ export default function MapDialog2(props) {
         <AppBar sx={{ position: "relative" }}>
           <Toolbar>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Connectivity Map
+              {title || "Maps"}
             </Typography>
             <IconButton
               edge="start"

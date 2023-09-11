@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Folder from "../../Folder/Folder.js";
 import MiniTable from "../../MiniTable/MiniTable.js";
 import ShowInTable from "../../ShowInTable/ShowInTable";
@@ -103,6 +103,7 @@ function TCEntry({ data, onClick, active }) {
                 setTreeView(true);
                 setNodeData(node);
               }}
+              title="State Machines"
               // onNodeMouseEnter={nodeMouseEnterHandler}
               // onNodeMouseLeave={nodeMouseLeaveHandler}
             />
@@ -116,7 +117,8 @@ function TCEntry({ data, onClick, active }) {
             "Total VTs":
               data.failedValidationTagsCount + data.passedValidationTagsCount,
             Duration: duration,
-            ...data.metaData,
+            ...{ ...data.metaData, connection: undefined },
+            ...maps,
           }}
         />
 

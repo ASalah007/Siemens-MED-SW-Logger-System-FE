@@ -37,6 +37,7 @@ export default function ShowInMap2({
           onNodeDoubleClick={onNodeDoubleClick}
           onNodeMouseEnter={onNodeMouseEnter}
           onNodeMouseLeave={onNodeMouseLeave}
+          title={title}
         />
       </ReactFlowProvider>
     </div>
