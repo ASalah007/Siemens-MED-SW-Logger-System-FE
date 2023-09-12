@@ -6,26 +6,28 @@ import { ReactFlowProvider } from "reactflow";
 
 function ShowInMap({ onClick, onClose, open, maps }) {
   return (
-    <div>
-      <Tooltip
-        title={"DUT Connectivity Map"}
-        placement="bottom"
-        disableInteractive
-      >
-        <IconButton onClick={() => onClick()}>
-          <HubOutlinedIcon fontSize="small" />
-        </IconButton>
-      </Tooltip>
+    Object.keys(maps).length > 0 && (
+      <div>
+        <Tooltip
+          title={"DUT Connectivity Map"}
+          placement="bottom"
+          disableInteractive
+        >
+          <IconButton onClick={() => onClick()}>
+            <HubOutlinedIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
 
-      <ReactFlowProvider>
-        <MapDialog
-          open={open}
-          onClick={onClick}
-          onClose={onClose}
-          maps={maps}
-        />
-      </ReactFlowProvider>
-    </div>
+        <ReactFlowProvider>
+          <MapDialog
+            open={open}
+            onClick={onClick}
+            onClose={onClose}
+            maps={maps}
+          />
+        </ReactFlowProvider>
+      </div>
+    )
   );
 }
 
