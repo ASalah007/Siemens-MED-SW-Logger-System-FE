@@ -265,7 +265,9 @@ function childClickHandler({
     .map((n) => n.state_id);
 
   // if the user clicked on the node or the parent reset edges
-  const testEdges = edges.filter((e) => !e.id.includes(`extra-${parent.state_id}-`));
+  const testEdges = edges.filter(
+    (e) => !e.id.includes(`extra-${parent.state_id}-`)
+  );
   if (testEdges.length !== edges.length) {
     setEdges(testEdges);
     setNodes(

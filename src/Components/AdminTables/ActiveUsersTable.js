@@ -12,11 +12,8 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import {
   deleteUser,
-  fetchAllSolutions,
   fetchAllActiveUsers,
   updateUser,
-  fetchDatabases,
-  fetchDatabasesBySolution,
   fetchDatabasesWithSolutions,
 } from "../../Services/authServices";
 import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
@@ -32,7 +29,7 @@ export default function ActiveUsersTable({ filterValue = "" }) {
   useEffect(() => {
     fetchDatabasesWithSolutions().then((data) => {
       setDeleteOptions(Object.values(data).flat());
-      setOptions(Object.keys(data));
+      setOptions(Object.keys(data).map((k) => k.toUpperCase()));
     });
     fetchAllActiveUsers().then((data) => {
       setUsers(data);
