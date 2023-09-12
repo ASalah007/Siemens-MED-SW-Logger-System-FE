@@ -49,6 +49,7 @@ function SignupForm() {
       .catch((err) => {
         setError(true);
         setErrorMsg(err.response.data.error.message);
+        setLoading(false);
       });
   }
 
@@ -193,12 +194,12 @@ function SignupForm() {
             </button>
             <p className=" text-center font-poppins mt-2">
               Already have an account?
-              <a
-                className="underline underline-offset-1 text-Blue font-medium"
-                href="/login"
+              <Link
+                className="underline underline-offset-1 text-Blue font-medium pl-1"
+                to="/login"
               >
                 Login
-              </a>
+              </Link>
             </p>
             {loading && <LinearLoader color={"#1976D2"} />}
           </Form>

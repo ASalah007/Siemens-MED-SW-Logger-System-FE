@@ -21,7 +21,7 @@ import ConfirmationDialog from "../ConfirmationDialog/ConfirmationDialog";
 export default function ActiveUsersTable({ filterValue = "" }) {
   const [users, setUsers] = useState([]);
 
-  const [options, setOptions] = useState(["Ethernet", "5G", "OTN"]);
+  const [options, setOptions] = useState([]);
   const [deleteOptions, setDeleteOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteConfirmation, setdeleteConfirmation] = useState(false);

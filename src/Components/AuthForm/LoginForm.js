@@ -127,12 +127,12 @@ function LoginForm() {
             </button>
             <p className=" text-center font-poppins mt-2">
               Don't have an account?
-              <a
-                className="underline underline-offset-1 text-Blue font-medium"
-                href="/signup"
+              <Link
+                className="underline underline-offset-1 text-Blue font-medium pl-1"
+                to="/signup"
               >
                 sign up
-              </a>
+              </Link>
             </p>
             {loading && <LinearLoader color={"#1976D2"} />}
           </Form>
