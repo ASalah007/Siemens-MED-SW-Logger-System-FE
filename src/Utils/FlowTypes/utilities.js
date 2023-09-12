@@ -33,7 +33,11 @@ export function getNodesFromMap(map, nodesType, grounded) {
   return Object.entries(map).flatMap(([key, group], i) =>
     group.map((node, j) => ({
       id: "" + node.state_id,
-      data: { label: node.name },
+      data: {
+        label: node.name,
+        tooltip:
+          node.parent_id && node.parent_id !== "None" ? "Slave State" : "",
+      },
       type:
         j === group.length - 1 && grounded
           ? "ground"

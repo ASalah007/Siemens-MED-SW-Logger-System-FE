@@ -198,17 +198,16 @@ function TCEntry({ data, onClick, active }) {
   );
 }
 
-function nodeClickHandler({
-  node,
-  filteredGroups,
-  edges,
-  setEdges,
-  nodes,
-  setNodes,
-}) {
+function nodeClickHandler(props) {
+  const { node, filteredGroups, edges, setEdges, nodes, setNodes } = props;
   const allNodes = Object.values(filteredGroups).flat();
-  if (allNodes.find((n) => n.state_id === node.id)?.nodeType !== "parent")
-    return;
+
+  // if this node is a slave node then insert an edge to the parent
+  const nodeObject = allNodes.find((n) => n.state_id === node.id);
+  if (nodeObject.parent_id && nodeObject.parent_id !== "None")
+    return childClickHandler({ ...props, allNodes, nodeObject });
+
+  if (node.type !== "parent") return;
 
   const childsIds = allNodes
     .filter((n) => n.parent_id === node.id)
@@ -242,6 +241,60 @@ function nodeClickHandler({
 
   const newNodes = nodes.map((n) => {
     if (!childsIds.includes(n.id)) return n;
+    n.oldType = n.type;
+    n.type = "child";
+    return n;
+  });
+
+  setNodes(newNodes);
+}
+
+function childClickHandler({
+  node,
+  filteredGroups,
+  edges,
+  setEdges,
+  nodes,
+  setNodes,
+  allNodes,
+  nodeObject,
+}) {
+  const parent = allNodes.find((n) => n.state_id === nodeObject.parent_id);
+  const childsIds = allNodes
+    .filter((n) => n.parent_id === nodeObject.parent_id)
+    .map((n) => n.state_id);
+
+  // if the user clicked on the node or the parent reset edges
+  const testEdges = edges.filter((e) => !e.id.includes(`extra-${parent.state_id}-`));
+  if (testEdges.length !== edges.length) {
+    setEdges(testEdges);
+    setNodes(
+      nodes.map((n) => {
+        if (childsIds.includes(n.id) && n.type === "child") n.type = n.oldType;
+        return n;
+      })
+    );
+    return;
+  }
+
+  const newEdges = [
+    {
+      id: `extra-${parent.state_id}-${node.id}`,
+      source: "" + parent.state_id,
+      target: "" + node.id,
+      targetHandle: "secondary",
+      animated: true,
+      style: {
+        stroke: "#555555",
+        strokeWidth: 1,
+        opacity: 0.5,
+      },
+    },
+  ];
+  setEdges([...edges, ...newEdges]);
+
+  const newNodes = nodes.map((n) => {
+    if (n.id !== node.id) return n;
     n.oldType = n.type;
     n.type = "child";
     return n;

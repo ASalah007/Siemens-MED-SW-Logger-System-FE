@@ -1,6 +1,7 @@
 import { Handle, Position } from "reactflow";
 import AlignHorizontalCenterIcon from "@mui/icons-material/AlignHorizontalCenter";
 import React, { memo } from "react";
+import { Tooltip } from "@mui/material";
 
 function HNode({ data, isConnectable }) {
   return (
@@ -26,30 +27,32 @@ function HNode({ data, isConnectable }) {
 
 const VNode = memo(({ data, isConnectable, borderColor, textColor }) => {
   return (
-    <div
-      className={
-        "w-28 border rounded flex items-center justify-center relative hover:cursor-pointer " +
-        (borderColor || "border-black")
-      }
-    >
-      <Handle
-        type="target"
-        position={Position.Top}
-        isConnectable={isConnectable}
-        style={{ opacity: 0 }}
-      />
-      <div className="overflow-hidden grow px-1">
-        <span className={"font-semibold text-sm break-words " + textColor}>
-          {data.label}
-        </span>
+    <Tooltip title={data.tooltip}>
+      <div
+        className={
+          "w-28 border rounded flex items-center justify-center relative hover:cursor-pointer " +
+          (borderColor || "border-black")
+        }
+      >
+        <Handle
+          type="target"
+          position={Position.Top}
+          isConnectable={isConnectable}
+          style={{ opacity: 0 }}
+        />
+        <div className="overflow-hidden grow px-1">
+          <span className={"font-semibold text-sm break-words " + textColor}>
+            {data.label}
+          </span>
+        </div>
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          isConnectable={isConnectable}
+          style={{ opacity: 0 }}
+        />
       </div>
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        isConnectable={isConnectable}
-        style={{ opacity: 0 }}
-      />
-    </div>
+    </Tooltip>
   );
 });
 
@@ -104,7 +107,7 @@ const Parent = memo(({ data, isConnectable }) => {
 
 const Child = memo(({ data, isConnectable }) => {
   return (
-    <div className="w-28 border-2 border-blue-500 rounded flex items-center justify-center relative">
+    <div className="w-28 border-2 border-blue-500 rounded flex items-center justify-center relative hover:cursor-pointer">
       <Handle
         id="main"
         type="target"
