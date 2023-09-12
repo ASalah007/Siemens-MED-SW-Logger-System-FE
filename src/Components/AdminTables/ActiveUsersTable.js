@@ -29,7 +29,7 @@ export default function ActiveUsersTable({ filterValue = "" }) {
   useEffect(() => {
     fetchDatabasesWithSolutions().then((data) => {
       setDeleteOptions(Object.values(data).flat());
-      setOptions(Object.keys(data).map((k) => k.toUpperCase()));
+      setOptions(Object.keys(data).map((k) => k));
     });
     fetchAllActiveUsers().then((data) => {
       setUsers(data);

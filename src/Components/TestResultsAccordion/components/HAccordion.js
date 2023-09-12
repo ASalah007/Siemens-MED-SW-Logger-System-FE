@@ -175,7 +175,6 @@ function HAccordion({
   const showFourthColumn =
     !minimized[3] && (fourthColumnElements.length > 0 || displayed[3]);
 
-  const currentSolution = sessionStorage.getItem("connectedSolution");
   return (
     <div className="flex grow max-h-full bg-gray-50">
       {minimized[0] && (

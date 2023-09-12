@@ -40,12 +40,6 @@ function HomePage() {
 
   function connectToDatabase(database) {
     sessionStorage.setItem("connectedDatabase", database);
-    sessionStorage.setItem(
-      "connectedSolution",
-      Object.entries(databases).find(([solution, solutionDatabases]) =>
-        solutionDatabases.includes(database)
-      )[0]
-    );
     setConnectedDatabase(database);
   }
 
@@ -57,6 +51,7 @@ function HomePage() {
     });
   }, [connectedDatabase, navigate]);
 
+  // put a default value in the select box
   useEffect(() => {
     Object.values(databases).some((e) =>
       e.some((d) => {
