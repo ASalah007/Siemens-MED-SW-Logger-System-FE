@@ -106,7 +106,7 @@ function HomePage() {
       <div className="flex flex-col justify-center items-center bg-white grow">
         {/* Welcome Message */}
         <div className="mb-14 font-bold text-5xl text-center flex flex-col gap-3 z-10 translate-y-4">
-          <span>Welcome !</span>
+          <span>Welcome {user.name}!</span>
           <span>Please choose a database.</span>
         </div>
 

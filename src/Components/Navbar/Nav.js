@@ -50,6 +50,12 @@ function Nav() {
           <LogoutIcon className="text-white" />
           <span className="font-semibold ml-1">Logout</span>
         </Link>
+
+        <Tooltip title={`Logged as ${user.name}`}>
+          <div className="font-bold text-sm hover:cursor-default">
+            {user.name}
+          </div>
+        </Tooltip>
       </div>
     </div>
   );
