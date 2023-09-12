@@ -66,8 +66,6 @@ function HomePage() {
     );
   }, [databases]);
 
-  console.log(databases);
-
   const mappedDatabases = [];
 
   for (var key in databases) {

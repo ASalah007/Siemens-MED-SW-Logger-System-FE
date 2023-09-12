@@ -101,8 +101,8 @@ export default function MapDialog2(props) {
               onNodeDoubleClick={nodeDoubleClickHandler}
               zoomOnDoubleClick={false}
               zoomOnScroll={false}
-              onNodeMouseEnter={nodeMouseEnterHandler}
-              onNodeMouseLeave={nodeMouseLeaveHandler}
+              // onNodeMouseEnter={nodeMouseEnterHandler}
+              // onNodeMouseLeave={nodeMouseLeaveHandler}
               panOnScroll={true}
               onlyRenderVisibleElements
             >

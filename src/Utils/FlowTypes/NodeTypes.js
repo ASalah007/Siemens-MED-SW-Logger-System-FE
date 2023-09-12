@@ -27,11 +27,12 @@ function HNode({ data, isConnectable }) {
 
 const VNode = memo(({ data, isConnectable, borderColor, textColor }) => {
   return (
-    <Tooltip title={data.tooltip}>
+    <Tooltip title={data.tooltip} placement="top">
       <div
         className={
           "w-28 border rounded flex items-center justify-center relative hover:cursor-pointer " +
-          (borderColor || "border-black")
+          (borderColor || "border-black ") +
+          (data.isChild && "hover:border-childNode ")
         }
       >
         <Handle
@@ -82,10 +83,7 @@ const Ground = memo(({ data, isConnectable }) => {
 
 const Parent = memo(({ data, isConnectable }) => {
   return (
-    <div className="w-28 border border-black rounded flex items-center justify-center relative py-2 hover:cursor-pointer hover:border-blue-500 hover:border-2">
-      <div className="absolute -top-1 right-0.5 text-xs text-blue-500 font-bold">
-        s
-      </div>
+    <div className="w-28 border-2 border-parentNode rounded flex items-center justify-center relative py-2 hover:cursor-pointer hover:border-parentNodeHover hover:border-2">
       <Handle
         type="target"
         position={Position.Top}
@@ -93,7 +91,9 @@ const Parent = memo(({ data, isConnectable }) => {
         style={{ opacity: 0 }}
       />
       <div className="overflow-hidden grow px-1">
-        <span className="font-semibold text-sm break-words">{data.label}</span>
+        <span className="font-semibold text-sm text-parentNode break-words">
+          {data.label}
+        </span>
       </div>
       <Handle
         type="source"
@@ -107,7 +107,7 @@ const Parent = memo(({ data, isConnectable }) => {
 
 const Child = memo(({ data, isConnectable }) => {
   return (
-    <div className="w-28 border-2 border-blue-500 rounded flex items-center justify-center relative hover:cursor-pointer">
+    <div className="w-28 border-2 border-childNode rounded flex items-center justify-center relative hover:cursor-pointer">
       <Handle
         id="main"
         type="target"
@@ -183,8 +183,8 @@ const DeadValidation = memo((props) => {
   return (
     <Validation
       {...props}
-      borderStyle="border-orange-300 hover:border-orange-500"
-      textStyle="text-orange-400"
+      borderStyle="border-gray-300 hover:border-gray-500"
+      textStyle="text-gray-400"
     />
   );
 });

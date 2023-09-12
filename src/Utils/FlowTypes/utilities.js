@@ -37,6 +37,7 @@ export function getNodesFromMap(map, nodesType, grounded) {
         label: node.name,
         tooltip:
           node.parent_id && node.parent_id !== "None" ? "Slave State" : "",
+        isChild: node.parent_id && node.parent_id !== "None",
       },
       type:
         j === group.length - 1 && grounded
