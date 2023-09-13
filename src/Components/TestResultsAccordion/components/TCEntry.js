@@ -48,7 +48,7 @@ function TCEntry({ data, onClick, active }) {
 
   let title = `Test Case(${data.incrementalId})`;
 
-  const maps = data?.metaData?.connection;
+  const maps = structuredClone(data?.metaData?.connection);
 
   // add label node to the start of each group
   if (maps) {
@@ -118,7 +118,7 @@ function TCEntry({ data, onClick, active }) {
               data.failedValidationTagsCount + data.passedValidationTagsCount,
             Duration: duration,
             ...{ ...data.metaData, connection: undefined },
-            ...maps,
+            ...data?.metaData?.connection,
           }}
         />
 
