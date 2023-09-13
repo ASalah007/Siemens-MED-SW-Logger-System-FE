@@ -3,7 +3,7 @@ import Folder from "../../Folder/Folder.js";
 import { formatDuration, titlize } from "../../../Utils/utilities.js";
 import RFolder from "../../Folder/RFolder.js";
 
-function VTEntry({ data, num, onClick, active }) {
+function VTEntry({ data, onClick, active }) {
   const duration = formatDuration(
     new Date(data.end_date) - new Date(data.creation_date)
   );
@@ -25,6 +25,12 @@ function VTEntry({ data, num, onClick, active }) {
         }
         active={active}
         onClick={onClick}
+        noArrow={
+          !(
+            data?.metaData?.metaData &&
+            Object.keys(data.metaData.metaData).length
+          )
+        }
       >
         {data?.metaData?.metaData && (
           <RFolder
