@@ -48,14 +48,20 @@ export default function RFolder(props) {
       {objects &&
         Object.keys(objects)
           .filter((k) => objects[k] !== null && objects[k] !== undefined)
-          .map((k) => (
-            <RFolder
-              key={data[k]?.id || k}
-              title={data[k]?.id || k}
-              data={data[k]}
-              tablesEntries={tablesEntries}
-            />
-          ))}
+          .map((k) => {
+            let title = k;
+            if (data[k]?.id !== undefined) title = data[k]?.id;
+            if (data[k]?.state_number !== undefined)
+              title = `s${data[k]?.state_number}`;
+            return (
+              <RFolder
+                key={data[k]?.id || k}
+                title={title}
+                data={data[k]}
+                tablesEntries={tablesEntries}
+              />
+            );
+          })}
     </Folder>
   );
 }
