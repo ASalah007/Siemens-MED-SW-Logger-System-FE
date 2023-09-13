@@ -204,7 +204,7 @@ export default function useAccordionStates({
     applyFilters(arr, testSuitesSelectedFilters, TSData);
 
   const filteringOptions = TSColumns.map((e) => new Set());
-  TSData.map((e, i) => e.map((b, j) => filteringOptions[j].add(b)));
+  TSData.map((e, i) => e.map((b, j) => filteringOptions[j]?.add(b)));
 
   const firstHeaderOptions = {
     failed: testSuitesStatistics.failed,
