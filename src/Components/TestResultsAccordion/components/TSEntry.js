@@ -19,8 +19,6 @@ function TSEntry({ data, onClick, active, onDelete }) {
 
   const connMap = data?.metaData?.design_info?.dut_connectivity_map;
   const dutMap = {};
-  // dutMap.mpg_connectivity_map = { 1: "2", 2: "3", 3: "4", 4: "1" };
-  console.log(dutMap);
   if (connMap?.mpg_connectivity_map)
     dutMap["MPG Connectivity Map"] = connMap.mpg_connectivity_map;
 

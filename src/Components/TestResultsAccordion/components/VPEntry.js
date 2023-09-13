@@ -29,6 +29,9 @@ function VPEntry({ data, onClick, active }) {
 
   const title = `Validation Point(${data.incrementalId})`;
 
+  const metaData =
+    data.metaData && data.metaData !== "None" ? data.metaData : {};
+
   return (
     <div>
       <RFolder
@@ -55,7 +58,7 @@ function VPEntry({ data, onClick, active }) {
         }
         data={{
           "Meta Data": {
-            ...data.metaData,
+            ...metaData,
             creation_date: data.creation_date,
             failed_results: failedCount,
             total_results: totalCount,
