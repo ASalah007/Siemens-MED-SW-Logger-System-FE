@@ -15,6 +15,7 @@ import FOFPage from "./Pages/404Page/FOFPage.js";
 import Testcase from "./Pages/Testcase/Testcase.js";
 import ValidationTag from "./Pages/ValidationTag/ValidationTag.js";
 import AuthPagesBase from "./Pages/AuthPagesBase/AuthPagesBase.js";
+import DocPage from "./Pages/DocPage/DocPage.js";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/doc" element={<DocPage />} />
           <Route path="*" element={<FOFPage />} />
         </Routes>
       </BrowserRouter>
