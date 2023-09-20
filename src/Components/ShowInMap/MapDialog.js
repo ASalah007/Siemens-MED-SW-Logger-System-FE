@@ -93,6 +93,7 @@ export default function MapDialog({ open, onClose, maps }) {
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
               edgeTypes={edgeTypes}
+              fitView
             >
               <Controls />
               <MiniMap nodeColor="#6ede87" zoomable pannable />
@@ -217,7 +218,10 @@ function getNodes(connectedComponents) {
   let currentX = 10;
   let currentY = 30;
   const componentSpacing = 120;
-  const nodeSpacing = 70;
+  const nodeSpacing = 60;
+
+  const MAX_NODES_PER_ROW = 14;
+  let nodesInRow = 0;
 
   for (let i = 0; i < connectedComponents.length; i++) {
     const component = connectedComponents[i];
@@ -235,10 +239,18 @@ function getNodes(connectedComponents) {
       nodes.push(node);
 
       currentX += nodeSpacing;
+      nodesInRow++;
     }
+    currentX += 30;
 
-    currentY += componentSpacing;
-    currentX = 10;
+    if (
+      i < connectedComponents.length - 1 &&
+      connectedComponents[i + 1].length + nodesInRow > MAX_NODES_PER_ROW
+    ) {
+      currentY += componentSpacing;
+      currentX = 10;
+      nodesInRow = 0;
+    }
   }
 
   return nodes;
