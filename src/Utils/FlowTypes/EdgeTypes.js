@@ -97,7 +97,7 @@ const CustomEdge = ({
               sourceY +
               "px)"
             }
-            label="Tx"
+            label="Rx"
           />
         }
         {
@@ -109,7 +109,7 @@ const CustomEdge = ({
               targetY +
               "px)"
             }
-            label="Rx"
+            label="Tx"
           />
         }
       </EdgeLabelRenderer>
