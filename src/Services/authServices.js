@@ -82,11 +82,11 @@ export async function fetchAllActiveUsers() {
   return response.data;
 }
 
-export async function updateUser(userId, solutions, deletableDatabases) {
+export async function updateUser(userId, solutions, deletePermissions) {
   try {
     const response = await authAxios.patch(`/admin/users/${userId}`, {
       solutions,
-      deletableDatabases,
+      deletePermissions,
     });
     return response.data;
   } catch (err) {

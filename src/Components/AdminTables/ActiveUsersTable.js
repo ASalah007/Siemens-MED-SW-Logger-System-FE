@@ -25,6 +25,7 @@ export default function ActiveUsersTable({ filterValue = "" }) {
   const [deleteOptions, setDeleteOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteConfirmation, setdeleteConfirmation] = useState(false);
+  console.log(users);
 
   useEffect(() => {
     fetchDatabasesWithSolutions().then((data) => {
@@ -70,15 +71,15 @@ export default function ActiveUsersTable({ filterValue = "" }) {
           />,
 
           <AdminSelect
-            values={user.deletableDatabases}
+            values={user.deletePermissions}
             handleChange={(e, v) =>
               setUsers((o) => {
                 const nw = [...o];
-                nw[i].deletableDatabases = v;
+                nw[i].deletePermissions = v;
                 return nw;
               })
             }
-            options={deleteOptions}
+            options={options}
           />,
           <div className="flex gap-1 justify-center">
             <Button
@@ -87,7 +88,7 @@ export default function ActiveUsersTable({ filterValue = "" }) {
                 updateUser(
                   user._id,
                   user.solutions,
-                  user.deletableDatabases
+                  user.deletePermissions
                 ).then((data) => {
                   setUpdateSnackbar({
                     status: data.status,

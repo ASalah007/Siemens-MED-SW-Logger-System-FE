@@ -73,7 +73,7 @@ function HomePage() {
         <MenuItem value={db} key={db}>
           <div className="flex justify-between items-center w-full">
             <div>{db}</div>
-            {(user.deletableDatabases?.includes(db) || user.isAdmin) && (
+            {(user.deletePermissions?.includes(solution) || user.isAdmin) && (
               <IconButton
                 onClick={() => {
                   setOpenConfirmation(true);
